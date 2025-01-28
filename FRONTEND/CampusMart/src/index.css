@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+@theme{
+    --color-cblue: #0C4CAB;
+    --color-cyello: #FFBB0F;
+    --default-font-family:'Poppins';
+}
