@@ -3,6 +3,9 @@ import './App.css'
 import HeroSection from "./pages/landing/heroSection"
 import SecondSection from "./pages/landing/2ndsection"
 import Navbar from './components/navbar'
+import ThirdSection from './pages/landing/3rdSection'
+import FourthSection from './pages/landing/4thSection'
+import EndSection from './pages/landing/endSection'
 
 function App() {
 
@@ -23,6 +26,9 @@ const LandingPage = ()=>{
     <>
   <HeroSection/>
   <SecondSection/>
+  <ThirdSection/>
+  <FourthSection/>
+  <EndSection/>
   </>
   )
 } 
