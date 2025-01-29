@@ -15,7 +15,7 @@ export default function FourthSection()
                 <div className="text-white font-poppins font-light text-[20px] pb-[30px]">
                 <p className="text-center">Start buying, selling, and bidding today. Join thousands of students who are already part of the campusMart community!</p>
                 </div>
-                <motion.button whileTap={{scale:.95}} className="bg-white rounded-[35px] lg:text-[30px] text-cblue px-[30px] py-[10px]  " onClick={()=>nav('/')}>
+                <motion.button whileTap={{scale:.95}} className="bg-white rounded-[35px] lg:text-[30px] text-cblue px-[30px] py-[10px]  " onClick={()=>nav('/signup')}>
                     Sign up Now
                 </motion.button>
             </div>

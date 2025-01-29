@@ -1,31 +1,45 @@
-import { Link } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { motion } from "motion/react"
 
 export default function Navbar()
 {
+    const nav= useNavigate();
+    const loc = useLocation();
+    if(loc.pathname!=='/')
+        return null;
+    else    
     return(
-        <div className='h-[70px] bg-[#0C4CAB] flex flex-row  justify-between px-[30px] lg:px-[120px]  '>
+        <div className='h-[70px] bg-[#0C4CAB] flex flex-row  justify-between px-[30px] lg:px-[120px] sticky top-0    '>
             <div className="my-auto "> 
                 <img src="src/images/CampusMart.png" className="w-[130px] lg:w-[170px]"></img>
             </div>
 
-            <div className="hidden lg:flex lg:justify-between lg:my-auto">
-                <Link className="font-Poppins text-white gap-1.5 mx-[15px]">
-                    Home
-                </Link>
-                <Link className="font-Poppins text-white gap-1.5 mx-[15px]">
-                About
-                </Link>
-                <Link className="font-Poppins text-white gap-1.5 mx-[15px]">
-                How It Works
-                </Link>
-                <Link className="font-Poppins text-white gap-1.5 mx-[15px]">
-                Contact
-                </Link>
+            <div className="hidden lg:flex lg:justify-between lg:">
+                
+                <div className="flex border-b-[2px]   border-b-[#0C4CAB] transition-all duration-200 hover:border-b-cyello hover:text-cyello  text-white gap-1.5 mx-[15px] ">
+                    <Link className="font-Poppins my-auto">
+                        Home
+                    </Link>
+                </div>
+                <div className="flex border-b-[2px] border-b-[#0C4CAB] transition-all duration-200 hover:border-b-cyello text-white hover:text-cyello">
+                    <Link className="font-Poppins gap-1.5 mx-[15px] my-auto">
+                        About
+                    </Link>
+                </div>
+                <div className="flex border-b-[2px] border-b-[#0C4CAB] transition-all duration-200 hover:border-b-cyello text-white hover:text-cyello">
+                    <Link className="font-Poppins gap-1.5 mx-[15px] my-auto">
+                        how it Works
+                    </Link>
+                </div>
+                <div className="flex border-b-[2px] border-b-[#0C4CAB] transition-all duration-200 hover:border-b-cyello text-white hover:text-cyello">
+                    <Link className="font-Poppins gap-1.5 mx-[15px] my-auto">
+                        Contact
+                    </Link>
+                </div>
             </div>
 
             <div className="my-auto hidden lg:flex gap-[10px]">
-                <motion.button whileTap={{scale:.95}} className="border-[1px] border-cblue rounded-[20px] px-[15px] py-[6px] text-[14px] text-white bg-cblue font-poppins ">
+                <motion.button whileTap={{scale:.95}} className="border-[1px] border-cblue rounded-[20px] px-[15px] py-[6px] text-[14px] text-white bg-cblue font-poppins " onClick={()=>nav('/signup')}>
                     Sign Up
                 </motion.button>
                 <motion.button whileTap={{scale:.95}} className="border-[1px] border-cblue rounded-[20px] px-[15px] py-[6px] text-[14px] text-white bg-cblue font-poppins ">

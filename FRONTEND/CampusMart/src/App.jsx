@@ -6,6 +6,7 @@ import Navbar from './components/navbar'
 import ThirdSection from './pages/landing/3rdSection'
 import FourthSection from './pages/landing/4thSection'
 import EndSection from './pages/landing/endSection'
+import Signup from './pages/SignUp'
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
       <main className='flex-grow'>
         <Routes>
           <Route path='/' element={<LandingPage/>}/>
+          <Route path='/signup' element={<Signup/>}/>
         </Routes>
       </main>  
     </BrowserRouter>  
