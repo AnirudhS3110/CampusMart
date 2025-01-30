@@ -7,6 +7,7 @@ import ThirdSection from './pages/landing/3rdSection'
 import FourthSection from './pages/landing/4thSection'
 import EndSection from './pages/landing/endSection'
 import Signup from './pages/SignUp'
+import Signin from './pages/SignIn'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Routes>
           <Route path='/' element={<LandingPage/>}/>
           <Route path='/signup' element={<Signup/>}/>
+          <Route path='/signin' element={<Signin/>}/>
         </Routes>
       </main>  
     </BrowserRouter>  

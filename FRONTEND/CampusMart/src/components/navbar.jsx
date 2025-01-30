@@ -28,7 +28,7 @@ export default function Navbar()
                 </div>
                 <div className="flex border-b-[2px] border-b-[#0C4CAB] transition-all duration-200 hover:border-b-cyello text-white hover:text-cyello">
                     <Link className="font-Poppins gap-1.5 mx-[15px] my-auto">
-                        how it Works
+                        How it Works
                     </Link>
                 </div>
                 <div className="flex border-b-[2px] border-b-[#0C4CAB] transition-all duration-200 hover:border-b-cyello text-white hover:text-cyello">
@@ -42,7 +42,7 @@ export default function Navbar()
                 <motion.button whileTap={{scale:.95}} className="border-[1px] border-cblue rounded-[20px] px-[15px] py-[6px] text-[14px] text-white bg-cblue font-poppins " onClick={()=>nav('/signup')}>
                     Sign Up
                 </motion.button>
-                <motion.button whileTap={{scale:.95}} className="border-[1px] border-cblue rounded-[20px] px-[15px] py-[6px] text-[14px] text-white bg-cblue font-poppins ">
+                <motion.button whileTap={{scale:.95}} className="border-[1px] border-cblue rounded-[20px] px-[15px] py-[6px] text-[14px] text-white bg-cblue font-poppins " onClick={()=>nav('/signin')} >
                     Sign In
                 </motion.button>
             </div>
