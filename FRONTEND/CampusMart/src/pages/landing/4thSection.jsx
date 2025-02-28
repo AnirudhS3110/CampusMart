@@ -9,7 +9,7 @@ export default function FourthSection()
     return(
         <section className="bg-cblue pt-[180px] pb-[80px] ">
             <div className="w-full justify-items-center  ">
-                <div className="font-poppins font-semibold lg:text-[35px] text-center text-white pb-[30px] ">
+                <div className="font-poppins text-[28px] font-semibold lg:text-[35px] text-center text-white pb-[30px] ">
                     Ready to join <span className="text-cyello">Campus</span>Mart ?
                 </div>
                 <div className="text-white font-poppins font-light text-[20px] pb-[30px]">

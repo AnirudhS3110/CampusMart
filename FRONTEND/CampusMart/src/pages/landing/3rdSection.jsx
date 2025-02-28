@@ -4,7 +4,7 @@ export default function ThirdSection()
 {
     return(
         <section className="bg-cblue">
-            <div className="w-full text-poppins mb-[70px] gap-[20px] text-white text-center font-semibold lg:text-[40px] ">
+            <div className="w-full text-[30px] text-poppins mb-[70px] gap-[20px] text-white text-center font-semibold lg:text-[40px] ">
                 What our <span className="text-cyello">Users </span> say
             </div>
 
@@ -19,7 +19,7 @@ export default function ThirdSection()
 function FeedBack()
 {
     return(
-        <div className="mb-[40px] flex flex-row flex-wrap lg:gap-[30px]">
+        <div className="mb-[40px] mx-[15px] flex lg:flex-row flex-wrap gap-[30px] lg:mx-0">
 
             <motion.div whileHover={{scale:1.1, transition:{duration:0.2}}} className="lg:w-[280px] lg:h-[280px] font-poppins px-[21px] py-[30px] rounded-[20px] bg-white">
                 <div className="flex flex-row align-middle justify-around mb-[16px]">
