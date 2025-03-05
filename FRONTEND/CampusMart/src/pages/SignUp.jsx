@@ -1,5 +1,6 @@
 import { motion } from "motion/react";
 import { useState } from "react"
+import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -11,6 +12,47 @@ export default function Signup()
     const [rollno,setRollNo] = useState("");
     const [error,setError] = useState("");
     const nav = useNavigate();
+
+    async function hitServer()
+    {
+        if(password != '' && rollno!= '' && confirmpass!='' && username!='')
+        {
+            try{
+                
+                const result = await axios.post('http://localhost:3000/authentication/signup',
+                    {
+                        username:username,
+                        rollnumber: rollno,
+                        password: password,
+                        checkpassWord:confirmpass
+                    },
+                    
+                    {
+                        headers:{
+                            'Content-Type': 'Application/json',   
+                        }
+                    }
+                )
+
+              
+                
+                if(result.data.success)
+                {
+                    nav('/signin')
+                }
+                else{
+                    setError(result.data.message);
+                }
+            }
+            catch(e)
+            {
+                setError(e.response ? e.response : "internal-server error");
+            }
+        }
+        else{
+            setError("Please enter all the fields");
+        }
+    }
 
     return(
         <section className="bg-cblue flex items-center w-[100vw] h-[100vh]  px-[140px] ">
@@ -28,7 +70,7 @@ export default function Signup()
                                 <p className="text-center mb-[0px]">to</p>
                                 <p className="text-center mb-[0px] font-normal"  ><span className="text-cyello font-semibold">Campus</span>Mart</p>
                             </div>
-                            <motion.button whileTap={{scale:0.95}} className="bg-cyello rounded-[32px] font-normal lg:text-[28px] py-[8px] px-[16px]">
+                            <motion.button whileTap={{scale:0.95}} className="bg-cyello rounded-[32px] font-normal lg:text-[28px] py-[8px] px-[16px]" onClick={hitServer}>
                                 Sign up
                             </motion.button>
                             <p className="text-[14px] font-normal text-center">Already have an account? <Link to={'/signin'} className="transition-colors duration-200 font-semibold hover:text-cyello">Signin</Link></p>

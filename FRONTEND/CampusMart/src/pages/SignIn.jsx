@@ -1,6 +1,11 @@
 import { motion } from "motion/react";
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { set } from "mongoose";
+
+
+
 
 
 export default function Signin()
@@ -26,7 +31,7 @@ export default function Signin()
                                 <p className="text-center mb-[0px]">to</p>
                                 <p className="text-center mb-[0px] font-normal"  ><span className="text-cyello font-semibold">Campus</span>Mart</p>
                             </div>
-                            <motion.button whileTap={{scale:0.95}} className="bg-cyello rounded-[32px] font-normal lg:text-[28px] py-[8px] px-[16px]">
+                            <motion.button whileTap={{scale:0.95}} className="bg-cyello rounded-[32px] font-normal lg:text-[28px] py-[8px] px-[16px]" onClick={hitServer}>
                                 Sign in
                             </motion.button>
                             <p className="text-[14px] font-normal text-center">New to CampusMart? <Link className="transition-colors duration-200 font-semibold hover:text-cyello" to={'/signup'}>Signup</Link></p>
@@ -38,9 +43,52 @@ export default function Signin()
         </section>
         
     )
+
+    async function hitServer()
+    {
+        if(password != '' && rollno!= '')
+        {
+            try{
+                
+                const result = await axios.get('http://localhost:3000/authentication/signin',
+                    
+                    {
+                        headers:{
+                            'Content-Type': 'Application/json',
+                            'rollnumber': rollno,
+                            'password': password
+                        }
+                    }
+                )
+
+              
+                
+                if(result.data.success)
+                {
+                    const token = result.data.token;
+                    console.log(token);
+                    localStorage.setItem("authToken",token);
+                    console.log("Login successful!");
+                    setPassword("");
+                    setRollNo("");
+
+                }
+                else{
+                    setError(result.data.message);
+                }
+            }
+            catch(e)
+            {
+                setError(e.response ? e.response : "server error");
+            }
+        }
+        else{
+            setError("Please enter all the fields");
+        }
+    }
 }
 
-function Form({password,setPassword,rollno,setRollNo,error,setError})
+function Form({password,setPassword,rollno,setRollNo,error})
 {
     return(
         <div className="w-full py-[50px] ">
