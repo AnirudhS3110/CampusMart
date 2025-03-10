@@ -1,13 +1,14 @@
 import express from 'express';
 import {Router} from 'express'
 import jwt from 'jsonwebtoken'
-import { isValidPassword  ,isValidRollNo, comparePassword } from '../authentication/authent.js';
+import { isValidPassword  ,isValidRollNo } from '../authentication/validation.js';
+import { comparePassword } from '../authentication/authent.js';
 const secretPass = 'S3crEt';
 
  const router = Router();
 
 router.get('/signin',isValidRollNo , isValidPassword, comparePassword , (req,res)=>{
-    const rollNumber = req.body.rollnumber;
+    const rollNumber = req.headers.rollnumber;
 
     try{
         const token = jwt.sign(rollNumber,secretPass);

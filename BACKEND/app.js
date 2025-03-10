@@ -2,6 +2,9 @@ import express from "express"
 import cors from "cors"
 import Signin from './routes/signin.js'
 import Signup from './routes/signup.js'
+import SingleUpload from './routes/upload.js'
+import UserSell from './routes/userSell.js'
+import UserBuy from './routes/userBuy.js'
 
 //Installing nodemon by typing 
  const app = express();
@@ -10,8 +13,8 @@ import Signup from './routes/signup.js'
 
  app.use("/authentication", Signin);
  app.use("/authentication", Signup);
+ app.use("/uploads",SingleUpload);
+ app.use("/users",UserSell);
+ app.use("/users",UserBuy);
 
-
-export default app; 
-
-
+export default app;

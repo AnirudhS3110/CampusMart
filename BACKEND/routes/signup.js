@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 import { Router } from 'express';
-import { isValidPassword , isValidUsername ,isValidRollNo, verifyPassword } from '../authentication/authent.js';
+import { isValidPassword , isValidUsername ,isValidRollNo, verifyPassword } from '../authentication/validation.js';
 import { Users } from '../models/db.js';
 
 
