@@ -27,7 +27,7 @@ export default function Navbar()
                     </Link>
                 </div>
                 <div className="flex border-b-[2px] border-b-[#0C4CAB] transition-all duration-200 hover:border-b-cyello text-white hover:text-cyello">
-                    <Link to={''} className="font-Poppins gap-1.5 mx-[15px] my-auto">
+                    <Link to={'/'} className="font-Poppins gap-1.5 mx-[15px] my-auto">
                         How it Works
                     </Link>
                 </div>

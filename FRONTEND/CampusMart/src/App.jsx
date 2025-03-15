@@ -8,7 +8,9 @@ import FourthSection from './pages/landing/4thSection'
 import EndSection from './pages/landing/endSection'
 import Signup from './pages/SignUp'
 import Signin from './pages/SignIn'
-import Dashboard from './pages/home'
+import Dashboard from './pages/dashboard'
+import Protected from './pages/protected'
+import Chat from './pages/chat'
 
 function App() {
 
@@ -20,7 +22,8 @@ function App() {
           <Route path='/' element={<LandingPage/>}/>
           <Route path='/signup' element={<Signup/>}/>
           <Route path='/signin' element={<Signin/>}/>
-          <Route path='/dashboard' element={<Dashboard/>}/>
+          <Route path='/dashboard' element={<Dashboard />}/>
+          <Route path='/chat' element={<Chat/>}/>
         </Routes>
       </main>  
     </BrowserRouter>  

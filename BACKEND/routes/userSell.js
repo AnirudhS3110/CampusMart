@@ -33,12 +33,6 @@ router.post('/addItem',jwtAuthentication , async(req,res)=>{
     }
 });
 
-router.get('/viewItems', jwtAuthentication , async(req,res)=>{
-    const rollNo = req.body.payload.rollNumber;
-    const user = await Users.findOne({rollNumber:rollNo});
-    const userListing = await Listings.find({seller:user._id})
-    return res.json({success:true,userListing:userListing});
-})
 
 router.post('/removeItem',jwtAuthentication, async(req,res)=>{
     const itemID = req.body.itemID;
@@ -61,7 +55,7 @@ router.post('/removeItem',jwtAuthentication, async(req,res)=>{
 })
 
 //To add favourites
-router.get('/favouritesList', jwtAuthentication , async(req,res)=>{
+router.post('/favouritesList', jwtAuthentication , async(req,res)=>{
     const rollNo = req.body.rollNumber;
     const id = req.body.id;
     try{

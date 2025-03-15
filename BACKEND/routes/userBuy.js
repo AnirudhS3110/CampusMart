@@ -34,13 +34,15 @@ router.get('/viewCart', jwtAuthentication , async(req,res)=>{
     const rollNo = req.body.rollNumber;
     try{
         const userCart = await Users.find({rollNumber:rollNo}).populate("cart");
-        return res.json({success:true,userCart:userCart});
+        return res.json({success:true,userCart:userCart.cart});
     }
     catch(e)
     {
         res.status(500).json({success:false, message:"Internal server error"});
     }
 })
+
+
 
 export default  router;
 

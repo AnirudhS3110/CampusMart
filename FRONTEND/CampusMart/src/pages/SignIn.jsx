@@ -1,6 +1,9 @@
 import { motion } from "motion/react";
-import { useState } from "react"
+import { useState } from "react";
+import { login } from "@/redux/slices/AuthSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import axios from 'axios';
 
 
@@ -13,6 +16,7 @@ export default function Signin()
     const [rollno,setRollNo] = useState("");
     const [error,setError] = useState("");
     const nav = useNavigate();
+    const dispatch = useDispatch();
 
     return(
         <section className="bg-cblue flex items-center w-[100vw] h-[100vh]  px-[140px] ">
@@ -65,13 +69,11 @@ export default function Signin()
                 if(result.data.success)
                 {
                     const token = result.data.token;
-                    console.log(token);
-                    localStorage.setItem("authToken",token);
-                    console.log("Login successful!");
+                    const payload = {rollNumber: result.data.rollNumber , token:token , useID:result.data.userID};
+                    dispatch(login(payload));
                     setPassword("");
                     setRollNo("");
                     nav('/dashboard');
-
                 }
                 else{
                     setError(result.data.message);
