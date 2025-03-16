@@ -7,7 +7,7 @@ const listingSchema = new mongoose.Schema({
     description: String,
     price: Number,
     category: String,  
-    images: [String], 
+    image: String, 
     seller: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },  
     status: {type: Boolean, default:true},
     buyer: { type: mongoose.Schema.Types.ObjectId, ref:'Users'},

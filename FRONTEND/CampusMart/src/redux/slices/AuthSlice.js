@@ -5,7 +5,7 @@ const initialState = {
     userName:null,
     rollNumber : null,
     token :  null,
-    isLoggedIn : false,
+    isLoggedIn : true,
 }
 
 const AuthSlice = createSlice({

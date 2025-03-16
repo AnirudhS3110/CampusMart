@@ -1,5 +1,5 @@
 import React from "react";
-import {CirclePlus} from 'lucide-react'
+import {CirclePlus, Ghost} from 'lucide-react'
 import {
     Carousel,
     CarouselContent,
@@ -17,29 +17,21 @@ import {
   } from "@/components/ui/card";
   import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Button } from "@/components/ui/button";
  
 
 export default function Dashboard()
 {
     const nav = useNavigate();
+    const userName = useSelector((state)=>state.authentication.userName)
     return(
-        <section className="bg-cblue flex flex-col items-center w-[100vw] h-[100vh] px-[30px]   lg:px-[120px] overflow-y-auto ">
-            <div className="w-full flex flex-row justify-between h-[15%]">
-                <div className="my-auto max-w-[25%] lg:max-w-[10%]">
-                    <img src="src/images/CampusMart.png" className="lg:w-[100%] lg:h-auto mx-auto"/>
-                </div>
-                <div className="text-cyello my-auto lg:text-[32px] lg:font-semibold mx-auto">
-                        Welcome Username
-                </div>
-                <button className="w-[35px] h-[35px] border-[1px] border-cyello rounded-[50%] lg:w-[50px] lg:h-[50px] my-auto">
-                    <img className="w-full h-full border-1 rounded-[50%] "/>
-                </button>
-                
-            </div>
+        <section className="bg-cblue flex flex-col items-center w-[100vw] h-[100vh] px-[30px]   lg:px-[120px] overflow-y-auto pt-[20px] ">
+            
             <hr className="bg-white"></hr>
             <div className="w-full h-[90%]">
                 <div className="text-white font-semibold mb-[20px] lg:text-[30px] ">
-                    <h3>DASHBOARD</h3>
+                    <h3>Welcome back <span className="text-cyello">{userName}</span>!</h3>
                 </div >
                     
                 <div className="text-white lg:text-[30px] mb-[15px]">
@@ -72,12 +64,21 @@ export default function Dashboard()
                                         </Card>
                                     </CarouselItem>
                                     <CarouselItem className="md:basis-1/2 lg:basis-1/4">
-                                        <Card className="bg-cyello" >
-                                            <CardContent >
-                                                <p>HElloo</p>
+                                        <Card className="bg-cyello text-white" >
+                                            <CardHeader className="flex flex-row justify-between px-[16px]">
+                                                <div className="text-[18px]">
+                                                   Seller 
+                                                </div>
+                                                <div>
+
+                                                </div>
+                                            </CardHeader>
+                                            <CardContent  className="p-0">
+                                                <img className="rounded-tr-sm rounded-tl-sm w-full" src="https://stimg.cardekho.com/images/carexteriorimages/930x620/Maruti/Dzire/11387/1731318279714/front-left-side-47.jpg?impolicy=resize&imwidth=420"/>
 
 
                                             </CardContent>
+                                            <CardFooter></CardFooter>
                                         </Card>
                                     </CarouselItem>
                                     <CarouselItem className="md:basis-1/2 lg:basis-1/4">
@@ -125,13 +126,30 @@ export default function Dashboard()
                                                 </CardContent>
                                             </Card>
                                     </CarouselItem>
-                                    <CarouselItem className="md:basis-1/2 lg:basis-1/3">
-                                        <Card className="bg-cyello text-white" >
-                                            <CardContent >
-                                                <p>HElloo</p>
+                                    <CarouselItem className="md:basis-1/2 lg:basis-1/4">
+                                    <Card className="bg-cyello text-white" >
+                                            <CardHeader className="flex flex-row justify-between px-[16px]">
+                                                <div className="text-[18px]">
+                                                   Seller 
+                                                </div>
+                                                <motion.div whileTap={{scale:1.05}} className=" flex">
+                                                    <Button variant={Ghost} className="bg-cblue hover:bg-blue-600">
+                                                        Chat
+
+                                                    </Button>
+
+                                                </motion.div>
+                                            </CardHeader>
+                                            <CardContent  className="p-0 m-0">
+                                                <img className="rounded-tr-sm rounded-tl-sm w-full" src="https://stimg.cardekho.com/images/carexteriorimages/930x620/Maruti/Dzire/11387/1731318279714/front-left-side-47.jpg?impolicy=resize&imwidth=420"/>
 
 
                                             </CardContent>
+                                            <CardFooter className="flex flex-row justify-between px-[16px] text-[18px] pt-0">
+                                                <div>
+                                                    <h2>5000</h2>
+                                                </div>
+                                            </CardFooter>
                                         </Card>
                                     </CarouselItem>
                                     <CarouselItem className="md:basis-1/2 lg:basis-1/3">
@@ -163,7 +181,7 @@ export default function Dashboard()
 
                                                     </CardHeader>
                                                     <CardContent  className=" mx-auto" >
-                                                        <motion.button whileTap={{scale:1.05}} onClick={()=>{nav('/marketPlace')}} className="  rounded-[50%]" >
+                                                        <motion.button whileTap={{scale:1.05}} onClick={()=>{nav('/addListing')}} className="  rounded-[50%]" >
                                                             <CirclePlus className="w-full h-auto lg:w-20 lg:h-20" color="white">
                                                                 Add
                                                             </CirclePlus>

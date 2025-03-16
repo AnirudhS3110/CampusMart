@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { jwtAuthentication } from "../authentication/authent";
-import { Users, Listings } from "../models/db";
+import { jwtAuthentication } from "../authentication/authent.js";
+import { Users, Listings } from "../models/db.js";
 const router = Router();
 
 router.post('addToCart', jwtAuthentication , async(req,res)=>{

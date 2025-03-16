@@ -1,6 +1,6 @@
 import { Router } from "express";  
-import { Chats, Messages } from "../models/db";
-import { jwtAuthentication } from "../authentication/authent";
+import { Chats, Messages } from "../models/db.js";
+import { jwtAuthentication } from "../authentication/authent.js";
 import mongoose from "mongoose";
 
 const router = Router();

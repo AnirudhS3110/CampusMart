@@ -7,7 +7,29 @@ import { useDispatch } from "react-redux";
 import axios from 'axios';
 
 
+function Form({password,setPassword,rollno,setRollNo,error})
+{
+    return(
+        <div className="w-full py-[50px] ">
+            <form onSubmit={(e)=>{e.preventDefault() ; hitServer();}} className="flex   justify-start  flex-col gap-[15px] ">
+                
+                <div className="flex flex-col justify-start gap-[8px] lg:px-[50px]">
+                    <label className=" w-full justify-start font-semibold text-[20px]">Enter your Roll Number</label>
+                    <input className="w-full bg-white rounded-[18px] px-[12px] py-[6px] text-black focus:outline-white" value={rollno} onChange={e=>setRollNo(e.target.value)} type="text" placeholder="Enter your Roll Number" />
+                </div>
+                <div className="flex flex-col justify-start gap-[8px] lg:px-[50px]">
+                    <label className="font-semibold text-[20px]">Enter Your password</label>
+                    <input className="bg-white rounded-[18px] px-[12px] py-[6px] text-black focus:outline-white" value={password} onChange={e=>setPassword(e.target.value)} type="password" placeholder="Enter password" />
+                </div>
+                
+            </form>
+            <div className=" mt-[20px] text-center">
+                {error.length!=0 && <div className="text-poppins text-white font-normal text-[18px]">{error} </div>}
+            </div>
+        </div>
+    )
 
+}
 
 
 export default function Signin()
@@ -69,7 +91,7 @@ export default function Signin()
                 if(result.data.success)
                 {
                     const token = result.data.token;
-                    const payload = {rollNumber: result.data.rollNumber , token:token , useID:result.data.userID};
+                    const payload = {rollNumber: result.data.rollNumber , token:token , useID:result.data.userID, userName:result.data.username};
                     dispatch(login(payload));
                     setPassword("");
                     setRollNo("");
@@ -90,26 +112,3 @@ export default function Signin()
     }
 }
 
-function Form({password,setPassword,rollno,setRollNo,error})
-{
-    return(
-        <div className="w-full py-[50px] ">
-            <form onSubmit={(e)=>{e.preventDefault();}} className="flex   justify-start  flex-col gap-[15px] ">
-                
-                <div className="flex flex-col justify-start gap-[8px] lg:px-[50px]">
-                    <label className=" w-full justify-start font-semibold text-[20px]">Enter your Roll Number</label>
-                    <input className="w-full bg-white rounded-[18px] px-[12px] py-[6px] text-black focus:outline-white" value={rollno} onChange={e=>setRollNo(e.target.value)} type="text" placeholder="Enter your Roll Number" />
-                </div>
-                <div className="flex flex-col justify-start gap-[8px] lg:px-[50px]">
-                    <label className="font-semibold text-[20px]">Enter Your password</label>
-                    <input className="bg-white rounded-[18px] px-[12px] py-[6px] text-black focus:outline-white" value={password} onChange={e=>setPassword(e.target.value)} type="password" placeholder="Enter password" />
-                </div>
-                
-            </form>
-            <div className=" mt-[20px] text-center">
-                {error.length!=0 && <div className="text-poppins text-white font-normal text-[18px]">{error} </div>}
-            </div>
-        </div>
-    )
-
-}

@@ -1,35 +1,34 @@
-import express from 'express';
 import { Router } from 'express';
-import { jwtAuthentication } from '../authentication/authent';
-import { Listings, Users } from '../models/db';
+import { jwtAuthentication } from '../authentication/authent.js';
+import { Listings, Users } from '../models/db.js';
+import mongoose from 'mongoose';
 
 const router = Router();
 
 router.post('/addItem',jwtAuthentication , async(req,res)=>{
-    const {title,description,price,imageURL,category} = req.body;
-    const rollNo = req.body.payload.rollNumber;
+    const {title,description,price,category,imageURL,userID} = req.body;
+    console.log(imageURL , `type of the url, ${typeof(imageURL)}`);
+    const userObjID =  new mongoose.Types.ObjectId(userID)
     
     try{
-        const user = await Users.findOne({rollNumber:rollNo})
-        if(!user)
-            return res.json({success:false, message:"User not found"});
+        console.log("Came into try block of adddItem api")
         const newListing = await Listings.create({
             title:title, 
             description:description,
             price:price,
             category:category,
-            images: [imageURL],
-            seller: user._id
+            image: imageURL,
+            seller: userObjID
         });
         if(!newListing)
             return res.status(500).json({success:false , message:"Internal server error in adding items in list"})
     
-        await Users.findByIdAndUpdate(user._id,{$push:{listings:newListing._id}})
+        await Users.findByIdAndUpdate(userID,{$push:{listings:newListing._id}})
         return res.status(201).json({success:true, message:"List successfully added!"});
     }
     catch(e)
     {
-        return res.status(500).json({success:false, message:"Internal Server error"});
+        return res.status(500).json({success:false, message:"Internal Server error from addItem"});
     }
 });
 

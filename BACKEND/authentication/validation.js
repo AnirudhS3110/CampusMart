@@ -60,8 +60,11 @@ export function isValidEmail(req,res,next)
 export function isValidRollNo(req,res,next)
 {
     const rollNo = req.body.rollnumber? req.body.rollnumber: req.headers.rollnumber;
+    console.log(rollNo);
     try{
+        
         const result = rollNumberSchema.safeParse(rollNo);
+        
         if(!result.success)
             {
                 return res.json({success:false, message:"Invalid roll Number"});
@@ -74,22 +77,6 @@ export function isValidRollNo(req,res,next)
     }
 }
 
-export function isValidRollNo(req,res,next)
-{
-    const rollNo = req.body.rollnumber? req.body.rollnumber: req.headers.rollnumber;
-    try{
-        const result = rollNumberSchema.safeParse(rollNo);
-        if(!result.success)
-            {
-                return res.json({success:false, message:"Invalid roll Number"});
-            }
-        next();
-    }
-    catch(e)
-    {
-        return res.json({success:false, message:"internal server error from isValidRollNo"});
-    }
-}
 
 export function verifyPassword(req,res,next)
 {

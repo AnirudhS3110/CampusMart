@@ -1,8 +1,8 @@
 import multer from 'multer';
-import cloudinaryStorage from 'multer-storage-cloudinary';
-import { cloudinary } from './cloudinaryConfig';
+import {CloudinaryStorage}  from 'multer-storage-cloudinary';
+import { cloudinary } from './cloudinaryConfig.js';
 
-const storage = new cloudinaryStorage({
+const storage = new CloudinaryStorage({
     cloudinary,
     params:{
         folder: "campusMart",
