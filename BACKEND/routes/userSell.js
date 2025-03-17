@@ -6,9 +6,9 @@ import mongoose from 'mongoose';
 const router = Router();
 
 router.post('/addItem',jwtAuthentication , async(req,res)=>{
-    const {title,description,price,category,imageURL,userID} = req.body;
+    const {title,description,price,category,imageURL,rollNumber} = req.body;
     console.log(imageURL , `type of the url, ${typeof(imageURL)}`);
-    const userObjID =  new mongoose.Types.ObjectId(userID)
+    const user = await Users.findOne({rollNumber:rollNumber});
     
     try{
         console.log("Came into try block of adddItem api")
@@ -18,12 +18,12 @@ router.post('/addItem',jwtAuthentication , async(req,res)=>{
             price:price,
             category:category,
             image: imageURL,
-            seller: userObjID
+            seller: user._id
         });
         if(!newListing)
             return res.status(500).json({success:false , message:"Internal server error in adding items in list"})
     
-        await Users.findByIdAndUpdate(userID,{$push:{listings:newListing._id}})
+        await Users.findByIdAndUpdate(user._id,{$push:{listings:newListing._id}})
         return res.status(201).json({success:true, message:"List successfully added!"});
     }
     catch(e)

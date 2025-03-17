@@ -20,7 +20,7 @@ const chatSlice = createSlice({
             state.messages = (message)=>[...message,action.payload.messages]
         },
         'setChats':(state,action)=>{
-            state.chats = [(prev)=>[...prev,action.payload.chats]]
+            state.chats = (prev)=>[...prev,action.payload.chats]
         },
         'setSocket':(state,action)=>{
             state.sockets = action.payload.socket;

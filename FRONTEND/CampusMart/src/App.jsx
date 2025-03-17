@@ -14,8 +14,13 @@ import Navbar from "./components/navbar";
 import ProtectedNavBar from "./components/protectedNavbar";
 import Protected from "./pages/protected";
 import AddListing from "./pages/addListing";
+import { useDispatch } from "react-redux";  
+import { setLocalHost } from './redux/slices/ServerSlice';
+import { useEffect } from "react";
 
 function App() {
+  
+  
   return (
     <BrowserRouter>
       <MainLayout />

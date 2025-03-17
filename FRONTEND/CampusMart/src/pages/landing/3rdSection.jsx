@@ -3,7 +3,7 @@ import { motion } from "motion/react";
 export default function ThirdSection()
 {
     return(
-        <section className="bg-cblue">
+        <section className="bg-[#0f3772]">
             <div className="w-full text-[30px] text-poppins mb-[70px] gap-[20px] text-white text-center font-semibold lg:text-[40px] ">
                 What our <span className="text-cyello">Users </span> say
             </div>

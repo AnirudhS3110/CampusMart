@@ -6,15 +6,16 @@ import { useEffect } from "react";
 
 export default function Protected({children})
 {
-    const nav = useNavigate;
+    const nav = useNavigate();
 
     const isLoggedIn = useSelector((state)=>state.authentication.isLoggedIn);
 
     useEffect(() => {
+        console.log("Login status cahnged to:", isLoggedIn);
         if (!isLoggedIn) {
             nav('/Signin');
         }
-    }, [isLoggedIn, nav]);
+    }, [isLoggedIn]);
 
     return isLoggedIn ? children:null;
 

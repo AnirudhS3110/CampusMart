@@ -41,7 +41,7 @@ export default function Signin()
     const dispatch = useDispatch();
 
     return(
-        <section className="bg-cblue flex items-center w-[100vw] h-[100vh]  px-[140px] ">
+        <section className="bg-[#05295e] flex items-center w-[100vw] h-[100vh]  px-[140px] ">
 
             <div className=" flex  flex-row justify-start flex-wrap mx-auto">
 
@@ -93,6 +93,7 @@ export default function Signin()
                     const token = result.data.token;
                     const payload = {rollNumber: result.data.rollNumber , token:token , useID:result.data.userID, userName:result.data.username};
                     dispatch(login(payload));
+                    localStorage.setItem('Authtoken',token); 
                     setPassword("");
                     setRollNo("");
                     nav('/dashboard');

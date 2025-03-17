@@ -5,7 +5,7 @@ const initialState = {
     userName:null,
     rollNumber : null,
     token :  null,
-    isLoggedIn : true,
+    isLoggedIn : false,
 }
 
 const AuthSlice = createSlice({
@@ -18,13 +18,11 @@ const AuthSlice = createSlice({
             state.rollNumber = action.payload.rollNumber;
             state.token = action.payload.token;
             state.isLoggedIn = true;
-            localStorage.setItem('Authtoken',action.payload.token); 
         },
         'logout':(state)=>{
             state.rollNumber=null,
             state.isLoggedIn=false;
             state.token = null;
-            localStorage.removeItem(token);
         }
     }
 

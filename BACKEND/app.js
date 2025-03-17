@@ -6,6 +6,7 @@ import SingleUpload from './routes/upload.js'
 import UserSell from './routes/userSell.js'
 import UserBuy from './routes/userBuy.js'
 import Chats from "./routes/chat.js"
+import Dashboard from "./routes/dashboard.js"
 import rateLimit from "express-rate-limit"
 
 //Installing nodemon by typing 
@@ -24,5 +25,6 @@ import rateLimit from "express-rate-limit"
  app.use("/users",UserSell);
  app.use("/users",UserBuy);
  app.use("/chats",Chats);
+ app.use("/users",Dashboard);
 
 export default app;

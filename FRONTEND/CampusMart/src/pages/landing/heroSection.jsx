@@ -5,7 +5,7 @@ import {motion} from "motion/react"
 export default function Landing()
 {
     return(
-        <section className="w-[100%] h-full bg-cblue">
+        <section className="w-[100%] h-full bg-[#0f3772]">
             <div className=" mx-[60px] flex flex-row justify-end  lg:ml-[140px] lg:mr-0">
                 <LeftDiv/>
                 <RightDiv/>        

@@ -55,7 +55,7 @@ export default function Signup()
     }
 
     return(
-        <section className="bg-cblue flex items-center w-[100vw] h-[100vh]  px-[140px] ">
+        <section className="bg-[#05295e]     flex items-center w-[100vw] h-[100vh]  px-[140px] ">
 
             <div className=" flex flex-row justify-start flex-wrap mx-auto">
 

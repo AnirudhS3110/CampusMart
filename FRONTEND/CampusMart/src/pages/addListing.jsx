@@ -26,7 +26,7 @@ export default function AddListing()
     const nav = useNavigate();
     const token = localStorage.getItem("Authtoken");
     const userID = useSelector((state)=>state.authentication.userID);
-
+    const rollNumber = useSelector((state)=>state.authentication.rollNumber);
     async function getImageURL()
     {    
         console.log("Inside getImageURl");
@@ -79,7 +79,7 @@ export default function AddListing()
                     price:price,
                     category:category,
                     imageURL:url,
-                    seller:userID
+                    rollNumber:rollNumber
                 },
                 {
                     headers:{
@@ -116,8 +116,8 @@ export default function AddListing()
                 </div>
 
                 <div>
-                    <h3 className="text-white text-[24px] mb-[8px]">Description:</h3>
-                    <textarea value={description} onChange={(e)=>{setDescription(e.target.value)}} type = "text" placeholder="Enter Description..." className="bg-white text-black px-[8px] py-[4px] min-w-[250px] lg:min-w-[350px] focus-white text-[16px] rounded-md" ></textarea>
+                    <h3 className="text-white text-[24px] mb-[8px]">Description(max 100 characters):</h3>
+                    <textarea maxLength="100" value={description} onChange={(e)=>{setDescription(e.target.value)}} type = "text" placeholder="Enter Description..." className="bg-white text-black px-[8px] py-[4px] min-w-[250px] lg:min-w-[350px] focus-white text-[16px] rounded-md" ></textarea>
                 </div>
 
                 <div>

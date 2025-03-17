@@ -10,7 +10,7 @@ export default function SecondSection()
     ])
     return(
         <section className="">
-            <div className="py-[30px] pt-[100px]  w-[100%] bg-cblue ">
+            <div className="py-[30px] pt-[100px]  w-[100%] bg-[#0f3772] ">
                 <div className="flex justify-center text-[25px]  text-poppins  text-white lg:text-[40px] lg:font-semibold text-center">
                     Why choose <span className="text-cyello">  Campus Mart </span>?
                 </div >

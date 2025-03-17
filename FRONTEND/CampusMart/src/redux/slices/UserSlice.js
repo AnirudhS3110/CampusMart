@@ -7,19 +7,23 @@ const initialState = {
     boughtListing:[]
 }
 
-const UserSlice = createSlice({
-    name:'user',
-    initialState,
-    reducers:{
-        'setUser':(state,action)=>{
-            state.username = action.action.username;
-            state.likedListings = action.action.likedListings;
-            state.userListing = action.action.userListing;
-            state.boughtListing = action.action.boughtListing;
-        },
+    const UserSlice = createSlice({
+        name:'user',
+        initialState,
+        reducers:{
+            'setUser':(state,action)=>{
+                state.username = action.payload.username;
+                state.likedListings = action.payload.likedListings;
+                state.userListing = action.payload.userListing;
+                state.boughtListing = action.payload.boughtListings;
 
-    }
-});
+            },
+            'setUserListing':(state,action)=>{
+                state.userListing = action.payload.userListing;
+            },
 
-export const {setUser} = UserSlice.actions;
+        }
+    });
+
+export const {setUser, setUserListing} = UserSlice.actions;
 export default UserSlice.reducer;
