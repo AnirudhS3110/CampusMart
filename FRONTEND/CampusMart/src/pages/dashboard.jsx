@@ -214,6 +214,7 @@ function AddUserListing()
 
 
     const [open, setOpen] = useState(false);
+    const [openDel,setOpenDel] = useState(false);
     const [rate, setRate] = useState(null);
     const [file,setFile] = useState(null);
     const [loading,setLoading] = useState(false);
@@ -230,7 +231,7 @@ function AddUserListing()
                                                     <h2 className="text-[20px]">{item.title}</h2>
                                                 </div>
                                                 <motion.div whileTap={{scale:1.03}} transition={{ type: "spring", stiffness: 200, damping: 10 }} className="my-auto">
-                                                <Dialog open={open} onOpenChange={setOpen}>
+                                                <Dialog open={openDel} onOpenChange={setOpenDel}>
                     <DialogTrigger asChild>
                         <Button variant="ghost" className="bg-cblue transition-colors duration-300 hover:bg-red-600">
                             Delete
@@ -246,7 +247,7 @@ function AddUserListing()
 
                         <DialogFooter className="flex justify-end gap-4">
                             <Button variant="outline" onClick={() => setOpen(false)}>No</Button>
-                            <Button variant="destructive" onClick={async() => { await onDelete(item._id); setOpen(false); }}>
+                            <Button variant="destructive" onClick={async() => { await onDelete(item._id); setOpenDel(false); }}>
                                 Yes, Delete
                             </Button>
                         </DialogFooter>
@@ -304,7 +305,7 @@ function AddUserListing()
                                                                 {loading && <h2 className="text-[14px]">Saving the changes..</h2>}
                                                             </div>
                                                             <motion.div >
-                                                            <Button variant="outline" onClick={async()=>{console.log("Save button clicked");console.log("url of the image is:",item.image);await handleOnCLick({url:item.image ,id:item._id ,oldrate:item.price ,olddescription:item.description}); setOpen(false);}}>Save</Button>
+                                                            <Button variant="outline" onClick={async()=>{console.log("Save button clicked");await handleOnCLick({url:item.image ,id:item._id ,oldrate:item.price ,olddescription:item.description}); setOpen(false);}}>Save</Button>
                                                             </motion.div>
                                                         </DialogFooter>
                                                     </DialogContent>
