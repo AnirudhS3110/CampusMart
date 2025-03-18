@@ -24,7 +24,9 @@ router.post('/getDashboard', jwtAuthentication, async(req,res)=>{
 })
 
 router.post('/viewListings', jwtAuthentication , async(req,res)=>{
+    console.log("Entering viewlistings");
     const rollNo = req.body.rollNumber;
+    console.log("Inside viewlistings");
     const user = await Users.findOne({rollNumber:rollNo});
     const userListing = await Listings.find({seller:user._id})
     return res.json({success:true,userListing:userListing});

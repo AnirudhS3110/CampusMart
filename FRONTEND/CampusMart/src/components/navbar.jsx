@@ -11,7 +11,7 @@ export default function Navbar()
     return(
         <div className='h-[70px] bg-[#0C4CAB] flex flex-row  justify-between px-[30px] lg:px-[120px] sticky top-0    '>
             <div className="my-auto "> 
-                <img src="src/images/CampusMart.png" className="w-[130px] lg:w-[170px]"></img>
+                <img src="https://res.cloudinary.com/dbvebbsbh/image/upload/v1742311986/campusMart/fxefdawiekznrmvhmz3y.png" className="w-[130px] lg:w-[170px]"></img>
             </div>
 
             <div className="hidden lg:flex lg:justify-between lg:">

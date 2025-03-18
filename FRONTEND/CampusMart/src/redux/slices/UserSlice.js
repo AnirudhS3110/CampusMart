@@ -19,7 +19,7 @@ const initialState = {
 
             },
             'setUserListing':(state,action)=>{
-                state.userListing = action.payload.userListing;
+                state.userListing = (action.payload.userListing) ? action.payload.userListing : [];
             },
 
         }

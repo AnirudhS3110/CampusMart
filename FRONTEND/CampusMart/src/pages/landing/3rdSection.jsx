@@ -24,7 +24,7 @@ function FeedBack()
             <motion.div whileHover={{scale:1.1, transition:{duration:0.2}}} className="lg:w-[280px] lg:h-[280px] font-poppins px-[21px] py-[30px] rounded-[20px] bg-white">
                 <div className="flex flex-row align-middle justify-around mb-[16px]">
                     <div className="rounded-full w-[55px] h-auto">
-                    <img className="rounded-full w-full h-fit" src="src/images/pic1.png"/>
+                    <img className="rounded-full w-full h-fit" src="https://res.cloudinary.com/dbvebbsbh/image/upload/v1742312314/campusMart/e6nyjweqv0cwq6owbqp6.png"/>
                     </div>
 
                     <div className="flex flex-col border-b-[1px] border-b-white transition-all duration-200 hover:border-b-blue-500 ">
@@ -39,7 +39,7 @@ function FeedBack()
 
             <motion.div whileHover={{scale:1.1, transition:{duration:0.2}}} className="lg:w-[280px] lg:h-auto font-poppins px-[21px] py-[30px] rounded-[20px] bg-white">
                 <div className="flex flex-row align-middle justify-around mb-[16px] ">
-                    <img className="rounded-full w-[50px] h-[50px]" src="src/images/pic3.png"/>
+                    <img className="rounded-full w-[50px] h-[50px]" src="https://res.cloudinary.com/dbvebbsbh/image/upload/v1742312373/campusMart/kzdrjs67sj772vsduv55.png"/>
 
                     <div className="flex flex-col border-b-[1px] border-b-white transition-all duration-200 hover:border-b-blue-500 ">
                         <h3 className="font-semibold text-[20px] text-cblue">Michael Brown</h3>
@@ -53,7 +53,7 @@ function FeedBack()
 
             <motion.div whileHover={{scale:1.1, transition:{duration:0.2}}} className="lg:w-[280px] lg:h-auto font-poppins px-[21px] py-[30px] rounded-[20px] bg-white">
                 <div className="flex flex-row align-middle justify-around mb-[16px]">
-                    <img className="rounded-full w-[50px] h-[50px]" src="src/images/pic2.png"/>
+                    <img className="rounded-full w-[50px] h-[50px]" src="https://res.cloudinary.com/dbvebbsbh/image/upload/v1742312352/campusMart/ahkg0xlobqhbmincomzt.png"/>
 
                     <div className="flex flex-col border-b-[1px] border-b-white transition-all duration-200 hover:border-b-blue-500 ">
                         <h3 className="font-semibold text-[20px] text-cblue">Samantha Lee</h3>

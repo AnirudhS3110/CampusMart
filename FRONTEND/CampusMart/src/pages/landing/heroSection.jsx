@@ -66,7 +66,7 @@ function RightDiv()
 {
     return(
         <div className="hidden lg:flex lg:w-[632px]">
-                <img src="src/images/HeroSectionImage.png"></img>
+                <img src="https://res.cloudinary.com/dbvebbsbh/image/upload/v1742311899/campusMart/qyhysdbp0zzkphqmn9vz.png"></img>
         </div>
     )
 }

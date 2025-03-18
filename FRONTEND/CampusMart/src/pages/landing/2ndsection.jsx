@@ -3,10 +3,10 @@ import { memo, useEffect, useState } from "react"
 
 export default function SecondSection()
 {
-    const [cards,setCards] = useState([{image:"src/images/ShoppingCart.png",header:"Easy Selling",message:"List your items quickly and reach the entire campus community with our user-friendly interface."},
-        {image:"src/images/Gavel.png",header:"Dynamic Bidding",message:"Get the best deals by participating in our exciting and fair bidding system."},
-        {image:"src/images/Shield.png",header:"Secure Transactions",message:"Enjoy peace of mind with our trusted and secure payment system for all your trades."},
-        {image:"src/images/bolt.png",header:"Instant Notifications",message:"Stay updated with real-time alerts on your bids, sales, and purchases."}
+    const [cards,setCards] = useState([{image:"https://res.cloudinary.com/dbvebbsbh/image/upload/v1742312147/campusMart/vi7jaljhdm43mf8bjhhj.png",header:"Easy Selling",message:"List your items quickly and reach the entire campus community with our user-friendly interface."},
+        {image:"https://res.cloudinary.com/dbvebbsbh/image/upload/v1742312123/campusMart/ivbbr7slre3bkqo8i20s.png",header:"Dynamic Bidding",message:"Get the best deals by participating in our exciting and fair bidding system."},
+        {image:"https://res.cloudinary.com/dbvebbsbh/image/upload/v1742312178/campusMart/gsok8rjaetbswpduswi9.png",header:"Secure Transactions",message:"Enjoy peace of mind with our trusted and secure payment system for all your trades."},
+        {image:"https://res.cloudinary.com/dbvebbsbh/image/upload/v1742312062/campusMart/ivl0luk0oqe0h8pyrkqm.png",header:"Instant Notifications",message:"Stay updated with real-time alerts on your bids, sales, and purchases."}
     ])
     return(
         <section className="">

@@ -53,6 +53,25 @@ router.post('/removeItem',jwtAuthentication, async(req,res)=>{
     
 })
 
+router.post('/editItem',jwtAuthentication,async(req,res)=>{
+    const {itemID,price,description} = req.body;
+    if (!itemID) {
+        return res.status(400).json({ success: false, message: "Item ID is required" });
+    }
+
+    try{
+        const updatedItem = await Listings.findByIdAndUpdate(itemID,{$set:{price:price,description:description}},{new:true});
+        if (!updatedItem) {
+            return res.status(404).json({ success: false, message: "Item not found" });
+        }
+
+        return res.json({success:true,message:"Item updated"});
+    }
+    catch(e){
+        return res.status(500).json({success:false, message:"Internal Server error"})
+    }
+})
+
 //To add favourites
 router.post('/favouritesList', jwtAuthentication , async(req,res)=>{
     const rollNo = req.body.rollNumber;

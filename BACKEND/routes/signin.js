@@ -16,8 +16,6 @@ router.get('/signin',isValidRollNo , isValidPassword, comparePassword , async(re
         if(!user)
             return res.status(400).json({success:false , message:"User not found"}); 
         console.log("Tryyyyy");
-        console.log(user);
-        console.log(user?.userName);
         const token = jwt.sign(rollNumber,secretPass);
         return res.json({success:true , message:"user is logged in", token:token, rollNumber:rollNumber,userID:user._id,username:user.userName})
     }
