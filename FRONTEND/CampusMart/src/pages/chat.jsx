@@ -7,7 +7,6 @@ import { setChatID, setChats, setRoomID, setSocket , setReceiverID, setMessages,
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import store from "@/redux/store";
-import { set } from "mongoose";
 
 export default function Chat()
 {
