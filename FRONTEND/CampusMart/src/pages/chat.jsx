@@ -1,4 +1,4 @@
-import React, { useEffect , useState} from "react";
+import React, { useEffect , useRef, useState} from "react";
 import { Rocket } from "lucide-react";
 import { LogOut } from "lucide-react";
 import axios from "axios";
@@ -7,7 +7,6 @@ import { setChatID, setChats, setRoomID, setSocket , setReceiverID, setMessages,
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import store from "@/redux/store";
-import { set } from "mongoose";
 
 export default function Chat()
 {
@@ -66,13 +65,19 @@ export default function Chat()
         hitServer();
     }, [dispatch, token, userID]);
 
-    useEffect(()=>{},[messages])
+    
 
     
 
     const [view,setview] = useState(false);
     const [userName, setUserName] = useState("");
-    const receiverID = useSelector((state)=>state.chat.receiverID); 
+     const [receiver,setReceiver] = useState(null);
+
+    // useEffect(()=>{
+    //     setInterval(()=>{
+    //         (view)? setview(false):setview(true);
+    //     },100000)
+    // },[])
 
     
 
@@ -87,7 +92,7 @@ export default function Chat()
                <div className="h-[90%] w-full flex flex-col overflow-y-auto">
 
                 {chats.map((chat)=><motion.div whileTap={{ scale: 1.03 }} className="w-full h-[60px] scrollbar-hide ">
-                            <button key={chat._id} className="w-full, h-full flex justify-start px-[30px] gap-[15px]" onClick={()=>{ setChat({id:chat._id,setView:setview}); setUserName(chat.userName)}}>
+                            <button key={chat._id} className="w-full, h-full flex justify-start px-[30px] gap-[15px]" onClick={()=>{setReceiver(chat._id); setChat({id:chat._id,setView:setview}); setUserName(chat.userName)}}>
                                 <div className="h-[40px] w-[40px] border-[1px] border-cyello rounded-[50%] my-auto">
                                     <img className="border-[1px] rounded-[50%] object-cover w-full h-full"/>
                                 </div>
@@ -110,16 +115,28 @@ export default function Chat()
     )
 
 
+
+
     function ChatElement()
     {
             
-        const userID = useSelector((state) => state.authentication.userID);
+        const userID = useSelector((state) => state.authentication.userID);   
         const dispatch = useDispatch();
         const [text, setText] = useState("");
+        const endRef = useRef(null);
 
-        useState(()=>{
+        useEffect(()=>{
 
-        },[messages])
+            endRef.current.scrollIntoView({behavior:"smooth"});
+
+        },[])
+
+        // useEffect(()=>{
+        //     socket.onmessage = (event) => {
+        //         let message = JSON.parse(event.data);
+        //         dispatch(addMessage(message));
+        //     }
+        // },[])
 
        
 
@@ -141,7 +158,7 @@ export default function Chat()
                         message:text
                     }
                 }))
-                
+                dispatch(addMessage({sender:userID,message:text}))
                 setText("");            }
             catch(e)
             {
@@ -171,6 +188,7 @@ export default function Chat()
                             <MessageDiv message={message}/>
                         </div>
                     })}
+                    <div ref = {endRef}/>
                 </div>
 
                 <form onSubmit={(e)=>{e.preventDefault();try{onSend();}catch(e){console.log("Error while pressing send");}}} className="h-[10%] flex bg-blue-900">
@@ -181,7 +199,7 @@ export default function Chat()
                     </Button>
                     </motion.div>
                 </form>
-            </div>
+            </div >
         )
     }
 

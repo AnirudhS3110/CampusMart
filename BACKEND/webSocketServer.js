@@ -30,6 +30,7 @@ wss.on('connection',(ws)=>{
             switch(json.type)
             {
                 case "join":
+                    ws.send("You successfully connecred to the server");    
                     const userID = json.payload.userID;
                     onlineUsers.set(userID,ws);
                     break;
@@ -50,7 +51,7 @@ wss.on('connection',(ws)=>{
                             message:json.payload.message
                         })
                         if(res)
-                            ws.send("The response from db:"+res); 
+                            ws.send(res); 
                     }
                            
                         catch(e){

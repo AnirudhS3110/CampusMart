@@ -27,7 +27,7 @@ const chatSlice = createSlice({
             
         },
         'setReceiverID':(state,action)=>{
-            state.receiverID = action.payload.id;
+            state.receiverID = action.id;
         },
         'addMessage':(state,action)=>{
             state.messages.push(action.payload);
