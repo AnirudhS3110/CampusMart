@@ -52,7 +52,7 @@ const messageSchema = new mongoose.Schema({
     chatID:{type:mongoose.Schema.Types.ObjectId, ref:'Chats'},
     sender:{type:mongoose.Schema.Types.ObjectId, ref:'Users'},
     receiver:{type:mongoose.Schema.Types.ObjectId, ref:'Users'}, 
-    message: {type:String, required:true},
+    message: {type:String},
     status: { type: String, enum: ["sent", "delivered", "seen"], default: "sent" },
     createdAt: { type: Date, default: Date.now }
 

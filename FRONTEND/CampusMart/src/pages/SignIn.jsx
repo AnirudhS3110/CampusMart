@@ -91,7 +91,7 @@ export default function Signin()
                 if(result.data.success)
                 {
                     const token = result.data.token;
-                    const payload = {rollNumber: result.data.rollNumber , token:token , useID:result.data.userID, userName:result.data.username};
+                    const payload = {rollNumber: result.data.rollNumber , token:token , userID:result.data.userID, userName:result.data.username};
                     dispatch(login(payload));
                     localStorage.setItem('Authtoken',token); 
                     setPassword("");

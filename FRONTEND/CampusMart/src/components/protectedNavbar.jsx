@@ -6,14 +6,15 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import store from "@/redux/store";
 
 export default function protectedNavBar()
 {
     const [Location,setLocation] = useState("");
     const location = useLocation();
-    const [notif,setNotif] = useState(true);
-    const [notifCount,setNotifCount] = useState(5);
-    const userID = useSelector((state)=>state.authentication.userID);
+    const [notifCount,setNotifCount] = useState(2);
+    const userID = store.getState().authentication.userID;
+    const token = localStorage.getItem("Authtoken");
     const nav = useNavigate();
    
 
@@ -23,9 +24,13 @@ export default function protectedNavBar()
             try{
                 const response = await axios.post('http://localhost:3000/chats/unreadMessages',{
                     userID:userID
+                },{
+                    headers:{
+                        "authorization":token,
+                        "Content-Type":"application/json"
+                    }
                 });
-                setNotif(true);
-                setNotifCount(response.notificationCount)
+                 setNotifCount(response.data.notificationCount)
             }catch(e){
                 console.error("Error while gettng notifCount");
             }
@@ -64,7 +69,7 @@ export default function protectedNavBar()
                     
                     <motion.div whileTap={{scale:1.05}} className="flex my-auto">
                         <Button variant="ghost" size="icon" className="my-auto rounded-full bg-[#0C4CAB] opacity-80 lg:h-[50px] lg:w-[50px] hover:opacity-100 hover:bg-[#0C4CAB]" onClick={()=>{nav('/chat');}}>
-                            {(!notif)? <MessageCircle color="white"/> : <MessageSquareDot color="white">{notifCount}</MessageSquareDot>}
+                            {(notifCount>0)? <MessageSquareDot color="white">{notifCount}</MessageSquareDot> :<MessageCircle color="white"/> }
                         </Button>
                     </motion.div>
 

@@ -1,6 +1,6 @@
 import http from 'http'
 import WebSocket, {WebSocketServer} from 'ws';
-import { Chats } from './models/db.js';
+import { Chats, Messages } from './models/db.js';
 
 const server = http.createServer()
 
@@ -8,13 +8,24 @@ const wss = new WebSocketServer({server});
 
 const onlineUsers = new Map();
 
+// setInterval(() => {
+//     console.log("Online Users: ", onlineUsers.size)
+//     for(let [userId, socket] of onlineUsers)
+//     {
+//         console.log("User: ", userId)
+//     }  ;
+    
+// }, 5000);
+
 wss.on('connection',(ws)=>{
-    console.log("new client connected: "+ws.url)
+    console.log("new client connected: "+ws._socket.remoteAddress)
     
     ws.on('error', console.error)
 
     ws.on('message', async(message)=>{
         try{
+            console.log("Came into message");
+            console.log("Message: ", message);
             const json = JSON.parse(message);
             switch(json.type)
             {
@@ -23,17 +34,28 @@ wss.on('connection',(ws)=>{
                     onlineUsers.set(userID,ws);
                     break;
                 case "message":
+                    console.log("Message: ", json.payload.message);
                     if(onlineUsers.has(json.payload.receiver))
                     {
                         onlineUsers.get(json.payload.receiver).send(json.payload.message);
                     }
                     else
                     {
-                        await Chats.findByIdAndUpdate({_id:json.payload.chatID},{messages:{
+                        console.log("Message is to be stored ot db");
+                        ws.send("Your message is receiveed");
+                        try{const res = await Messages.create({
+                            chatID:json.payload.chatID,
                             sender:json.payload.sender,
                             receiver:json.payload.receiver,
                             message:json.payload.message
-                        }})
+                        })
+                        if(res)
+                            ws.send("The response from db:"+res); 
+                    }
+                           
+                        catch(e){
+                            console.error("Error while storing message to db")
+                        }   
                     }
                     break;
         }
@@ -54,4 +76,4 @@ wss.on('connection',(ws)=>{
 });
 
 
-server.listen(5000,()=>console.log("Server is running at "))
+server.listen(5000,()=>console.log("Server is running at 5000"))

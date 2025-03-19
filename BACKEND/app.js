@@ -7,18 +7,18 @@ import UserSell from './routes/userSell.js'
 import UserBuy from './routes/userBuy.js'
 import Chats from "./routes/chat.js"
 import Dashboard from "./routes/dashboard.js"
-import rateLimit from "express-rate-limit"
+// import rateLimit from "express-rate-limit"
 
 //Installing nodemon by typing 
  const app = express();
  app.use(cors());
  app.use(express.json());
- const limitter = rateLimit({
-    windowMs: 60*1000,
-    max:10,
-    message:"Too many requests from this IP, please try again later"
- })
- app.use(limitter);
+//  const limitter = rateLimit({
+//     windowMs: 60*1000,
+//     max:10,
+//     message:"Too many requests from this IP, please try again later"
+//  })
+//  app.use(limitter);
  app.use("/authentication", Signin);
  app.use("/authentication", Signup);
  app.use("/uploads",SingleUpload);

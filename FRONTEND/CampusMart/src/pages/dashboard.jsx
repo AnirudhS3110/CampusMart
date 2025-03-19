@@ -93,7 +93,7 @@ export default function Dashboard()
     
 
     return(
-        <section className="bg-[#05295e] flex flex-col items-center w-[100vw] h-[100vh] px-[30px] pb-[30px]  lg:px-[120px] overflow-y-auto pt-[20px] absolute  ">
+        <section className="bg-[#05295e] flex flex-col items-center w-[100vw] h-[200vh] px-[30px] pb-[30px]  lg:px-[120px] overflow-y-auto pt-[20px] absolute  ">
             
             <hr className="bg-white"></hr>
             <div className="w-full h-[90%]">
@@ -256,8 +256,8 @@ function AddUserListing()
 
                                                 </motion.div>
                                             </CardHeader>
-                                            <CardContent className="h-[200px] px-0 pb-0 mb-0">
-                                                <img className="rounded-tr-md h-full w-full object-fill rounded-tl-md" src={item.image}/>
+                                            <CardContent className="h-[200px] px-0 pb-0 mb-0 overflow-hidden">
+                                                <motion.img whileHover={{scale:1.03}} transition={{duration:0.2, ease: "easeInOut"}} className="rounded-tr-md h-full w-full object-fill rounded-tl-md" src={item.image}/>
                                             </CardContent>
                                             <CardFooter className="flex w-full flex-col px-0 gap-[8px]">
 

@@ -15,7 +15,7 @@ router.get('/signin',isValidRollNo , isValidPassword, comparePassword , async(re
         const user = await Users.findOne({rollNumber:rollNumber});
         if(!user)
             return res.status(400).json({success:false , message:"User not found"}); 
-        console.log("Tryyyyy");
+       
         const token = jwt.sign(rollNumber,secretPass);
         return res.json({success:true , message:"user is logged in", token:token, rollNumber:rollNumber,userID:user._id,username:user.userName})
     }

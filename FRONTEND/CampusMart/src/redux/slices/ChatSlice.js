@@ -14,25 +14,28 @@ const chatSlice = createSlice({
     reducers:{
         'setRoomID':(state,action)=>{
             state.roomID=action.payload.roomID;
-            (action.payload.messages) ? state.messages = (message)=>[...message,action.payload.messages] : null; 
+            (action.payload.messages) ? state.messages = action.payload.messages : null; 
         },
         'setMessages':(state, action)=>{
-            state.messages = (message)=>[...message,action.payload.messages]
+            state.messages = action.payload.messages
         },
         'setChats':(state,action)=>{
-            state.chats = (prev)=>[...prev,action.payload.chats]
+            state.chats = action.payload;
         },
         'setSocket':(state,action)=>{
-            state.sockets = action.payload.socket;
+            state.sockets = action.payload;
             
         },
         'setReceiverID':(state,action)=>{
             state.receiverID = action.payload.id;
+        },
+        'addMessage':(state,action)=>{
+            state.messages.push(action.payload);
         },
         
         
     }
 })
 
-export const {setRoomID,setChats,setMessages,setSocket,setReceiverID,setChatID} = chatSlice.actions;
+export const {setRoomID,setChats,setMessages,setSocket,setReceiverID,setChatID,addMessage} = chatSlice.actions;
 export default chatSlice.reducer;
