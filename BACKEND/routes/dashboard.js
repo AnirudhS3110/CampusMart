@@ -16,6 +16,7 @@ router.post('/getDashboard', jwtAuthentication, async(req,res)=>{
         const userListing = await Listings.find({seller:user._id});
         console.log("userlisiting : ",userListing);
         const boughtListings = await Listings.find({buyer:user._id});
+        res.set('Cache-Control', 'no-store');
         return res.json({success:true,username:user.userName, likedListings:user.favorites, userListing:userListing, boughtListings:boughtListings});
     } 
     catch(e){
@@ -29,6 +30,7 @@ router.post('/viewListings', jwtAuthentication , async(req,res)=>{
     console.log("Inside viewlistings");
     const user = await Users.findOne({rollNumber:rollNo});
     const userListing = await Listings.find({seller:user._id})
+    res.set('Cache-Control', 'no-store');
     return res.json({success:true,userListing:userListing});
 })
 

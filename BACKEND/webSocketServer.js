@@ -30,15 +30,36 @@ wss.on('connection',(ws)=>{
             switch(json.type)
             {
                 case "join":
-                    ws.send("You successfully connecred to the server");    
+                    ws.send(JSON.stringify({
+                        "type":"server-status",
+                        "payload":{
+                            "status":"connected"
+                        }
+                    }));    
                     const userID = json.payload.userID;
                     onlineUsers.set(userID,ws);
                     break;
                 case "message":
-                    console.log("Message: ", json.payload.message);
+                    console.log("Message: ", json.payload.message.toString());  
                     if(onlineUsers.has(json.payload.receiver))
                     {
-                        onlineUsers.get(json.payload.receiver).send(json.payload.message);
+                        onlineUsers.get(json.payload.receiver).send(JSON.stringify({
+                            "type":"message",
+                            "payload":{
+                                "sender":json.payload.sender,
+                                "message":json.payload.message
+                            }
+                        }));
+                        try{const res = await Messages.create({
+                            chatID:json.payload.chatID,
+                            sender:json.payload.sender,
+                            receiver:json.payload.receiver,
+                            message:json.payload.message
+                        })}
+                        catch(e){
+                            console.error("Error while storing message to db")
+                        } 
+                        
                     }
                     else
                     {

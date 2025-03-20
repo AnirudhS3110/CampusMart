@@ -5,7 +5,7 @@ const initialState = {
     receiverID:null,
     messages: [],
     chats:[],
-    sockets:null
+    newmessages:[]
 };
 
 const chatSlice = createSlice({
@@ -22,20 +22,19 @@ const chatSlice = createSlice({
         'setChats':(state,action)=>{
             state.chats = action.payload;
         },
-        'setSocket':(state,action)=>{
-            state.sockets = action.payload;
-            
-        },
         'setReceiverID':(state,action)=>{
-            state.receiverID = action.id;
+            state.receiverID = action.payload;
         },
         'addMessage':(state,action)=>{
             state.messages.push(action.payload);
+        },
+        'setNewMessages':(state,action)=>{
+            state.newmessages = action.payload;
         },
         
         
     }
 })
 
-export const {setRoomID,setChats,setMessages,setSocket,setReceiverID,setChatID,addMessage} = chatSlice.actions;
+export const {setRoomID,setChats,setMessages,setReceiverID,setChatID,addMessage,setNewMessages} = chatSlice.actions;
 export default chatSlice.reducer;

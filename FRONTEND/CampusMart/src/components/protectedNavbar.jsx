@@ -48,7 +48,7 @@ export default function protectedNavBar()
             setLocation("CHAT");
     },[location])
     return(
-        <div className="w-full h-[80px] flex flex-row justify start bg-[#062D67]">
+        <div className="w-full h-[10vh] flex flex-row justify start bg-[#062D67]">
             <div className="w-full flex flex-row justify-evenly ">
                 <div className="my-auto max-w-[25%] lg:max-w-[10%]">
                     <img src="https://res.cloudinary.com/dbvebbsbh/image/upload/v1742311986/campusMart/fxefdawiekznrmvhmz3y.png" className="lg:w-[100%] lg:h-auto mx-auto"/>
