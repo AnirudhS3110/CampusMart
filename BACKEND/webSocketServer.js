@@ -7,15 +7,9 @@ const server = http.createServer()
 const wss = new WebSocketServer({server});
 
 const onlineUsers = new Map();
+const Rooms = new Map();
 
-// setInterval(() => {
-//     console.log("Online Users: ", onlineUsers.size)
-//     for(let [userId, socket] of onlineUsers)
-//     {
-//         console.log("User: ", userId)
-//     }  ;
-    
-// }, 5000);
+
 
 wss.on('connection',(ws)=>{
     console.log("new client connected: "+ws._socket.remoteAddress)
@@ -25,7 +19,7 @@ wss.on('connection',(ws)=>{
     ws.on('message', async(message)=>{
         try{
             console.log("Came into message");
-            console.log("Message: ", message);
+            console.log("Type of message: ", typeof(message));
             const json = JSON.parse(message);
             switch(json.type)
             {
@@ -39,6 +33,9 @@ wss.on('connection',(ws)=>{
                     const userID = json.payload.userID;
                     onlineUsers.set(userID,ws);
                     break;
+                    
+                
+
                 case "message":
                     console.log("Message: ", json.payload.message.toString());  
                     if(onlineUsers.has(json.payload.receiver))
@@ -47,14 +44,20 @@ wss.on('connection',(ws)=>{
                             "type":"message",
                             "payload":{
                                 "sender":json.payload.sender,
-                                "message":json.payload.message
+                                "message":json.payload.message,
+                                "status":"see"
                             }
                         }));
+                        ws.send(JSON.stringify({
+                            "type":"seen"
+                        }));
+
                         try{const res = await Messages.create({
                             chatID:json.payload.chatID,
                             sender:json.payload.sender,
                             receiver:json.payload.receiver,
-                            message:json.payload.message
+                            message:json.payload.message,
+                            status:"seen"
                         })}
                         catch(e){
                             console.error("Error while storing message to db")
@@ -80,10 +83,45 @@ wss.on('connection',(ws)=>{
                         }   
                     }
                     break;
+
+                    case "enterRoom":
+                    console.log("Entered room");
+                    const {chatID,first,second} = json.payload;
+                    if(Rooms.has(chatID))
+                    {
+                        Rooms.get(chatID).includes(second) ? ws.send(JSON.stringify({
+                            "type":"seen"
+                        })) : ws.send(JSON.stringify({
+                            "type":"delivered",
+                            }));
+                        onlineUsers.get(second).send(JSON.stringify({
+                            type:"seen"
+                        }))
+                    }
+                    else
+                    {
+                        Rooms.set(chatID, [first,second]);
+                    }
+                    break;
+
+                    case "exitRoom":
+                    const {chatID1,userID1} = json.payload;
+                    Rooms.set(chatID1, Rooms.get(chatID1).filter(member=>member!== userID1))
+                    Rooms.get(chatID1).forEach((member)=>{
+                        if(onlineUsers.has(member))
+                        {
+                            const socket = onlineUsers.get(member);
+                            if(socket) 
+                            {
+                                socket.send(JSON.stringify({ type: "offline" }));
+                            }
+                        }
+                    })
+                    break;
         }
 
         }catch(e){
-            console.error("Invalid JSON")
+            console.log("Invalid JSON", e);
         }
     })
     
@@ -94,6 +132,17 @@ wss.on('connection',(ws)=>{
                 onlineUsers.delete(userID);
             break;
         }
+        wss.clients.forEach((client)=>{
+            if(client.readyState === WebSocket.OPEN)
+            {
+                client.send(JSON.stringify({
+                    "type":"offline",
+                    "payload":{
+                        "status":"disconnected"
+                    }
+                }))
+            }
+        })
     })
 });
 

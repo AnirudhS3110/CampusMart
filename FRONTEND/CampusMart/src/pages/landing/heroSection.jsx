@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowRight } from "lucide-react";
 import {motion} from "motion/react"
+import { useNavigate } from "react-router-dom";
 
 export default function Landing()
 {
@@ -16,6 +17,7 @@ export default function Landing()
 
 function LeftDiv()
 {
+    const nav = useNavigate();
     const scndline = "text-cyello font-semibold transition-all duration-200 hover:text-[50px] lg:hover:text-[60px]";
     const thrdline = "text-cyello font-semibold text-[20px] transition-all duration-200 hover:text-[50px] lg:text-[32px] lg:hover:text-[36px]";
     const button = "text-white py-[18px] px-[50px] max-w-[277px] max-h-[70] rounded-[35px]"
@@ -46,12 +48,12 @@ function LeftDiv()
             </div>
 
             <div className="flex justify-center gap-[15px] flex-wrap lg:flex-row lg:gap-[30px] lg:justify-start">
-                <motion.button whileTap={{scale: 0.95}} className="flex justify-between align-middle text-white px-[16px] py-[8px] border-[2px] border-cyello lg:py-[10px] lg:px-[50px] lg:max-w-[277px] lg:max-h-[70] rounded-[35px] bg-cyello transition-all duration-200 hover:bg-cblue hover:text-white hover:border-white lg:mt-[20px] ">
+                <motion.button whileTap={{scale: 0.95}} onClick={()=>nav('/signup')} className="flex justify-between align-middle text-white px-[16px] py-[8px] border-[2px] border-cyello lg:py-[10px] lg:px-[50px] lg:max-w-[277px] lg:max-h-[70] rounded-[35px] bg-cyello transition-all duration-200 hover:bg-cblue hover:text-white hover:border-white lg:mt-[20px] ">
                     Start Selling
                     <ArrowRight className="ml-3 h-5 w-5" />
                 </motion.button>
 
-                <motion.button whileTap={{scale: 0.95}} className="flex justify-between align-middle border-[2px] border-white text-white bg-cblue px-[16px] py-[8px] lg:py-[10px] lg:px-[50px] lg:max-w-[277px] lg:max-h-[70] rounded-[35px]  transition-all duration-200 hover:bg-cyello hover:text-white hover:border-cyello lg:mt-[20px] ">
+                <motion.button onClick={()=>nav('/signup')} whileTap={{scale: 0.95}} className="flex justify-between align-middle border-[2px] border-white text-white bg-cblue px-[16px] py-[8px] lg:py-[10px] lg:px-[50px] lg:max-w-[277px] lg:max-h-[70] rounded-[35px]  transition-all duration-200 hover:bg-cyello hover:text-white hover:border-cyello lg:mt-[20px] ">
                     Start Buying
                     <ArrowRight className="ml-3 h-5 w-5" />
                 </motion.button>

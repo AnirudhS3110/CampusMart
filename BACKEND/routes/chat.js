@@ -32,15 +32,15 @@ router.post('/createChat',jwtAuthentication,async(req,res)=>{
         res.status(500).json({success:false, message:"Internal server Error while creating chat room."});
     }
 })
-
-router.post('/getChats',jwtAuthentication,async(req,res)=>{
+ 
+router.post('/getChats',async(req,res)=>{
     const {userId} = req.body;
     console.log("userID:",userId);
     try{
         const chatList = await Chats.find({members:userId}).populate('members','userName');
         console.log("Chat List:", chatList);
-        const chats = chatList.flatMap((chat)=>{
-            return chat.members.filter((member)=>member._id.toString()!==userId);
+        const chats = chatList.map((chat)=>{
+            return { chatID:chat._id , receiver: chat.members.filter((member)=>member._id.toString()!==userId)};
               
     }
     )
@@ -48,7 +48,7 @@ router.post('/getChats',jwtAuthentication,async(req,res)=>{
         return res.json({success:true,chats:chats});
 
     }catch(e){
-        res.status(500).json({success:false, message:"Internal server Error while fetchng chats."});
+        res.json({success:false, message:"Internal server Error while fetchng chats."});
     }
 
 })
@@ -71,6 +71,24 @@ router.post('/unreadMessages',async(req,res)=>{
     }
 
 })
+
+router.post('/setRead',async(req,res)=>{
+    const {chatID,receiver} = req.body;
+    console.log("ChatID:",chatID);
+    console.log("Receiver:",receiver);
+    try{    
+        const isRead = await Messages.updateMany({chatID:chatID,receiver:receiver},{$set:{status:"seen"}})
+        console.log("isRead:",isRead.modifiedCount);
+        if(isRead.modifiedCount > 0)
+        {
+            return res.json({success:true});
+        }
+        else{
+            return res.json({success:false,message:""})
+        }
+    }catch(e){
+        res.status(500).json({success:false, message:"Internal server Error while setting messages as read."});
+    }})
 
 
 router.post('/findChat',async(req,res)=>{

@@ -2,6 +2,7 @@ import { motion } from "motion/react";
 import { useState } from "react"
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 
 export default function Signup()
@@ -55,16 +56,18 @@ export default function Signup()
     }
 
     return(
-        <section className="bg-[#05295e]     flex items-center w-[100vw] h-[100vh]  px-[140px] ">
+        <section className="bg-[#05295e]     flex items-center w-[100vw] h-[100vh]  md:px-[140px] ">
 
-            <div className=" flex flex-row justify-start flex-wrap mx-auto">
+            <div className=" flex  flex-row justify-start flex-wrap mx-auto">
 
-                    <div className="bg-cyello flex align-middle h-auto text-white font-poppins border-white border-[2px] rounded-l-[20px] items-center">
-                        <Form username={username} setUsername={setUsername} password={password} setPassword={setPassword} confirmpass={confirmpass} setConfirmPass = {setConfirmPass} rollno = {rollno} setRollNo = {setRollNo} error={error} setError={setError} ></Form>
+                    <div className="bg-blue px-[30px]  md:bg-cyello flex flex-col md:flex align-middle h-auto min-w-[350px] md:min-w-[340px] rounded-[20px] text-white font-poppins border-white border-[2px] md:rounded-r-[0px] items-center">
+                        <p className="text-center text-[30px] mt-[5px] md:hidden">Sign Up</p>
+                        <Form className="" username={username} setUsername={setUsername} password={password} setPassword={setPassword} confirmpass={confirmpass} setConfirmPass = {setConfirmPass} rollno = {rollno} setRollNo = {setRollNo} error={error} setError={setError} hitServer={hitServer} ></Form>
+                        <p className="text-[14px] md:hidden mb-[10px] font-normal text-center">Already have an account? <Link to={'/signin'} className="transition-colors duration-200 font-semibold hover:text-cyello">Signin</Link></p>
                     </div>
 
 
-                    <div className="flex  lg:flex-col gap-[30px] justify-center text-poppins bg-[#0C4CAB] text-white font-semibold lg:text-[40px] border-[2px] rounded-r-2xl border-white lg:px-[80px] lg:pt-[110px] pb-[90px]">
+                    <div className=" hidden md:flex   lg:flex-col gap-[30px] justify-center text-poppins bg-[#0C4CAB] text-white font-semibold lg:text-[40px] border-[2px] rounded-r-2xl border-white lg:px-[80px] lg:pt-[110px] pb-[90px]">
                             <div className="lg:leading-[40px]">
                                 <p className="text-center mb-[0px] ">Welcome</p>
                                 <p className="text-center mb-[0px]">to</p>
@@ -73,7 +76,7 @@ export default function Signup()
                             <motion.button whileTap={{scale:0.95}} className="bg-cyello rounded-[32px] font-normal lg:text-[28px] py-[8px] px-[16px]" onClick={hitServer}>
                                 Sign up
                             </motion.button>
-                            <p className="text-[14px] font-normal text-center">Already have an account? <Link to={'/signin'} className="transition-colors duration-200 font-semibold hover:text-cyello">Signin</Link></p>
+                            <p className="text-[14px] font-normal text-center">Already have an account? <Link to={'/signin'} className=" text-cyello">Signin</Link></p>
 
                     </div>
 
@@ -84,11 +87,11 @@ export default function Signup()
     )
 }
 
-function Form({username,setUsername,password,setPassword,confirmpass,setConfirmPass,rollno,setRollNo,error,setError})
+function Form({username,setUsername,password,setPassword,confirmpass,setConfirmPass,rollno,setRollNo,error,setError,hitServer})
 {
     return(
-        <div className="w-full py-[50px] ">
-            <form onSubmit={(e)=>{e.preventDefault();}} className="flex   justify-start  flex-col gap-[15px] ">
+        <div className="w-full   md:py-[50px]  ">
+            <form onSubmit={(e)=>{e.preventDefault(); hitServer()}} className="flex   justify-start  flex-col gap-[15px] ">
                 <div className="flex items-center justify-start flex-col gap-[8px] lg:px-[50px]">
                     <label className="w-full font-semibold text-[20px]">Select a username</label>
                     <input className=" w-full bg-white rounded-[18px] px-[12px] py-[6px] text-black focus:outline-white" value={username} onChange={e=>setUsername(e.target.value)} type="text" placeholder="Enter your username" />
@@ -105,9 +108,14 @@ function Form({username,setUsername,password,setPassword,confirmpass,setConfirmP
                     <label className="font-semibold text-[20px]">Confirm password</label>
                     <input className="bg-white rounded-[18px] px-[12px] py-[6px] text-black focus:outline-white" value={confirmpass} onChange={e=>setConfirmPass(e.target.value)} type="password" placeholder="Confirm password" />
                 </div>
+                <motion.div whileTap={{scale:1.03}} className="flex justify-center md:hidden">
+                    <Button type="submit" variant="Ghost" className="rounded-[16px] bg-cyello w-full border-[1px] border-cyello hover:bg-cyello hover:border-cyello">
+                        Sign In
+                    </Button>
+                </motion.div>
             </form>
-            <div className=" mt-[20px] text-center">
-                {error.length!=0 && <div className="text-poppins text-white font-normal text-[18px]">{error} </div>}
+            <div className=" my-[20px] text-center">
+                {error.length!=0 && <div className="text-poppins text-white font-normal md:text-[18px]">{error} </div>}
             </div>
         </div>
     )
