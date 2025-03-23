@@ -67,7 +67,6 @@ wss.on('connection',(ws)=>{
                     else
                     {
                         console.log("Message is to be stored ot db");
-                        ws.send("Your message is receiveed");
                         try{const res = await Messages.create({
                             chatID:json.payload.chatID,
                             sender:json.payload.sender,
@@ -94,9 +93,12 @@ wss.on('connection',(ws)=>{
                         })) : ws.send(JSON.stringify({
                             "type":"delivered",
                             }));
-                        onlineUsers.get(second).send(JSON.stringify({
-                            type:"seen"
-                        }))
+                        if(onlineUsers.get(second))
+                        {
+                            onlineUsers.get(second).send(JSON.stringify({
+                                type:"seen"
+                            }));
+                        }
                     }
                     else
                     {
@@ -106,7 +108,6 @@ wss.on('connection',(ws)=>{
 
                     case "exitRoom":
                     const {chatID1,userID1} = json.payload;
-                    Rooms.set(chatID1, Rooms.get(chatID1).filter(member=>member!== userID1))
                     Rooms.get(chatID1).forEach((member)=>{
                         if(onlineUsers.has(member))
                         {
@@ -117,6 +118,7 @@ wss.on('connection',(ws)=>{
                             }
                         }
                     })
+                    Rooms.set(chatID1, Rooms.get(chatID1).filter(member=>member!== userID1))
                     break;
         }
 

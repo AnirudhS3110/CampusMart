@@ -3,7 +3,7 @@ import { Rocket } from "lucide-react";
 import { LogOut } from "lucide-react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { setChatID, setChats, setRoomID , setReceiverID, setMessages, addMessage, setNewMessages} from "@/redux/slices/ChatSlice";
+import { setChatID, setChats, setRoomID , setReceiverID, setMessages, addMessage,setIsChatting, setReceiverName} from "@/redux/slices/ChatSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import store from "@/redux/store";
@@ -24,7 +24,6 @@ export default function Chat()
     const messages = useSelector((state)=>state.chat.messages)
     const dispatch =  useDispatch();
     const socketRef = useRef(null);
-    const [isChatting,setIsChatting] = useState(false);
 
     useEffect(() => {
         const Socket = new WebSocket("ws://localhost:5000");
@@ -43,10 +42,10 @@ export default function Chat()
             if (message.type === "message")
                 dispatch(addMessage(message.payload));
             else if(message.type  == "seen")
-                setIsChatting(true);
+                dispatch(setIsChatting(true))
             else if(message.type == "offline")
                 {
-                    setIsChatting(false);
+                    dispatch(setIsChatting(false))
                 }   
         };
         socketRef.current = Socket;
@@ -86,7 +85,7 @@ export default function Chat()
     const [view,setview] = useState(false);
     const [userName, setUserName] = useState("");
 
-    async function setRead(id)
+    async function setRead(id) //function to update in db that message are seen
     {
         try{
             const response = await axios.post('http://localhost:3000/chats/setRead',{
@@ -121,26 +120,15 @@ export default function Chat()
         }
     }
 
-    function onExit()
-    {
-        const id = store.getState().chat.roomID;
-        const socket = socketRef.current;
-        socket.send(JSON.stringify({
-            type:"exitRoom",
-            payload:{
-                chatID1:id,
-                userID1:userID
-            }
-        }))
-
-    }
+    
 
 
     
     
 
     return(
-        <ResizablePanelGroup direction="horizontal" className="min-h-[90vh] bg-[#05295e] flex justify-between">
+        <div className="w-full h-full">
+            <ResizablePanelGroup direction="horizontal" className="min-h-[90vh] bg-[#05295e] flex justify-between">
              <ResizablePanel defaultSize={45}>
                      <div className="h-[90%] w-full flex flex-col overflow-y-auto">
 
@@ -148,8 +136,14 @@ export default function Chat()
                                     <button className="w-full, h-full flex justify-start px-[30px] gap-[15px]" onClick={()=>{ 
                                         setChat({id:chat.receiver[0]._id,setView:setview}); 
                                         setUserName(chat.receiver[0].userName);
+                                        dispatch(setReceiverName(chat.receiver[0].userName))
                                         setRead(chat.chatID)
-                                        enterRoom(chat.chatID,chat.receiver[0]._id);}}>
+                                        enterRoom(chat.chatID,chat.receiver[0]._id);
+                                        if(window.innerWidth <=768)
+                                        {
+                                            history.pushState(`chat/${chat.receiver[0]._id}`)
+                                        }
+                                        }}>
                                         <div className="h-[40px] w-[40px] border-[1px] border-cyello rounded-[50%] my-auto">
                                             <img className="border-[1px] rounded-[50%] object-cover w-full h-full"/>
                                         </div>
@@ -165,87 +159,107 @@ export default function Chat()
                      </div>
 
              </ResizablePanel>
-            <ResizableHandle withHandle />
-            <ResizablePanel defaultSize={55}>
+            <ResizableHandle withHandle className="hidden md:flex" />
+            <ResizablePanel defaultSize={55} className="hidden md:flex">
             <div className="h-full  flex flex-col w-full">
-                {(view) ? <ChatElement userName={userName} messages={messages} setview={setview} setUserName={setUserName} isChatting={isChatting}/> : null}
+                {(view) ? <ChatElement  setview={setview}  socketRef={socketRef} /> : null}
             </div>
-            
             </ResizablePanel>
         </ResizablePanelGroup>
+        </div>
        
-    )
+    )  
+}
 
-    
+export function ChatElement({setview,socketRef}) {  
+    const isChatting = useSelector((state)=>state.chat.isChatting);
+    const messages = useSelector((state)=>state.chat.messages);     
+    const userID = useSelector((state) => state.authentication.userID);
+    const userName = useSelector((state)=>state.chat.receiverName);
+    const dispatch = useDispatch();
+    const [text, setText] = useState("");
+    const chatContainerRef = useRef(null);
+    const [autoScroll, setAutoScroll] = useState(true);
 
+    useEffect(()=>{
 
+        return ()=>{
+            onExit();
+        }
+    },[])
 
-    function ChatElement() {       
-        const userID = useSelector((state) => state.authentication.userID); 
-        const dispatch = useDispatch();
-        const [text, setText] = useState("");
-        const chatContainerRef = useRef(null);
-        const [autoScroll, setAutoScroll] = useState(true);
+    useEffect(() => {
+        if (chatContainerRef.current && autoScroll) {
+            chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+        }
+    }, [messages]);
 
-        useEffect(() => {
-            if (chatContainerRef.current && autoScroll) {
-                chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    function onExit()
+    {
+        const id = store.getState().chat.roomID;
+        const socket = socketRef.current;
+        socket.send(JSON.stringify({
+            type:"exitRoom",
+            payload:{
+                chatID1:id,
+                userID1:userID
             }
-        }, [messages]);
-    
-        const handleScroll = (e) => {
-            const element = e.target;
-            const isScrolledNearBottom = 
-                element.scrollHeight - element.scrollTop - element.clientHeight < 100;
-            setAutoScroll(isScrolledNearBottom);
-        };
-    
-        const onSend= useCallback(()=> {
-            if (!text.trim())
-                return;
-            
-            const socket = socketRef.current;   
-            const receiverID = store.getState().chat.receiverID;    
-            const chatID = store.getState().chat.roomID;
-            try {
-                socket.send(JSON.stringify(
-                    {
-                    type: "message",
-                    payload: {
-                        chatID: chatID,
-                        sender: userID,
-                        receiver: receiverID,
-                        message: text
-                    }
-                }
-                ));
-                console.log("isChatting status: ",isChatting);
-                if(isChatting)
-                    dispatch(addMessage({ sender: userID, message: text, status: "seen" }));
-                else
+        }))
+
+    }
+
+    const handleScroll = (e) => {
+        const element = e.target;
+        const isScrolledNearBottom = 
+            element.scrollHeight - element.scrollTop - element.clientHeight < 100;
+        setAutoScroll(isScrolledNearBottom);
+    };
+
+    const onSend= useCallback(()=> {
+        if (!text.trim())
+            return;
+        
+        const socket = socketRef.current;   
+        const receiverID = store.getState().chat.receiverID;    
+        const chatID = store.getState().chat.roomID;
+        try {
+            socket.send(JSON.stringify(
                 {
-                    dispatch(addMessage({ sender: userID, message: text }));
+                type: "message",
+                payload: {
+                    chatID: chatID,
+                    sender: userID,
+                    receiver: receiverID,
+                    message: text
                 }
-                setText("");
-            } catch (e) {
-                console.log("Error while sending message to websocket: ", e);
             }
-        },[text,dispatch,userID]);
-    
-        return (
-            <div className="w-full h-full flex flex-col">
-                <ChatHeader userName={userName} setUserName={setUserName} dispatch={dispatch} setview={setview} onExit={onExit}/>
-                <div 
-                ref={chatContainerRef}
-                onScroll={handleScroll}
-                className="h-[70vh] flex flex-col gap-[12px] overflow-y-auto px-[30px] my-[17px]"
-            >
-                <MessageList messages={messages} userID={userID} isChatting={isChatting} />
-            </div>
-                <LowerArea text={text} setText={setText} onSend={onSend} />
-            </div>
-        );
-    }  
+            ));
+            console.log("isChatting status: ",isChatting);
+            if(isChatting)
+                dispatch(addMessage({ sender: userID, message: text, status: "seen" }));
+            else
+            {
+                dispatch(addMessage({ sender: userID, message: text }));
+            }
+            setText("");
+        } catch (e) {
+            console.log("Error while sending message to websocket: ", e);
+        }
+    },[text,dispatch,userID]);
+
+    return (
+        <div className="w-full h-full flex flex-col">
+            <ChatHeader userName={userName}  dispatch={dispatch} setview={setview} onExit={onExit}/>
+            <div 
+            ref={chatContainerRef}
+            onScroll={handleScroll}
+            className="h-[70vh] flex flex-col gap-[12px] overflow-y-auto px-[30px] my-[17px]"
+        >
+            <MessageList messages={messages} userID={userID} isChatting={isChatting} />
+        </div>
+            <LowerArea text={text} setText={setText} onSend={onSend} />
+        </div>
+    );
 }
 
 const MessageList = React.memo(({ messages, userID }) => {
@@ -259,7 +273,7 @@ const MessageList = React.memo(({ messages, userID }) => {
     ));
 });
 
-const ChatHeader = React.memo(({userName,setUserName,dispatch,setview,onExit})=>{
+const ChatHeader = React.memo(({userName,dispatch,setview,onExit})=>{
     return <div className="h-[10vh]  bg-blue-900 flex justify-between">
     <div className="flex flex-row justify-start gap-[20px] w-[80%] px-[40px]">
         <div className="w-[50px] h-[50px] border-1 rounded-[50%] overflow-hidden my-auto ">
@@ -271,11 +285,10 @@ const ChatHeader = React.memo(({userName,setUserName,dispatch,setview,onExit})=>
         </div>
     </div>
     <Button  className="my-auto mx-10 bg-cyello" onClick={()=>{
-        setview(false); 
-        setUserName("");
+        setview(false);
         onExit();
         dispatch(setMessages([]));
-        dispatch(setNewMessages([]))
+        dispatch(setReceiverName(""))
         }}>
         <LogOut/>
     </Button>

@@ -17,6 +17,7 @@ import AddListing from "./pages/addListing";
 import { useDispatch } from "react-redux";  
 import { setLocalHost } from './redux/slices/ServerSlice';
 import { useEffect } from "react";
+import ChatPage from "./pages/ChatPage";
 
 function App() {
   
@@ -52,6 +53,7 @@ function MainLayout() {
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
           <Route path="/addListing" element={<Protected><AddListing /></Protected>} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/chat/:id" element={<ChatPage/>} /> 
         </Routes>
       </main>
     </div>
