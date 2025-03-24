@@ -13,6 +13,7 @@ import {
     ResizablePanelGroup,
   } from "@/components/ui/resizable";
 import {CheckCheck} from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Chat()
 {
@@ -24,6 +25,7 @@ export default function Chat()
     const messages = useSelector((state)=>state.chat.messages)
     const dispatch =  useDispatch();
     const socketRef = useRef(null);
+    const nav = useNavigate()
 
     useEffect(() => {
         const Socket = new WebSocket("ws://localhost:5000");
@@ -84,6 +86,8 @@ export default function Chat()
 
     const [view,setview] = useState(false);
     const [userName, setUserName] = useState("");
+    const [hide,setHide] = useState(false)
+    console.log("hide status:",hide);
 
     async function setRead(id) //function to update in db that message are seen
     {
@@ -128,8 +132,8 @@ export default function Chat()
 
     return(
         <div className="w-full h-full">
-            <ResizablePanelGroup direction="horizontal" className="min-h-[90vh] bg-[#05295e] flex justify-between">
-             <ResizablePanel defaultSize={45}>
+            <ResizablePanelGroup direction="horizontal"  className={` min-h-[90vh] bg-[#05295e] flex justify-between`}>
+             <ResizablePanel defaultSize={45} >
                      <div className="h-[90%] w-full flex flex-col overflow-y-auto">
 
                         {chats.map((chat)=><motion.div whileTap={{ scale: 1.03 }} className="w-full h-[60px] scrollbar-hide ">
@@ -141,9 +145,9 @@ export default function Chat()
                                         enterRoom(chat.chatID,chat.receiver[0]._id);
                                         if(window.innerWidth <=768)
                                         {
-                                            history.pushState(`chat/${chat.receiver[0]._id}`)
+                                             
                                         }
-                                        }}>
+                                        }}> 
                                         <div className="h-[40px] w-[40px] border-[1px] border-cyello rounded-[50%] my-auto">
                                             <img className="border-[1px] rounded-[50%] object-cover w-full h-full"/>
                                         </div>
@@ -166,12 +170,13 @@ export default function Chat()
             </div>
             </ResizablePanel>
         </ResizablePanelGroup>
+        
         </div>
        
     )  
 }
 
-export function ChatElement({setview,socketRef}) {  
+    function ChatElement({setview,socketRef}) {  
     const isChatting = useSelector((state)=>state.chat.isChatting);
     const messages = useSelector((state)=>state.chat.messages);     
     const userID = useSelector((state) => state.authentication.userID);
@@ -181,12 +186,7 @@ export function ChatElement({setview,socketRef}) {
     const chatContainerRef = useRef(null);
     const [autoScroll, setAutoScroll] = useState(true);
 
-    useEffect(()=>{
-
-        return ()=>{
-            onExit();
-        }
-    },[])
+    
 
     useEffect(() => {
         if (chatContainerRef.current && autoScroll) {
@@ -274,6 +274,13 @@ const MessageList = React.memo(({ messages, userID }) => {
 });
 
 const ChatHeader = React.memo(({userName,dispatch,setview,onExit})=>{
+    useEffect(()=>{
+
+        return ()=>{
+            onExit();
+        }
+    },[userName])
+
     return <div className="h-[10vh]  bg-blue-900 flex justify-between">
     <div className="flex flex-row justify-start gap-[20px] w-[80%] px-[40px]">
         <div className="w-[50px] h-[50px] border-1 rounded-[50%] overflow-hidden my-auto ">
@@ -348,6 +355,14 @@ async function setChat({id,setView})
     setView(true);
         
     }
+
+
+export function ChatElement2()
+{
+    return <></>
+
+}
+
 
     
 
