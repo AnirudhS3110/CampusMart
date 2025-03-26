@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect,useMemo , useRef, useState} from "react";
-import { Rocket } from "lucide-react";
+import { Rocket, ArrowLeft, ArrowRight } from "lucide-react";
 import { LogOut } from "lucide-react";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -26,6 +26,25 @@ export default function Chat()
     const dispatch =  useDispatch();
     const socketRef = useRef(null);
     const nav = useNavigate()
+    const [isPhone,setIsPhone] = useState(window.innerWidth <= 768); 
+    const [isChatView,setIsChatView] = useState(true);
+
+    useEffect(()=>{
+        function handleResize()
+        {
+            setIsPhone(window.innerWidth <= 768);
+            if(window.innerWidth < 768)
+            {
+                setIsChatView(true);
+                console.log("is chat view set to true");
+            }
+                
+        }
+        window.addEventListener('resize',handleResize);
+
+        return ()=>window.removeEventListener('resize',handleResize);
+
+    },[])
 
     useEffect(() => {
         const Socket = new WebSocket("ws://localhost:5000");
@@ -86,8 +105,7 @@ export default function Chat()
 
     const [view,setview] = useState(false);
     const [userName, setUserName] = useState("");
-    const [hide,setHide] = useState(false)
-    console.log("hide status:",hide);
+    console.log("isChatView status: ", isChatView)
 
     async function setRead(id) //function to update in db that message are seen
     {
@@ -118,10 +136,18 @@ export default function Chat()
                     second:receiver 
                 }
             }))
-        }catch(e)
+        }
+        catch(e)
         {
             console.log("Error while entering room:",e);
         }
+    }
+
+    function setViewAndManageMobile(value)
+    {
+        setview(value);
+        (isPhone && value) ? setIsChatView(false): null;
+
     }
 
     
@@ -130,53 +156,84 @@ export default function Chat()
     
     
 
-    return(
-        <div className="w-full h-full">
-            <ResizablePanelGroup direction="horizontal"  className={` min-h-[90vh] bg-[#05295e] flex justify-between`}>
-             <ResizablePanel defaultSize={45} >
-                     <div className="h-[90%] w-full flex flex-col overflow-y-auto">
+    return( <div className="w-full h-full">
+        {isPhone ? (
+            <div className="h-[90vh] w-full flex flex-col overflow-y-auto bg-[#05295e]">
+                {
+                isChatView ? 
+                    <div className="w-full h-full bg-[#05295e]">
+                    {chats.map((chat)=><motion.div whileTap={{ scale: 1.03 }} className="w-full h-[60px] scrollbar-hide ">
+                                <button className="w-full, h-full flex justify-start px-[30px] gap-[15px]" onClick={()=>{ 
+                                    setChat({id:chat.receiver[0]._id,setView:setViewAndManageMobile}); 
+                                    setUserName(chat.receiver[0].userName);
+                                    dispatch(setReceiverName(chat.receiver[0].userName))
+                                    setRead(chat.chatID)
+                                    enterRoom(chat.chatID,chat.receiver[0]._id);
+                                    setIsChatView(false)
+                                    }}> 
+                                    <div className="h-[40px] w-[40px] border-[1px] border-cyello rounded-[50%] my-auto">
+                                        <img className="border-[1px] rounded-[50%] object-cover w-full h-full"/>
+                                    </div>
+                                    <div className="text-white text-[20px] my-auto">
+                                        {chat.receiver[0].userName}
+                                    </div>
+                        
+                                </button>
+                                <hr className="bg-blue-500 opacity-25"></hr>
+                            </motion.div>)}
 
-                        {chats.map((chat)=><motion.div whileTap={{ scale: 1.03 }} className="w-full h-[60px] scrollbar-hide ">
-                                    <button className="w-full, h-full flex justify-start px-[30px] gap-[15px]" onClick={()=>{ 
-                                        setChat({id:chat.receiver[0]._id,setView:setview}); 
-                                        setUserName(chat.receiver[0].userName);
-                                        dispatch(setReceiverName(chat.receiver[0].userName))
-                                        setRead(chat.chatID)
-                                        enterRoom(chat.chatID,chat.receiver[0]._id);
-                                        if(window.innerWidth <=768)
-                                        {
-                                             
-                                        }
-                                        }}> 
-                                        <div className="h-[40px] w-[40px] border-[1px] border-cyello rounded-[50%] my-auto">
-                                            <img className="border-[1px] rounded-[50%] object-cover w-full h-full"/>
-                                        </div>
-                                        <div className="text-white text-[20px] my-auto">
-                                            {chat.receiver[0].userName}
-                                        </div>
-                            
-                                    </button>
-                                    <hr className="bg-blue-500 opacity-25"></hr>
-                                </motion.div>)}
-
-           
-                     </div>
-
-             </ResizablePanel>
-            <ResizableHandle withHandle className="hidden md:flex" />
-            <ResizablePanel defaultSize={55} className="hidden md:flex">
-            <div className="h-full  flex flex-col w-full">
-                {(view) ? <ChatElement  setview={setview}  socketRef={socketRef} /> : null}
+                    </div> : 
+                        <div className="h-[80vh]  flex flex-col w-full">
+                            {(view) ? <ChatElement  setview={setview} isPhone={isPhone}  socketRef={socketRef} setIsChatView={setIsChatView}/> : null}
+                        </div>}
+                    
             </div>
-            </ResizablePanel>
-        </ResizablePanelGroup>
-        
+        ): (
+            <div className="w-full h-full">
+        <ResizablePanelGroup direction="horizontal"  className={`hidden md:flex min-h-[90vh] bg-[#05295e]  md:justify-between`}>
+         <ResizablePanel defaultSize={45} >
+                 <div className="h-[90%] w-full flex flex-col overflow-y-auto">
+
+                    {chats.map((chat)=><motion.div whileTap={{ scale: 1.03 }} className="w-full h-[60px] scrollbar-hide ">
+                                <button className="w-full, h-full flex justify-start px-[30px] gap-[15px]" onClick={()=>{ 
+                                    setChat({id:chat.receiver[0]._id,setView:setview}); 
+                                    setUserName(chat.receiver[0].userName);
+                                    dispatch(setReceiverName(chat.receiver[0].userName))
+                                    setRead(chat.chatID)
+                                    enterRoom(chat.chatID,chat.receiver[0]._id);
+                                    }}> 
+                                    <div className="h-[40px] w-[40px] border-[1px] border-cyello rounded-[50%] my-auto">
+                                        <img className="border-[1px] rounded-[50%] object-cover w-full h-full"/>
+                                    </div>
+                                    <div className="text-white text-[20px] my-auto">
+                                        {chat.receiver[0].userName}
+                                    </div>
+                        
+                                </button>
+                                <hr className="bg-blue-500 opacity-25"></hr>
+                            </motion.div>)}
+                 </div>
+
+         </ResizablePanel>
+        <ResizableHandle withHandle className="hidden md:flex" />
+        <ResizablePanel defaultSize={55} className="hidden md:flex">
+        <div className="h-full  flex flex-col w-full">
+            {(view) ? <ChatElement  setview={setview}  socketRef={socketRef} /> : null}
         </div>
+        </ResizablePanel>
+    </ResizablePanelGroup>
+    
+    </div>
+        )}
+
+    </div>
+        
        
     )  
 }
 
-    function ChatElement({setview,socketRef}) {  
+    function ChatElement({setview,isPhone,socketRef,setIsChatView}) 
+    {  
     const isChatting = useSelector((state)=>state.chat.isChatting);
     const messages = useSelector((state)=>state.chat.messages);     
     const userID = useSelector((state) => state.authentication.userID);
@@ -247,9 +304,20 @@ export default function Chat()
         }
     },[text,dispatch,userID]);
 
+    const handleBackToList = () => {
+        if (isPhone && setIsChatView) {
+          setview(false);
+          onExit();
+          dispatch(setMessages([]));
+          dispatch(setReceiverName(""));
+          setIsChatView(true);
+        }
+      };
+
     return (
         <div className="w-full h-full flex flex-col">
-            <ChatHeader userName={userName}  dispatch={dispatch} setview={setview} onExit={onExit}/>
+            <ChatHeader userName={userName}  dispatch={dispatch} setview={setview} onExit={onExit} isPhone={isPhone}
+        handleBackToList={handleBackToList}/>
             <div 
             ref={chatContainerRef}
             onScroll={handleScroll}
@@ -273,7 +341,7 @@ const MessageList = React.memo(({ messages, userID }) => {
     ));
 });
 
-const ChatHeader = React.memo(({userName,dispatch,setview,onExit})=>{
+const ChatHeader = React.memo(({userName, dispatch, setview, onExit, isPhone, handleBackToList})=>{
     useEffect(()=>{
 
         return ()=>{
@@ -282,23 +350,31 @@ const ChatHeader = React.memo(({userName,dispatch,setview,onExit})=>{
     },[userName])
 
     return <div className="h-[10vh]  bg-blue-900 flex justify-between">
-    <div className="flex flex-row justify-start gap-[20px] w-[80%] px-[40px]">
-        <div className="w-[50px] h-[50px] border-1 rounded-[50%] overflow-hidden my-auto ">
-            <img src="" className="w-full h-full object-cover border-[2px] border-cyello rounded-[50%] "/>
+        
+    <div className="flex flex-row justify-start gap-[20px] w-[90%] md:w-[80%] px-[40px]">
+        <div className="w-[45px] h-[45px] md:w-[50px] md:h-[50px] border-1 rounded-[50%] overflow-hidden my-auto ">
+            <img src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D" className="w-full h-full object-cover border-[2px] border-cyello rounded-[50%] "/>
         </div>
-        <div className="w-[80%] my-auto text-white  text-[28px]">
+        <div className="w-[80%] text-[16px] my-auto text-white  nmd:text-[28px]">
             {console.log("UserName:",userName)}
             {userName}
         </div>
     </div>
-    <Button  className="my-auto mx-10 bg-cyello" onClick={()=>{
+    {isPhone && (
+            <Button  className="my-auto mx-10 bg-cyello"
+              onClick={handleBackToList}
+            >
+              <ArrowRight />
+            </Button>
+          )}
+    {!isPhone && <Button  className="my-auto mx-10 bg-cyello" onClick={()=>{
         setview(false);
         onExit();
         dispatch(setMessages([]));
         dispatch(setReceiverName(""))
         }}>
         <LogOut/>
-    </Button>
+    </Button>}
 </div>
 })
 
