@@ -163,7 +163,7 @@ export default function Chat()
                 isChatView ? 
                     <div className="w-full h-full bg-[#05295e]">
                     {chats.map((chat)=><motion.div whileTap={{ scale: 1.03 }} className="w-full h-[60px] scrollbar-hide ">
-                                <button className="w-full, h-full flex justify-start px-[30px] gap-[15px]" onClick={()=>{ 
+                                <button className="w-full, h-full flex justify-start px-[30px] gap-[15px]  hover:bg-white hover:opacity-15" onClick={()=>{ 
                                     setChat({id:chat.receiver[0]._id,setView:setViewAndManageMobile}); 
                                     setUserName(chat.receiver[0].userName);
                                     dispatch(setReceiverName(chat.receiver[0].userName))
@@ -174,8 +174,11 @@ export default function Chat()
                                     <div className="h-[40px] w-[40px] border-[1px] border-cyello rounded-[50%] my-auto">
                                         <img className="border-[1px] rounded-[50%] object-cover w-full h-full"/>
                                     </div>
-                                    <div className="text-white text-[20px] my-auto">
-                                        {chat.receiver[0].userName}
+                                    <div className="text-white text-[20px] my-auto flex flex-col justify-start">
+                                        <h2 className="my-auto">{chat.receiver[0].userName}</h2>
+                                        <div className="text-[14px] text-gray-400 text-left">
+                                            {chat.lastMessage}
+                                        </div>
                                     </div>
                         
                                 </button>
@@ -191,11 +194,11 @@ export default function Chat()
         ): (
             <div className="w-full h-full">
         <ResizablePanelGroup direction="horizontal"  className={`hidden md:flex min-h-[90vh] bg-[#05295e]  md:justify-between`}>
-         <ResizablePanel defaultSize={45} >
+         <ResizablePanel defaultSize={45} minSize={38} maxSize={60}>
                  <div className="h-[90%] w-full flex flex-col overflow-y-auto">
 
                     {chats.map((chat)=><motion.div whileTap={{ scale: 1.03 }} className="w-full h-[60px] scrollbar-hide ">
-                                <button className="w-full, h-full flex justify-start px-[30px] gap-[15px]" onClick={()=>{ 
+                                <button className="w-full h-full flex justify-start px-[30px] gap-[15px] transition-all duration-200 rounded-[10px] hover:bg-[#0C4CAB]  hover:opacity-60" onClick={()=>{ 
                                     setChat({id:chat.receiver[0]._id,setView:setview}); 
                                     setUserName(chat.receiver[0].userName);
                                     dispatch(setReceiverName(chat.receiver[0].userName))
@@ -205,8 +208,11 @@ export default function Chat()
                                     <div className="h-[40px] w-[40px] border-[1px] border-cyello rounded-[50%] my-auto">
                                         <img className="border-[1px] rounded-[50%] object-cover w-full h-full"/>
                                     </div>
-                                    <div className="text-white text-[20px] my-auto">
-                                        {chat.receiver[0].userName}
+                                    <div className="text-white text-[20px] my-auto flex flex-col justify-start">
+                                        <h2 className="my-auto">{chat.receiver[0].userName}</h2>
+                                        <div className="text-[14px] text-gray-400 text-left ">
+                                            {chat.lastMessage}
+                                        </div>
                                     </div>
                         
                                 </button>
@@ -216,7 +222,7 @@ export default function Chat()
 
          </ResizablePanel>
         <ResizableHandle withHandle className="hidden md:flex" />
-        <ResizablePanel defaultSize={55} className="hidden md:flex">
+        <ResizablePanel defaultSize={55}  className="hidden md:flex">
         <div className="h-full  flex flex-col w-full">
             {(view) ? <ChatElement  setview={setview}  socketRef={socketRef} /> : null}
         </div>

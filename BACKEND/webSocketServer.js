@@ -119,6 +119,7 @@ wss.on('connection',(ws)=>{
                         }
                     })
                     Rooms.set(chatID1, Rooms.get(chatID1).filter(member=>member!== userID1))
+                    console.log(Rooms.get(chatID1));
                     break;
         }
 
@@ -134,17 +135,17 @@ wss.on('connection',(ws)=>{
                 onlineUsers.delete(userID);
             break;
         }
-        wss.clients.forEach((client)=>{
-            if(client.readyState === WebSocket.OPEN)
-            {
-                client.send(JSON.stringify({
-                    "type":"offline",
-                    "payload":{
-                        "status":"disconnected"
-                    }
-                }))
-            }
-        })
+        // wss.clients.forEach((client)=>{
+        //     if(client.readyState === WebSocket.OPEN)
+        //     {
+        //         client.send(JSON.stringify({
+        //             "type":"offline",
+        //             "payload":{
+        //                 "status":"disconnected"
+        //             }
+        //         }))
+        //     }
+        // })
     })
 });
 

@@ -37,18 +37,19 @@ router.post('/getChats',async(req,res)=>{
     const {userId} = req.body;
     console.log("userID:",userId);
     try{
-        const chatList = await Chats.find({members:userId}).populate('members','userName');
+        console.log("Entered try catch")
+        const chatList = await Chats.find({members:userId}).populate('members','userName').sort({lastMessageAt: -1});
         console.log("Chat List:", chatList);
         const chats = chatList.map((chat)=>{
-            return { chatID:chat._id , receiver: chat.members.filter((member)=>member._id.toString()!==userId)};
+            return { chatID:chat._id , receiver: chat.members.filter((member)=>member._id.toString()!==userId), lastMessage:chat.lastMessage , lastMessageAt:chat.lastMessageAt};
               
-    }
+        }
     )
     
         return res.json({success:true,chats:chats});
 
     }catch(e){
-        res.json({success:false, message:"Internal server Error while fetchng chats."});
+        res.json({success:false, message:"Internal server Error while fetching chats."});
     }
 
 })

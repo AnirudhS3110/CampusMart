@@ -45,7 +45,8 @@ const userSchema = new mongoose.Schema({
 
 const RoomSchema = new mongoose.Schema({
     members:[{type:mongoose.Schema.Types.ObjectId, ref:'Users', required:true}],
-    
+    lastMessage:{type:mongoose.Schema.Types.String, ref:'Messages'},
+    lastMessageAt:{type:Date, default: Date.now}
 })
 
 const messageSchema = new mongoose.Schema({
@@ -56,6 +57,10 @@ const messageSchema = new mongoose.Schema({
     status: { type: String, enum: ["sent", "delivered", "seen"], default: "sent" },
     createdAt: { type: Date, default: Date.now }
 
+})
+
+messageSchema.post('save', async(doc)=>{
+  await Chats.findByIdAndUpdate(doc.chatID,{$set:{lastMessage:doc.message, lastMessageAt: doc.createdAt}})
 })
   
 
