@@ -3,7 +3,7 @@ import { Rocket, ArrowLeft, ArrowRight } from "lucide-react";
 import { LogOut } from "lucide-react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { setChatID, setChats, setRoomID , setReceiverID, setMessages, addMessage,setIsChatting, setReceiverName} from "@/redux/slices/ChatSlice";
+import { setChatID, setChats, setRoomID , setReceiverID, setMessages, addMessage,setIsChatting, setReceiverName, updateMessage, updateLastMessage} from "@/redux/slices/ChatSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import store from "@/redux/store";
@@ -64,10 +64,19 @@ export default function Chat()
                 dispatch(addMessage(message.payload));
             else if(message.type  == "seen")
                 dispatch(setIsChatting(true))
+            else if(message.type == "updateStatus")
+            {
+                dispatch(updateMessage());
+            }
             else if(message.type == "offline")
-                {
-                    dispatch(setIsChatting(false))
-                }   
+            {
+                dispatch(setIsChatting(false))
+            }
+            else if(message.type == "notify")
+            {
+                dispatch(updateLastMessage(message.payload));
+                console.log(chats);
+            }   
         };
         socketRef.current = Socket;
 
@@ -209,7 +218,7 @@ export default function Chat()
                                         <img className="border-[1px] rounded-[50%] object-cover w-full h-full"/>
                                     </div>
                                     <div className="text-white text-[20px] my-auto flex flex-col justify-start">
-                                        <h2 className="my-auto">{chat.receiver[0].userName}</h2>
+                                        <h2 className="my-auto text-left">{chat.receiver[0].userName}</h2>
                                         <div className="text-[14px] text-gray-400 text-left ">
                                             {chat.lastMessage}
                                         </div>
@@ -222,7 +231,7 @@ export default function Chat()
 
          </ResizablePanel>
         <ResizableHandle withHandle className="hidden md:flex" />
-        <ResizablePanel defaultSize={55}  className="hidden md:flex">
+        <ResizablePanel defaultSize={55}  className="hidden md:flex md:hidden-handle">
         <div className="h-full  flex flex-col w-full">
             {(view) ? <ChatElement  setview={setview}  socketRef={socketRef} /> : null}
         </div>
@@ -302,7 +311,7 @@ export default function Chat()
                 dispatch(addMessage({ sender: userID, message: text, status: "seen" }));
             else
             {
-                dispatch(addMessage({ sender: userID, message: text }));
+                dispatch(addMessage({ sender: userID, message: text, status:"sent" }));
             }
             setText("");
         } catch (e) {
@@ -336,13 +345,16 @@ export default function Chat()
     );
 }
 
-const MessageList = React.memo(({ messages, userID }) => {
+const MessageList = React.memo(({ messages, userID, isChatting }) => {
+    useEffect(()=>{
+
+    },[isChatting])
     return messages.map((message, index) => (
         <div 
             key={index} 
             className={`${message.sender === userID ? "justify-end" : "justify-start"} flex`}
         >
-            <MessageDiv message={message} userID = {userID} />
+            <MessageDiv message={message} userID = {userID} isChatting={isChatting}/>
         </div>
     ));
 });
@@ -398,8 +410,9 @@ const LowerArea = React.memo(({text,setText,onSend})=>{
 })
 
     
- const MessageDiv= React.memo(({message, userID})=>
+ const MessageDiv= React.memo(({message, userID,isChatting})=>
 {
+    useEffect(()=>{},[isChatting])
     return(
         <motion.div className="bg-[#0f3772] text-white border-[2px] rounded-[20px] border-[#07295c] px-[10px] py-[6px] min-w-[70px] max-w-[50%] w-fit flex flex-col gap-[3px] justify-center">
             <div className="w-[100%]">
@@ -415,7 +428,6 @@ const LowerArea = React.memo(({text,setText,onSend})=>{
         </motion.div>
     )
 })
-
 
 
 async function setChat({id,setView})

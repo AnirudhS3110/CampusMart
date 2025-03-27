@@ -38,20 +38,18 @@ wss.on('connection',(ws)=>{
 
                 case "message":
                     console.log("Message: ", json.payload.message.toString());  
-                    if(onlineUsers.has(json.payload.receiver))
+                    if(Rooms.get(json.payload.chatID).includes(json.payload.receiver))
                     {
                         onlineUsers.get(json.payload.receiver).send(JSON.stringify({
                             "type":"message",
                             "payload":{
+                                "chatID":json.payload.chatID,
                                 "sender":json.payload.sender,
                                 "message":json.payload.message,
-                                "status":"see"
+                                "status":"seen"
                             }
                         }));
-                        ws.send(JSON.stringify({
-                            "type":"seen"
-                        }));
-
+                        
                         try{const res = await Messages.create({
                             chatID:json.payload.chatID,
                             sender:json.payload.sender,
@@ -64,6 +62,16 @@ wss.on('connection',(ws)=>{
                         } 
                         
                     }
+                    else if(onlineUsers.has(json.payload.receiver)) 
+                    {
+                        onlineUsers.get(json.payload.receiver).send(JSON.stringify({
+                            "type":"notify",
+                            "payload":{
+                                "chatID":json.payload.chatID,
+                                "lastMessage":json.payload.message
+                            }
+                        }))       
+                    }
                     else
                     {
                         console.log("Message is to be stored ot db");
@@ -73,8 +81,7 @@ wss.on('connection',(ws)=>{
                             receiver:json.payload.receiver,
                             message:json.payload.message
                         })
-                        if(res)
-                            ws.send(res); 
+                        console.log("Message stored");
                     }
                            
                         catch(e){
@@ -88,22 +95,26 @@ wss.on('connection',(ws)=>{
                     const {chatID,first,second} = json.payload;
                     if(Rooms.has(chatID))
                     {
-                        Rooms.get(chatID).includes(second) ? ws.send(JSON.stringify({
-                            "type":"seen"
-                        })) : ws.send(JSON.stringify({
-                            "type":"delivered",
-                            }));
-                        if(onlineUsers.get(second))
+                        Rooms.get(chatID).push(first);
+                        if(Rooms.get(chatID).includes(second))
                         {
-                            onlineUsers.get(second).send(JSON.stringify({
-                                type:"seen"
-                            }));
+                            onlineUsers.get(second).send(JSON.stringify({type:"updateStatus"})) ; 
+                            Rooms.get(chatID).forEach((user)=>{
+                                onlineUsers.get(user).send(JSON.stringify({"type":"seen"}))
+                            })
                         }
+                        else{
+                            ws.send(JSON.stringify({
+                                "type":"delivered",
+                                })); 
+                        }
+                        
                     }
                     else
                     {
-                        Rooms.set(chatID, [first,second]);
+                        Rooms.set(chatID, [first]);
                     }
+                    
                     break;
 
                     case "exitRoom":

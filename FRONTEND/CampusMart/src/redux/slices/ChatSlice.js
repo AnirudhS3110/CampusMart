@@ -29,17 +29,22 @@ const chatSlice = createSlice({
         },
         'addMessage':(state,action)=>{
             state.messages.push(action.payload);
+            state.chats = state.chats.map((chat)=>(chat.chatID == action.payload.chatID) ? {...chat, lastMessage:action.payload.message} : chat)
         },
         'setIsChatting':(state,action)=>{
             state.isChatting = action.payload
         },
         'setReceiverName':(state,action)=>{
             state.receiverName = action.payload
-        }
-        
-        
+        },
+        'updateMessage':(state)=>{   
+            state.messages = state.messages.map((message)=>(message.status === 'sent') ? { ...message, status: 'seen' } : message)
+        },
+        'updateLastMessage':(state,action)=>{
+            state.chats = state.chats.map((chat)=>(chat.chatID == action.payload.chatID) ? { ...chat, lastMessage:action.payload.lastMessage} : chat)
+        }    
     }
 })
 
-export const {setRoomID,setChats,setMessages,setReceiverName,setReceiverID,setChatID,addMessage,setIsChatting} = chatSlice.actions;
+export const {setRoomID,setChats,setMessages,setReceiverName,setReceiverID,setChatID,addMessage,setIsChatting,updateMessage,updateLastMessage} = chatSlice.actions;
 export default chatSlice.reducer;
