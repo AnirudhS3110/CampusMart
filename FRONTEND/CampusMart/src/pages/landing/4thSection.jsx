@@ -20,7 +20,12 @@ export default function FourthSection()
                 <div className="text-white font-poppins font-light text-[20px] pb-[30px]">
                 <p className="text-center">Start buying, selling, and bidding today. Join thousands of students who are already part of the campusMart community!</p>
                 </div>
-                <motion.button whileTap={{scale:.95}} className="bg-white rounded-[35px] border-2 border-white transition-colors duration-200 lg:text-[30px] text-cblue px-[30px] py-[10px] hover:bg-cblue hover:text-white  " onClick={()=>nav('/signup')}>
+                <motion.button 
+                initial={{opacity:0, y:30}}
+                whileInView={{opacity:1,y:0}}
+                transition={{duration:1.2, delay:0.7}}
+                viewport={{once:true}}
+                 whileTap={{scale:.95}} className="bg-white rounded-[35px] border-2 border-white transition-colors duration-200 lg:text-[30px] text-cblue px-[30px] py-[10px] hover:bg-cblue hover:text-white  " onClick={()=>nav('/signup')}>
                     Sign up Now
                 </motion.button>
             </div>

@@ -51,11 +51,16 @@ export default function Signin()
 
 
                     <div className="flex h-full  lg:flex-col gap-[30px] justify-center text-poppins bg-[#0C4CAB] text-white font-semibold lg:text-[40px] border-[2px] rounded-r-2xl border-white lg:px-[80px] lg:pt-[110px] pb-[90px]">
-                            <div className="lg:leading-[40px]">
+                            <motion.div
+                            initial={{opacity:0,y:-30}}
+                            whileInView={{opacity:1,y:0}}
+                            transition={{duration:1.1}}
+                            viewport={{once:true}}
+                             className="lg:leading-[40px]">
                                 <p className="text-center mb-[0px] ">Welcome</p>
                                 <p className="text-center mb-[0px]">to</p>
                                 <p className="text-center mb-[0px] font-normal"  ><span className="text-cyello font-semibold">Campus</span>Mart</p>
-                            </div>
+                            </motion.div>
                             <motion.button whileTap={{scale:0.95}} className="bg-cyello rounded-[32px] font-normal lg:text-[28px] py-[8px] px-[16px]" onClick={hitServer}>
                                 Sign in
                             </motion.button>

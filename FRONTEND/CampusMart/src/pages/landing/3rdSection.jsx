@@ -62,7 +62,7 @@ function FeedBack({cards})
             initial={{opacity:0, x:-30}}
             whileInView={{opacity:1,x:0}}
             exit={{opacity:0,x:10}}
-            transition={{duration:0.8,delay:.5}} 
+            transition={{duration:0.8,delay:.3}} 
             viewport={{once:false}}>
             <motion.div whileHover={{scale:1.1, transition:{duration:0.2}}} className="lg:w-[330px] lg:h-[330px] font-poppins px-[21px] py-[30px] rounded-[20px] bg-white">
                 <div className="flex flex-row align-middle justify-around mb-[16px]">
