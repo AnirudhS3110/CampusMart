@@ -23,7 +23,7 @@ export default function Signin()
 
             <div className=" flex  flex-row justify-start flex-wrap mx-auto">
 
-                    <div className="bg-blue px-[30px] flex flex-col  md:bg-cyello h-auto align-middle rounded-r-[20px] min-w-[300px] text-white font-poppins border-white border-[2px] md:min-w-[400px] md:rounded-r-0  md:flex-row rounded-l-[20px] md:rounded-r-[0px] items-center">
+                    <div className="bg-blue px-[30px] flex flex-col  md:bg-cyello h-auto align-middle rounded-r-[20px] min-w-[300px] max-w-[325px] text-white font-poppins border-white border-[2px] md:min-w-[400px] md:rounded-r-0  md:flex-row rounded-l-[20px] md:rounded-r-[0px] items-center">
                     <p className="text-center text-[30px] mt-[5px] md:hidden">Sign In</p>
                         <Form  password={password} setPassword={setPassword}  rollno = {rollno} setRollNo = {setRollNo} error={error} setError={setError} hitServer={hitServer} ></Form>
                     </div>
