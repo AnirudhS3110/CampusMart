@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 export default function Landing()
 {
     return(
-        <section className="w-[100%] h-full bg-[#0f3772]">
-            <div className=" mx-[60px] flex flex-row justify-end  lg:ml-[140px] lg:mr-0">
-                <LeftDiv/>
+        <section className="w-[100%] h-[100vh] bg-[#0f3772]">
+            <div className=" mx-[60px] h-full flex flex-col  md:flex md:flex-row md:justify-end  md:mr-[0px] lg:ml-[120px] lg:h-[100%]">
+                <LeftDiv className="items-center my-auto h-full"/>
                 <RightDiv/>        
             </div>
         </section>
@@ -18,12 +18,12 @@ export default function Landing()
 function LeftDiv()
 {
     const nav = useNavigate();
-    const scndline = "text-cyello font-semibold transition-all duration-200 hover:text-[50px] lg:hover:text-[60px]";
-    const thrdline = "text-cyello font-semibold text-[20px] transition-all duration-200 hover:text-[50px] lg:text-[32px] lg:hover:text-[36px]";
+    const scndline = "text-cyello font-semibold transition-all duration-300 hover:text-[50px] lg:hover:text-[60px]";
+    const thrdline = "text-cyello font-semibold text-[20px] transition-all duration-300 hover:text-[50px] lg:text-[32px] lg:hover:text-[36px]";
     const button = "text-white py-[18px] px-[50px] max-w-[277px] max-h-[70] rounded-[35px]"
     return(
-        <div className="w-[100%] font-Poppins text-white mt-[30px] lg:min-w-[670px] lg:mt-[40px] lg:ml-[75px] ">
-            <div className="text-center mb-[30px] leading-[110%] font-semibold text-[24px] lg:hidden ">
+        <div className="w-full h-full flex flex-col gap-[10px] align-middle font-Poppins text-white mt-[30px] lg:h-[90vh] lg:min-w-[670px] lg:my-[90px] ">
+            <div className="text-center mb-[30px] leading-[110%]  font-semibold text-[24px] lg:hidden ">
                 <h2 className="">Your</h2>
                 <span className={scndline}>Campus </span><span className={scndline}>Marketplace</span>
                 <h2>Reimagined!</h2>

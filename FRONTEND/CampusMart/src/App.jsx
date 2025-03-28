@@ -42,9 +42,9 @@ function MainLayout() {
       {isLoggedIn && !isLandingPage && !noNavbarRoutes.includes(location.pathname) && <ProtectedNavBar />}
 
       {/* Render the page content */}
-      <main className="flex-grow">
+      <main className="flex-grow overflow-y-scrollscrollbar-hide">
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<LandingPage className=" " />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<Signin />} />
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
@@ -60,7 +60,7 @@ function MainLayout() {
 const LandingPage = () => {
   return (
     <>
-       <div id="hero">
+       <div id="hero" className="">
         <HeroSection />
       </div>
       <div id="second">
