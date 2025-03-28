@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Linkedin, LinkedinIcon } from "lucide-react";
 
 export default function Footer() {
     return (
@@ -37,8 +38,15 @@ export default function Footer() {
                 
                 <div className="text-white font-poppins font-semibold text-[22px]"></div>
                 
-                <div className="text-white font-poppins text-[18px]">Connect with us</div>
-                <div></div>
+                <div className="text-white font-poppins text-[18px]">
+                    <p className="mb-[20px]">Connect with us</p>
+                    <div  className="flex flex-col gap-[8px] text-[14px] font-light">
+                    <Link href="https://www.linkedin.com/in/anirudh-selvakumar-45948b2a7?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3B7GrN2yuyTUe8oKVu2mRAVQ%3D%3D" className="transition-colors duration-200 hover:text-cyello">
+                    <Linkedin color="white" />
+                    </Link>
+                </div>
+                </div>
+                
             </div>
         </section>
     );

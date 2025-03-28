@@ -62,7 +62,7 @@ function FeedBack({cards})
             initial={{opacity:0, x:-30}}
             whileInView={{opacity:1,x:0}}
             exit={{opacity:0,x:10}}
-            transition={{duration:0.8,delay:.3}} 
+            transition={{duration:0.8,delay:0.8}} 
             viewport={{once:false}}>
             <motion.div whileHover={{scale:1.1, transition:{duration:0.2}}} className="lg:w-[330px] lg:h-[330px] font-poppins px-[21px] py-[30px] rounded-[20px] bg-white">
                 <div className="flex flex-row align-middle justify-around mb-[16px]">
@@ -81,33 +81,6 @@ function FeedBack({cards})
             </motion.div>
             </motion.div>
             </AnimatePresence>
-
-            {/* <motion.div whileHover={{scale:1.1, transition:{duration:0.2}}} className="lg:w-[280px] lg:h-auto font-poppins px-[21px] py-[30px] rounded-[20px] bg-white">
-                <div className="flex flex-row align-middle justify-around mb-[16px] ">
-                    <img className="rounded-full w-[50px] h-[50px]" src="https://res.cloudinary.com/dbvebbsbh/image/upload/v1742312373/campusMart/kzdrjs67sj772vsduv55.png"/>
-
-                    <div className="flex flex-col border-b-[1px] border-b-white transition-all duration-200 hover:border-b-blue-500 ">
-                        <h3 className="font-semibold text-[20px] text-cblue">Michael Brown</h3>
-                        <p className="text-cyello font-poppins text-[10px]">Freshman, Engineering</p>
-                    </div>
-                </div>
-                <div className="font-poppins font-normal text-[16px] text-cblue">
-                As a new student, campusMart helped me find affordable furniture for my dorm. The community is friendly and helpful!                
-                </div>
-            </motion.div>
-
-            <motion.div whileHover={{scale:1.1, transition:{duration:0.2}}} className="lg:w-[280px] lg:h-auto font-poppins px-[21px] py-[30px] rounded-[20px] bg-white">
-                <div className="flex flex-row align-middle justify-around mb-[16px]">
-                    <img className="rounded-full w-[50px] h-[50px]" src="https://res.cloudinary.com/dbvebbsbh/image/upload/v1742312352/campusMart/ahkg0xlobqhbmincomzt.png"/>
-
-                    <div className="flex flex-col border-b-[1px] border-b-white transition-all duration-200 hover:border-b-blue-500 ">
-                        <h3 className="font-semibold text-[20px] text-cblue">Samantha Lee</h3>
-                        <p className="text-cyello font-poppins text-[10px]">Junior, Business Administration</p>
-                    </div>
-                </div>
-                <div className="font-poppins font-normal text-[16px] text-cblue">
-                I love to say how easy it is to list items for sale. The secure payment system gives me peace of mind for every transaction.                </div>
-            </motion.div> */}
         </div>
     )
 }

@@ -56,11 +56,11 @@ export default function Signup()
     }
 
     return(
-        <section className="bg-[#05295e]     flex items-center w-[100vw] h-[100vh]  md:px-[140px] ">
+        <section className="bg-[#05295e] flex items-center w-[100vw] h-[100vh]  md:px-[140px] ">
 
             <div className=" flex  flex-row justify-start flex-wrap mx-auto">
 
-                    <div className="bg-blue px-[30px]  md:bg-cyello flex flex-col md:flex align-middle h-auto min-w-[350px] md:min-w-[340px] rounded-[20px] text-white font-poppins border-white border-[2px] md:rounded-r-[0px] items-center">
+                    <div className="bg-blue px-[30px]  md:bg-cyello flex flex-col md:flex align-middle h-auto min-w-[325px] md:min-w-[340px] rounded-[20px] text-white font-poppins border-white border-[2px] md:rounded-r-[0px] items-center">
                         <p className="text-center text-[30px] mt-[5px] md:hidden">Sign Up</p>
                         <Form className="" username={username} setUsername={setUsername} password={password} setPassword={setPassword} confirmpass={confirmpass} setConfirmPass = {setConfirmPass} rollno = {rollno} setRollNo = {setRollNo} error={error} setError={setError} hitServer={hitServer} ></Form>
                         <p className="text-[14px] md:hidden mb-[10px] font-normal text-center">Already have an account? <Link to={'/signin'} className="transition-colors duration-200 font-semibold hover:text-cyello">Signin</Link></p>
@@ -83,7 +83,7 @@ export default function Signup()
                             </motion.button>
                             <p className="text-[14px] font-normal text-center">Already have an account? <Link to={'/signin'} className="text-white hover:text-cyello">Signin</Link></p>
 
-                    </div>
+                    </div>  
 
             </div>
 
