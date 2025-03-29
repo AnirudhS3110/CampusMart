@@ -90,7 +90,7 @@ const Carousal  = memo(({cards, setCards}) => {
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -10 }}
-                transition={{ duration: 0.8 , delay:1 }}
+                transition={{ duration: 0.8 , delay:.8 }}
                 viewport={{once:false}}
                 className="max-w-[280px] min-w-[290px] lg:min-w-[380px] lg:pt-[30px] lg:pl-[20px] lg:h-[400px] flex justify-between my-auto "
             >

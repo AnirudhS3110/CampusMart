@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 export default function Landing()
 {
     return(
-        <section className="w-[100%] h-[70vh] md:min-h-[100vh] bg-[#0f3772]">
-            <div className=" mx-[30px] h-full flex flex-col  md:flex md:flex-row md:justify-end  md:mr-[0px] lg:ml-[120px] lg:h-[100%]">
-                <LeftDiv className="items-center my-auto h-full"/>
+        <section className="w-[100%] px-[30px] md:px-0 min-h-screen  md:min-h-[100vh] bg-[#0f3772] flex  justify-center items-center md:block">
+            <div className="  h-full    md:flex md:flex-row md:justify-end  md:mr-[0px] lg:ml-[120px] lg:h-[100%]">
+                <LeftDiv className="items-center  h-full"/>
                 <RightDiv/>        
             </div>
         </section>
@@ -22,7 +22,7 @@ function LeftDiv()
     const thrdline = "text-cyello font-semibold text-[20px] transition-all duration-300 hover:text-[50px] lg:text-[32px] lg:hover:text-[36px]";
     const button = "text-white py-[18px] px-[50px] max-w-[277px] max-h-[70] rounded-[35px]"
     return(
-        <div className="w-full h-full flex flex-col gap-[10px] align-middle font-Poppins text-white mt-[30px] lg:h-[90vh] lg:min-w-[670px] lg:my-[90px] ">
+        <div className="w-full py-auto h-full flex flex-col gap-[10px] align-middle font-Poppins text-white mt-[30px] lg:h-[90vh] lg:min-w-[670px] lg:my-[90px] ">
             <div className="text-center mb-[30px] leading-[110%]  font-semibold text-[24px] lg:hidden ">
                 <h2 className="">Your</h2>
                 <span className={scndline}>Campus </span><span className={scndline}>Marketplace</span>
@@ -39,11 +39,11 @@ function LeftDiv()
 
             <div className="text-center mb-[10px] lg:text-left ">
                 <span className={thrdline} >Buy </span> <span className={thrdline}>Sell </span><span>&</span> <span className={thrdline}> Bid</span>
-                <h2 className="text-[14px] lg:text-[24px]">Items within your Campus community!</h2>
+                <h2 className="text-[16px] lg:text-[24px]">Items within your Campus community!</h2>
             </div>
 
             <div className="text-center lg:text-left ">
-                <h3 className="text-[14px] lg:text-[24px]">Experience a new way of trading that's</h3>
+                <h3 className="text-[16px] lg:text-[24px]">Experience a new way of trading that's</h3>
                 <span className={thrdline} >Safe </span> <span className={thrdline}>Easy </span><span>&</span> <span className={thrdline}>Fun</span>
             </div>
 
