@@ -7,7 +7,7 @@ export default function Landing()
 {
     return(
         <section className="w-[100%] h-[70vh] md:min-h-[100vh] bg-[#0f3772]">
-            <div className=" mx-[60px] h-full flex flex-col  md:flex md:flex-row md:justify-end  md:mr-[0px] lg:ml-[120px] lg:h-[100%]">
+            <div className=" mx-[30px] h-full flex flex-col  md:flex md:flex-row md:justify-end  md:mr-[0px] lg:ml-[120px] lg:h-[100%]">
                 <LeftDiv className="items-center my-auto h-full"/>
                 <RightDiv/>        
             </div>
