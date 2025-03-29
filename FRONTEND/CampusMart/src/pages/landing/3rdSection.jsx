@@ -10,34 +10,36 @@ const cards = [{picture:"https://res.cloudinary.com/dbvebbsbh/image/upload/v1742
 export default function ThirdSection()
 {
     return(
-        <section className="bg-[#0f3772] min-h-[70vh] lg:min-h-[100vh] lg:flex lg:flex-row-reverse lg:justify-around lg:px-[100px] lg:items-center">
-            <div className="w-full text-[30px]  text-poppins mb-[70px] gap-[20px] text-white text-center font-semibold lg:hidden lg:text-[50px] md:max-w-[50%]  ">
-                What our <span className="text-cyello">Users </span> say
-            </div>
-            <motion.div 
-            initial={{opacity:0,x:30}}
-            whileInView={{opacity:1,x:0}}
-            transition={{duration:1.2}}
-            viewport={{once:false}}
-            className="w-full  hidden lg:block text-poppins mb-[70px]  text-white text-end font-semibold whitespace-pre lg:text-[70px] md:max-w-[50%] leading-[0.9] ">
-                <span className="font-light text-end">
-                What our {"\n"}
-                <span className="text-cyello text-[90px] font-regular text-start"> Users</span> say!
-                </span>
-            </motion.div>
-
-            <div className="flex justify-center box-border pl-[30px] gap-[15px] ">
-                <FeedBack cards={cards}/>
-                <motion.div
-                animate = {{x:[0,30,0]}}
-                transition={{
-                    repeat:Infinity,
-                    repeatType: "loop",
-                    duration:4}}
-                 className="hidden lg:flex lg:items-center">
-                    <ChevronsRight size={50} color="#FFBB0F" className="hidden lg:block"></ChevronsRight>
+        <section className="bg-[#0f3772]   min-h-[70vh] lg:min-h-[100vh] lg:flex lg:flex-row-reverse lg:justify-around lg:px-[100px] lg:items-center">
+            
+                <div className="w-full text-[30px]  text-poppins mb-[70px] gap-[20px] text-white text-center font-semibold lg:hidden lg:text-[50px] md:max-w-[50%]  ">
+                    What our <span className="text-cyello">Users </span> say
+                </div>
+                <motion.div 
+                initial={{opacity:0,x:30}}
+                whileInView={{opacity:1,x:0}}
+                transition={{duration:1.2}}
+                viewport={{once:false}}
+                className="w-full  hidden lg:block text-poppins mb-[70px]  text-white text-end font-semibold whitespace-pre lg:text-[70px] md:max-w-[50%] leading-[0.9] ">
+                    <span className="font-light text-end">
+                    What our {"\n"}
+                    <span className="text-cyello text-[90px] font-regular text-start"> Users</span> say!
+                    </span>
                 </motion.div>
-            </div>
+
+                <div className="flex justify-center box-border  gap-[15px] ">
+                    <FeedBack cards={cards}/>
+                    <motion.div
+                    animate = {{x:[0,30,0]}}
+                    transition={{
+                        repeat:Infinity,
+                        repeatType: "loop",
+                        duration:4}}
+                    className="hidden lg:flex lg:items-center">
+                        <ChevronsRight size={50} color="#FFBB0F" className="hidden lg:block"></ChevronsRight>
+                    </motion.div>
+                </div>
+              
         </section>
     )
 
@@ -50,7 +52,7 @@ function FeedBack({cards})
         const id = setInterval(()=>{
             setIndex((index)=>(index+1)%cards.length);
 
-        },4000)
+        },5000)
 
         return ()=>clearInterval(id);
     },[cards.length])
@@ -63,8 +65,8 @@ function FeedBack({cards})
             whileInView={{opacity:1,x:0}}
             exit={{opacity:0,x:10}}
             transition={{duration:0.8,delay:0.8}} 
-            viewport={{once:false}}>
-            <motion.div whileHover={{scale:1.1, transition:{duration:0.2}}} className="lg:w-[330px] lg:h-[330px] font-poppins px-[21px] py-[30px] rounded-[20px] bg-white">
+            viewport={{once:true, amount: 0.3}}>
+            <motion.div whileHover={{scale:1.1, transition:{duration:0.2}}} className="  min-w-[280px] max-w-[285px]   lg:min-w-[330px] lg:h-[330px] font-poppins px-[21px] py-[30px] rounded-[20px] bg-white">
                 <div className="flex flex-row align-middle justify-around mb-[16px]">
                     <div className="rounded-full w-[55px] h-auto">
                     <img className="rounded-full w-full h-fit" src={cards[index].picture}/>

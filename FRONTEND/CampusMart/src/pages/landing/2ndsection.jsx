@@ -28,7 +28,7 @@ export default function SecondSection()
         {image:"https://res.cloudinary.com/dbvebbsbh/image/upload/v1742312062/campusMart/ivl0luk0oqe0h8pyrkqm.png",header:"Instant Notifications",message:"Stay updated with real-time alerts on your bids, sales, and purchases."}
     ])
     return(
-        <section className="w-[100vw]  lg:px-[100px]  bg-[#0f3772] flex items-center ">
+        <section className="w-[100vw] min-h-[100vh]  lg:px-[100px]  bg-[#0f3772] flex items-center ">
             {(mobileView) ? (<div className="py-[30px] pt-[100px]  w-[100%] bg-[#0f3772] ">
                 <div className="flex justify-center text-[25px]  text-poppins  text-white lg:text-[40px] lg:font-semibold text-center">
                     Why choose <span className="text-cyello">  Campus Mart </span>?
@@ -43,7 +43,7 @@ export default function SecondSection()
                 initial={{opacity:0,x:-30}}
                 whileInView={{opacity:1,x:0}}
                 transition={{duration:1.2}}
-                viewport={{ once: false, amount: 0.3 }}
+                viewport={{ once: true, amount: 0.3 }}
                     className="flex justify-between text-[25px]  text-poppins lg:min-w-[50%] my-auto  text-white lg:text-[70px] lg:font-semibold text-start">
                     <span className="min-w-[760px] max-w-[760px] flex flex-col justify-start leading-[.98]">
                     Why choose 

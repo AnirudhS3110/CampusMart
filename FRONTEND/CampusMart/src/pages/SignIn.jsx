@@ -34,10 +34,10 @@ export default function Signin()
                             initial={{opacity:0,y:-30}}
                             whileInView={{opacity:1,y:0}}
                             transition={{duration:1.1}}
-                            viewport={{once:true}}
+                            viewport={{once:true,amount:.3}}
                              className="lg:leading-[40px]">
                                 <p className="text-center mb-[0px] ">Welcome</p>
-                                <p className="text-center mb-[0px]">to</p>
+                                <p className="text-center mb-[0px]">back to</p>
                                 <p className="text-center mb-[0px] font-normal"  ><span className="text-cyello font-semibold">Campus</span>Mart</p>
                             </motion.div>
                             <motion.button whileTap={{scale:0.95}} className="bg-cyello rounded-[32px] font-normal lg:text-[28px] py-[8px] px-[16px]" onClick={hitServer}>

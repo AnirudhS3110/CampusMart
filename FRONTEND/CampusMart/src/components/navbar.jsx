@@ -19,7 +19,7 @@ export default function Navbar()
         return null;
     else    
     return(
-        <div className='h-[70px] bg-[#0C4CAB] flex flex-row  justify-between px-[30px] lg:px-[120px] sticky top-0  lg:opacity-90  '>
+        <div className='h-[70px] z-50 bg-[#0C4CAB] flex flex-row  justify-between px-[30px] lg:px-[120px] sticky top-0  lg:opacity-90  '>
             <motion.div whileTap={{scale:1.05}} className="my-auto "> 
                 <motion.img whileTap={{scale:1.05}} src="https://res.cloudinary.com/dbvebbsbh/image/upload/v1742311986/campusMart/fxefdawiekznrmvhmz3y.png" className="w-[130px] lg:w-[170px]"></motion.img>
             </motion.div>

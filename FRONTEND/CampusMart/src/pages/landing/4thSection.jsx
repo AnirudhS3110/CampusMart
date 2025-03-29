@@ -24,7 +24,7 @@ export default function FourthSection()
                 initial={{opacity:0, y:30}}
                 whileInView={{opacity:1,y:0}}
                 transition={{duration:1.2, delay:0.7}}
-                viewport={{once:true}}
+                viewport={{once:true,amount: 0.3}}
                  whileTap={{scale:.95}} className="bg-white rounded-[35px] border-2 border-white transition-colors duration-200 lg:text-[30px] text-cblue px-[30px] py-[10px] hover:bg-cblue hover:text-white  " onClick={()=>nav('/signup')}>
                     Sign up Now
                 </motion.button>
