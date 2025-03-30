@@ -12,6 +12,8 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { FileUploader } from "react-drag-drop-files";
+
   
 
 export default function AddListing()
