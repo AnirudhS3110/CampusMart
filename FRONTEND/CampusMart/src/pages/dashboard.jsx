@@ -40,19 +40,6 @@ import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-// export const useGetUserLisiting = ()=>{
-
-//     return useSelector((state)=>state.user.userListing)
-
-// }
-
-// export const useGetUserLisiting = ()=>{
-//     return useSelector((state)=>state.user.useListing)
-// }
-
-// export const useGetRollNumber = ()=>{
-//     return useSelector((state)=>state.authentication.rollNumber)
-// }
 
 export default function Dashboard()
 {
@@ -93,7 +80,7 @@ export default function Dashboard()
     
 
     return(
-        <section className="bg-[#05295e] flex flex-col items-center w-[100vw] h-[200vh] px-[30px] pb-[30px]  lg:px-[120px] overflow-y-auto pt-[20px] absolute  ">
+        <section className="bg-[#05295e] flex flex-col items-center w-[100vw] min-h-[100vh] px-[30px] pb-[30px]  lg:px-[120px] overflow-y-auto pt-[20px] absolute  ">
             
             <hr className="bg-white"></hr>
             <div className="w-full h-[90%]">
@@ -103,7 +90,7 @@ export default function Dashboard()
                     
                 <div className="text-white lg:text-[30px] mb-[15px]">
                     <h2 className="text-[24px]">YOUR PURCHASES:</h2>
-                    <div className="w-full h-[440px]">
+                    <div className="w-full ">
                             <Carousel className="h-full">
                                 <AddBoughtListing/>
                             </Carousel>
@@ -122,7 +109,7 @@ export default function Dashboard()
                 </div>
 
                 
-                <div className="text-white lg:text-[30px] mb-[15px]">
+                <div className="text-white  lg:text-[30px] mb-[15px]">
                     <h2 className="text-[24px]">Your Listings:</h2>
                     <div className="w-full">
                         {console.log("About to run AdduserListing")}
@@ -224,8 +211,8 @@ function AddUserListing()
         <Carousel>
             <CarouselContent>
             
-        { userListing.map((item)=><CarouselItem className="md:basis-1/2 lg:basis-1/4">
-                                    <Card  className="bg-[#0b336e] text-white py-[14px] max-h-[440px] border-0" >
+        { userListing.map((item)=><CarouselItem className="md:basis-1/2 lg:basis-1/4 min-h-[440px]">
+                                    <Card  className="bg-[#0b336e] text-white py-[14px] max-h-[440px]  border-0" >
                                     <CardHeader className="flex flex-row justify-between px-[8px]  " >
                                                 <div className="text-white text-[16px] my-auto">
                                                     <h2 className="text-[20px]">{item.title}</h2>
@@ -319,7 +306,7 @@ function AddUserListing()
                                 </CarouselItem>)}
 
                                 <CarouselItem className=" md:basis-1/2 lg:basis-1/4 max-h-[450px]">
-                                            <Card  className="bg-[#0f3772] h-full border-0" >
+                                            <Card  className="bg-[#0f3772] min-h-[300px] h-full border-0 lg:min-h-[350px]" >
                                                 <CardHeader className="mx-auto text-white">
                                                     <h3 >Add new Item</h3>
 
