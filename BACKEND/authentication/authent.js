@@ -12,6 +12,8 @@ export async function comparePassword(req,res,next)
     const rollNo = req.headers.rollnumber;
     const password = req.headers.password;
     try{
+        if(rollNo == '' || !rollNo)
+            return res.json({success:false, message:"RollNumber unaivalable"})
         const user = await Users.findOne({rollNumber:rollNo})
         if(!user)
             return res.json({success:false ,  message:"user does not exist"});

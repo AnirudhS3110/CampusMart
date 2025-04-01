@@ -41,7 +41,15 @@ const chatSlice = createSlice({
             state.messages = state.messages.map((message)=>(message.status === 'sent') ? { ...message, status: 'seen' } : message)
         },
         'updateLastMessage':(state,action)=>{
-            state.chats = state.chats.map((chat)=>(chat.chatID == action.payload.chatID) ? { ...chat, lastMessage:action.payload.lastMessage} : chat)
+            let chatIndex = state.chats.findIndex(chat => chat.chatID === action.payload.chatID);
+            console.log(chatIndex);
+            if(chatIndex!=-1)
+            {
+                let updatedChat = state.chats[chatIndex]
+                state.chats.splice(chatIndex,1)
+                state.chats.unshift({...updatedChat,lastMessage:action.payload.lastMessage})
+
+            }
         }    
     }
 })

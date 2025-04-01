@@ -18,8 +18,6 @@ wss.on('connection',(ws)=>{
 
     ws.on('message', async(message)=>{
         try{
-            console.log("Came into message");
-            console.log("Type of message: ", typeof(message));
             const json = JSON.parse(message);
             switch(json.type)
             {
@@ -37,8 +35,21 @@ wss.on('connection',(ws)=>{
                 
 
                 case "message":
-                    console.log("Message: ", json.payload.message.toString());  
-                    if(Rooms.get(json.payload.chatID).includes(json.payload.receiver))
+                    // console.log("Message: ", json.payload.message.toString()); 
+                    Rooms.get(chatID).forEach((member)=>{
+                        if(onlineUsers.has(member))
+                        {
+                            onlineUsers.get(member).send(JSON.stringify({
+                                "type":"notify",
+                                "payload":{
+                                    "chatID":json.payload.chatID,
+                                    "lastMessage":json.payload.message
+                                }
+                            }))
+                        }
+                    })
+
+                    if(Rooms.get(json.payload.chatID).includes(json.payload.receiver)) //If the user is has opened the chat
                     {
                         onlineUsers.get(json.payload.receiver).send(JSON.stringify({
                             "type":"message",
@@ -62,18 +73,31 @@ wss.on('connection',(ws)=>{
                         } 
                         
                     }
-                    else if(onlineUsers.has(json.payload.receiver)) 
+                    else if(onlineUsers.has(json.payload.receiver))  // If the Reciever is online but hasnt yet opened the chat, notify the user and store the message to db
                     {
                         onlineUsers.get(json.payload.receiver).send(JSON.stringify({
                             "type":"notify",
                             "payload":{
                                 "chatID":json.payload.chatID,
-                                "lastMessage":json.payload.message
+                                "lastMessage":json.payload.message,
+                                "status":"sent"
                             }
-                        }))       
+                        })) 
+                        try{const res = await Messages.create({
+                            chatID:json.payload.chatID,
+                            sender:json.payload.sender,
+                            receiver:json.payload.receiver,
+                            message:json.payload.message,
+                            status:"sent"
+                        })}
+                        catch(e){
+                            console.error("Error while storing message to db")
+                        }       
                     }
-                    else
+                    else //IF the receiver is offline. store the message in db
                     {
+                       
+                        
                         console.log("Message is to be stored ot db");
                         try{const res = await Messages.create({
                             chatID:json.payload.chatID,
@@ -93,7 +117,8 @@ wss.on('connection',(ws)=>{
                     case "enterRoom":
                     console.log("Entered room");
                     const {chatID,first,second} = json.payload;
-                    if(Rooms.has(chatID))
+                    //Checking if a room with the roomID alrdy exists
+                    if(Rooms.has(chatID)) //If yes, then just push the user into the room, then notify teh other person in the room that the secnd one has entered the room!
                     {
                         Rooms.get(chatID).push(first);
                         if(Rooms.get(chatID).includes(second))
@@ -103,34 +128,36 @@ wss.on('connection',(ws)=>{
                                 onlineUsers.get(user).send(JSON.stringify({"type":"seen"}))
                             })
                         }
-                        else{
+                        else{  //if there is no other user, just send the message is delivered to the user
                             ws.send(JSON.stringify({
                                 "type":"delivered",
                                 })); 
                         }
                         
                     }
-                    else
+                    else  // if the room doesnt exist, then create a new room with roomID = chatID, then push themselve into it
                     {
                         Rooms.set(chatID, [first]);
                     }
-                    
                     break;
 
                     case "exitRoom":
                     const {chatID1,userID1} = json.payload;
-                    Rooms.get(chatID1).forEach((member)=>{
-                        if(onlineUsers.has(member))
+                    const receiver = Rooms.get(chatID1).filter((member)=>member!==userID1)
+
+                    if(receiver.length==0) //checking if the reciver is in the room
+                    {
+                        Rooms.delete(chatID1); //if the sender is the only one in the room, then delete the room.
+                    }
+                    else{
+                        if(onlineUsers.has(receiver[0])) // if reciever is there in the room, notify that the sender has left.
                         {
-                            const socket = onlineUsers.get(member);
-                            if(socket) 
-                            {
-                                socket.send(JSON.stringify({ type: "offline" }));
-                            }
+                            onlineUsers.get(receiver[0]).send(JSON.stringify({
+                                "type":"left"
+                            }))
                         }
-                    })
-                    Rooms.set(chatID1, Rooms.get(chatID1).filter(member=>member!== userID1))
-                    console.log(Rooms.get(chatID1));
+                        Rooms.set(chatID1,receiver);
+                    }
                     break;
         }
 
@@ -146,17 +173,6 @@ wss.on('connection',(ws)=>{
                 onlineUsers.delete(userID);
             break;
         }
-        // wss.clients.forEach((client)=>{
-        //     if(client.readyState === WebSocket.OPEN)
-        //     {
-        //         client.send(JSON.stringify({
-        //             "type":"offline",
-        //             "payload":{
-        //                 "status":"disconnected"
-        //             }
-        //         }))
-        //     }
-        // })
     })
 });
 

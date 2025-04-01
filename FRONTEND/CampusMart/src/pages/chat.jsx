@@ -184,8 +184,8 @@ export default function Chat()
                                         <img className="border-[1px] rounded-[50%] object-cover w-full h-full"/>
                                     </div>
                                     <div className="text-white text-[20px] my-auto flex flex-col justify-start">
-                                        <h2 className="my-auto">{chat.receiver[0].userName}</h2>
-                                        <div className="text-[14px] text-gray-400 text-left">
+                                        <h2 className="my-auto text-left">{chat.receiver[0].userName}</h2>
+                                        <div className="text-[14px] text-gray-400 text-left min-w-[250px]max-w-[300px]">
                                             {chat.lastMessage}
                                         </div>
                                     </div>
@@ -195,13 +195,13 @@ export default function Chat()
                             </motion.div>)}
 
                     </div> : 
-                        <div className="h-[80vh]  flex flex-col w-full">
+                        <div className="h-full  flex flex-col w-full">
                             {(view) ? <ChatElement  setview={setview} isPhone={isPhone}  socketRef={socketRef} setIsChatView={setIsChatView}/> : null}
                         </div>}
                     
             </div>
         ): (
-            <div className="w-full h-full">
+            <div className="w-full h-[90vh] ">
         <ResizablePanelGroup direction="horizontal"  className={`hidden md:flex min-h-[90vh] bg-[#05295e]  md:justify-between`}>
          <ResizablePanel defaultSize={45} minSize={38} maxSize={60}>
                  <div className="h-[90%] w-full flex flex-col overflow-y-auto">
@@ -230,9 +230,9 @@ export default function Chat()
                  </div>
 
          </ResizablePanel>
-        <ResizableHandle withHandle className="hidden md:flex" />
-        <ResizablePanel defaultSize={55}  className="hidden md:flex md:hidden-handle">
-        <div className="h-full  flex flex-col w-full">
+        <ResizableHandle withHandle={false} className="hidden md:flex" />
+        <ResizablePanel defaultSize={55}  className="hidden md:flex ">
+        <div className="h-full  flex flex-col w-full ">
             {(view) ? <ChatElement  setview={setview}  socketRef={socketRef} /> : null}
         </div>
         </ResizablePanel>
