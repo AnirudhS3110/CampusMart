@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import {CirclePlus, Ghost} from 'lucide-react'
+import { Button } from "../ui/button";
 
 import {
     Carousel,
@@ -21,9 +22,9 @@ import store from "@/redux/store";
 import { useNavigate } from "react-router-dom";
 
 
-export default function AddLikedListing()
+export default function AddLikedListing({likedList})
 {
-    const likedList = store.getState().user.likedListings;
+    
     const nav = useNavigate();
     return(
         <CarouselContent>

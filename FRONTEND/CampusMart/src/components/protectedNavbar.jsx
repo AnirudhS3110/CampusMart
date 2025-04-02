@@ -62,7 +62,7 @@ export default function protectedNavBar()
 
                 <div className="flex flex-row justify-between gap-[20px] align-baseline  ">
                     <motion.div  className="h-full  border-b-2 border-b-[#062D67] hover:border-b-2 hover:border-b-cyello  ">
-                        <Button variant="ghost" size="icon" className="  bg-[#062D67]   h-full lg:w-[50px] flex justify-center hover:bg-[#062D67]   " >
+                        <Button onClick={()=>nav('/marketPlace')} variant="ghost" size="icon" className="  bg-[#062D67]   h-full lg:w-[50px] flex justify-center hover:bg-[#062D67]   " >
                             <ShoppingCart color="white" className="w-[40px] h-[40px] group-hover:text-yellow-500"  ></ShoppingCart>
                         </Button>
                     </motion.div>

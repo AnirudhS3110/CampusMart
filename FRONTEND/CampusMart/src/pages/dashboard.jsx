@@ -48,7 +48,7 @@ export default function Dashboard()
     const nav = useNavigate();
     const token = localStorage.getItem("Authtoken");
     const userName = useSelector((state)=>state.authentication.userName)
-
+    const likedList = useSelector((state)=>state.user.likedListings)
     
     
     useEffect(()=>{
@@ -102,7 +102,7 @@ export default function Dashboard()
                     <h2 className="text-[24px]">YOUR FAVOURITES:</h2>
                     <div className="w-full">
                             <Carousel className="">
-                                <AddLikedListing/>
+                                <AddLikedListing likedList={likedList}/>
                             </Carousel>
                     </div>
 
@@ -260,7 +260,7 @@ function AddUserListing()
                                                 </motion.div>
                                             </CardHeader>
                                             <CardContent className="h-[200px] px-0 pb-0 mb-0 overflow-hidden">
-                                                <motion.img whileHover={{scale:1.03}} transition={{duration:0.2, ease: "easeInOut"}} className="rounded-tr-md h-full w-full object-fill rounded-tl-md" src={item.image}/>
+                                                <motion.img whileHover={{scale:1.03}}  transition={{duration:0.2, ease: "easeInOut"}} className="rounded-tr-md h-full w-full object-fill rounded-tl-md" src={item.image}/>
                                             </CardContent>
                                             <CardFooter className="flex w-full flex-col px-0 gap-[8px]">
 

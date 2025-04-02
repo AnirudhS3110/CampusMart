@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { Heart, Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -51,7 +51,7 @@ export default function MarketPlace()
     const nav = useNavigate();
     
     const [listings,setListings] = useState(null)
-    console.log(listings)
+   
 
     useEffect(()=>{
         if (listing) {
@@ -103,45 +103,102 @@ export default function MarketPlace()
         }
 
     }
+    
 
-
+    
     return(
         <section className="w-full min-h-[90vh] bg-[#05295e]  ">
-            <div className="w-full h-[10vh] bg-[#062D67] flex flex-row justify-around items-center border-b-[1px] border-b-cyello sticky top-[10vh]">
+            <div className="w-full h-[10vh] bg-[#062D67] flex flex-row justify-around items-center border-b-[1px] border-b-cyello sticky top-[10vh] z-50">
                 <div className=" min-w-[85%] max-w-[90%] sm:min-w-[400px] md:h-[40px] rounded-full">
                     <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="search by title, category , description.." className="h-full w-full px-[20px] py-[8px] rounded-full bg-white text-black md:px-[30px]"></input>
                 </div>
             </div>
 
-            <div className="w-full min-h-[80vh] md:px-[80px] pt-[30px] flex flex-row flex-wrap justify-start md:gap-[20px] items-center lg:">
-                {!loading && listings.length>0 && listings.map((list)=><Card className={`bg-[#0b336e] md:gap-[30px] text-white py-[14px] max-h-[280px] min-w-[300px] max-w-[300px] border-0 ${loading ? "hidden" : "block"}`}>
-                    <CardHeader >
-                        <div className="w-full h-full flex flex-row justify-between">
-                                <div>
-                                    {list.seller? list.seller.userName.toUpperCase() : "Seller"}
-                                </div>
-                                
-                            <motion.div whileTap={{scale:.95}} className="">
-                                <Button onClick={()=>{createChat({first:userID,second:list.seller ? list.seller._id : null})}} className={`bg-[#FFBB0F] `}>Chat!</Button>
-                            </motion.div>
+            <div className="w-full min-h-[80vh] md:px-[80px] pt-[30px] flex flex-row justify-center items-center">
+                <div className=" h-full flex flex-row flex-wrap gap-[10px] justify-start md:gap-[35px] items-center ">
+                    {!loading && listings.length>0 && listings.map((list)=><Card className={`bg-[#0b336e] md:gap-[30px] text-white py-[14px] max-h-[400px] min-w-[300px] max-w-[300px] border-0 ${loading ? "hidden" : "block"}`}>
+                        <CardHeader >
+                            <div className="w-full h-full flex flex-row justify-between">
+                                    <div>
+                                        {list.seller? list.seller.userName.toUpperCase() : "Seller"}
+                                    </div>
+                                    
+                                <motion.div whileTap={{scale:.95}} className="">
+                                    <Button onClick={()=>{createChat({first:userID,second:list.seller ? list.seller._id : null})}} className={`bg-[#FFBB0F] `}>Chat!</Button>
+                                </motion.div>
 
-                        </div>
-                        </CardHeader>
-                    <CardContent className=" md:h-[200px] md:max-w-[300px]">
-                    <img src={list.image}  className="w-full h-full object-contain"/>
-                        
-                    </CardContent>
-                    <CardFooter className={`flex flex-col`}>
-                        
-                    </CardFooter>
+                            </div>
+                            </CardHeader>
+                            
 
-                </Card>)}
+                        <CardContent className=" md:h-[200px] md:max-w-[300px] px-0 overflow-hidden">
+                            <div className="w-full h-full object-fill rounded-t-md relative">
+                            <motion.img whileHover={{scale:1.03}} transition={{duration:0.2, ease: "easeInOut"}} src={list.image}  className="w-full h-full object-fill rounded-t-md"/>
+                            <LikeButton listId={list._id} />
+                            </div>
+                        </CardContent>
 
-                {loading && <div className="text-cyello text-center my-auto mx-auto font-semibold md:text-[24px]"> Loading Marketplace...</div>}
-                
+                        <CardFooter className={`flex flex-col px-0 w-full gap-[8px] `}>
 
+                        <div className="text-white flex w-full  justify-between px-[8px] ">
+                                                    <div className="w-[50%]">
+                                                    <h2 className="text-[26px] text-cyello ">{list.price}</h2>
+                                                    </div>
+                                                    <div className=" my-auto">
+                                                        <h2 className="text-[20px] ">{list.createdAt.split("T")[0]}</h2>
+                                                    </div>
+                                                </div>
+
+                                                <div className="text-white w-full max-h-[40px] px-[8px]">
+                                                    <div className="text-[12px] w-full overflow-y-hidden scrollbar-hide">
+                                                        {list.description}
+                                                    </div>
+                                                </div>
+                                <motion.div whileTap={{scale:.95}} className="w-full">
+                                    <Button  className={`bg-[#FFBB0F] w-full`}>Add to Cart!</Button>
+                                </motion.div>
+                            
+                        </CardFooter>
+
+                    </Card>)}
+                    {loading && <div className="text-cyello text-center my-auto mx-auto font-semibold md:text-[24px]"> Loading Marketplace...</div>}
+                </div>
             </div>
 
         </section>
     )
+}
+
+function LikeButton({listId})
+{
+    const userID = useSelector((state)=>state.authentication.userID);
+    const token = localStorage.getItem('Authtoken');
+    const [like,setLike] = useState(false);
+    useEffect(()=>{
+        if(like)
+            {
+                async function setLike()
+                {
+                    const res = await axios.post('http://localhost:3000/marketplace/setLike',
+                        {
+                            userId:userID,
+                            listID:listId
+                        },{
+                            headers:{
+                                'authorization':token,
+                                'Content-Type':'application/json'
+                            }
+                        }
+                    )
+                    if(res.data.success)
+                    {
+                        console.alert("Added to your favorites")
+                    }
+                }
+                setLike();
+            }
+
+    },[like])
+    return <button onClick={()=>{setLike(!like)}} className="absolute top-2 right-2  p-1 rounded-full shadow-md"> <Heart color={like? "none":"black"} fill={like ? "red": "none"} /> </button>
+    
 }
