@@ -74,7 +74,7 @@ export default function MultiStepForm({formData,setFormData,onClickSend})
                 <div className={`w-full flex ${index==2 ? "flex-row" : "flex-row-reverse"}  justify-between px-[20px]`}>
                 { index <2 && <motion.div whileTap={{scale:.95}}><Button variant="ghost" onClick={next} className="bg-cyello text-white text-[18px]">Next</Button></motion.div>}
                 { index <=2 && index >0 && <Button variant="ghost" onClick={()=>setIndex((prev)=>prev-1)} className="bg-cyello text-white text-[18px] max-w-[50%]">Edit previous</Button>}
-                {index == 2 && isupload && <Button type="submit" variant="ghost" className="bg-cyello text-white text-[18px] max-w-[50%] " onClick={onClickSend} >Submit</Button>}
+                {index == 2 &&   <Button disabled={isupload} type="submit" variant="ghost" className="bg-cyello text-white text-[18px] max-w-[50%] " onClick={onClickSend} >Submit</Button>}
                 </div>
                 
                 

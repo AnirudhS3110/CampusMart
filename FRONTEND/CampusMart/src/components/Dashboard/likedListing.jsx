@@ -28,12 +28,12 @@ export default function AddLikedListing()
     return(
         <CarouselContent>
             <CarouselItem className=" md:basis-1/2 lg:basis-1/4">
-                                            <Card  className="bg-[#0f3772] border-[#07295c]" >
+                                            <Card  className="bg-[#0f3772] max-w-[300px] min-w-[280px] border-[#07295c] flex flex-col justify-items-start" >
                                                 <CardHeader className="mx-auto text-white">
                                                     <h3>Add new Item</h3>
 
                                                 </CardHeader>
-                                                <CardContent  className="h-[200px] mx-auto" >
+                                                <CardContent  className="h-[200px]  flex flex-col justify-center items-center" >
                                                     <motion.button whileHover={{scale:1.03}} whileTap={{scale:1.05}} onClick={()=>{nav('/marketPlace')}} className="  rounded-[50%]" >
                                                         <CirclePlus className="w-20 h-20" color="white">
                                                             Add

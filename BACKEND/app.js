@@ -7,6 +7,7 @@ import UserSell from './routes/userSell.js'
 import UserBuy from './routes/userBuy.js'
 import Chats from "./routes/chat.js"
 import Dashboard from "./routes/dashboard.js"
+import MarketPlace from "./routes/marketPlace.js"
 // import rateLimit from "express-rate-limit"
 
 //Installing nodemon by typing 
@@ -26,5 +27,6 @@ import Dashboard from "./routes/dashboard.js"
  app.use("/users",UserBuy);
  app.use("/chats",Chats);
  app.use("/users",Dashboard);
+ app.use("/marketplace",MarketPlace)
 
 export default app;

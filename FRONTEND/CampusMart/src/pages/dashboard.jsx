@@ -80,11 +80,11 @@ export default function Dashboard()
     
 
     return(
-        <section className="bg-[#05295e] flex flex-col items-center w-[100vw] min-h-[100vh] px-[30px] pb-[30px]  lg:px-[120px] overflow-y-auto pt-[20px] absolute  ">
+        <section className="bg-[#05295e] flex flex-col items-center w-[100vw] min-h-[100vh] px-[30px] pb-[30px]  md:px-[120px] overflow-y-auto pt-[20px] absolute  ">
             
             <hr className="bg-white"></hr>
             <div className="w-full h-[90%]">
-                <div className="text-white font-semibold mb-[20px] lg:text-[30px] ">
+                <div className="text-white font-semibold mb-[20px] md:text-[30px] ">
                     <h3>Welcome back <span className="text-cyello">{userName}</span>!</h3>
                 </div >
                     
@@ -98,7 +98,7 @@ export default function Dashboard()
 
                 </div>
 
-                <div className="text-white lg:text-[30px] mb-[15px]">
+                <div className="text-white md:text-[30px] mb-[15px]">
                     <h2 className="text-[24px]">YOUR FAVOURITES:</h2>
                     <div className="w-full">
                             <Carousel className="">
@@ -109,7 +109,7 @@ export default function Dashboard()
                 </div>
 
                 
-                <div className="text-white  lg:text-[30px] mb-[15px]">
+                <div className="text-white  md:text-[30px] mb-[15px]">
                     <h2 className="text-[24px]">Your Listings:</h2>
                     <div className="w-full">
                         {console.log("About to run AdduserListing")}
@@ -210,9 +210,25 @@ function AddUserListing()
     return(
         <Carousel>
             <CarouselContent>
+            <CarouselItem className=" md:basis-1/2 lg:basis-1/4 max-h-[450px]">
+                                            <Card  className="bg-[#0f3772] min-h-[300px] h-full border-0 max-w-[300px] min-w-[280px] lg:min-h-[350px]" >
+                                                <CardHeader className="mx-auto text-white">
+                                                    <h3 >Add new Item</h3>
+
+                                                </CardHeader>
+                                                <CardContent  className="h-full mx-auto" >
+                                                    <motion.button whileHover={{scale:1.03}} whileTap={{scale:1.05}} onClick={()=>{nav('/addListing')}} className=" h-full rounded-[50%]" >
+                                                        <CirclePlus className="  w-20 h-20 " color="white" >
+                                                            
+                                                        </CirclePlus>
+                                                    </motion.button>
+                                                </CardContent>
+                                                <CardFooter></CardFooter>
+                                            </Card>
+                                </CarouselItem>
             
-        { userListing.map((item)=><CarouselItem className="md:basis-1/2 lg:basis-1/4 min-h-[440px]">
-                                    <Card  className="bg-[#0b336e] text-white py-[14px] max-h-[440px]  border-0" >
+        { userListing.map((item)=><CarouselItem className=" md:basis-1/2 lg:basis-1/4 min-h-[440px]">
+                                    <Card  className="bg-[#0b336e] text-white py-[14px] max-h-[440px] max-w-[300px] min-w-[280px]  border-0" >
                                     <CardHeader className="flex flex-row justify-between px-[8px]  " >
                                                 <div className="text-white text-[16px] my-auto">
                                                     <h2 className="text-[20px]">{item.title}</h2>
@@ -305,22 +321,7 @@ function AddUserListing()
                                     </Card>
                                 </CarouselItem>)}
 
-                                <CarouselItem className=" md:basis-1/2 lg:basis-1/4 max-h-[450px]">
-                                            <Card  className="bg-[#0f3772] min-h-[300px] h-full border-0 lg:min-h-[350px]" >
-                                                <CardHeader className="mx-auto text-white">
-                                                    <h3 >Add new Item</h3>
-
-                                                </CardHeader>
-                                                <CardContent  className="h-full mx-auto" >
-                                                    <motion.button whileHover={{scale:1.03}} whileTap={{scale:1.05}} onClick={()=>{nav('/addListing')}} className=" h-full rounded-[50%]" >
-                                                        <CirclePlus className="  w-20 h-20 " color="white" >
-                                                            
-                                                        </CirclePlus>
-                                                    </motion.button>
-                                                </CardContent>
-                                                <CardFooter></CardFooter>
-                                            </Card>
-                                </CarouselItem>
+                                
         
             </CarouselContent>
         </Carousel>

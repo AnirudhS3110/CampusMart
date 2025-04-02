@@ -15,6 +15,7 @@ import ProtectedNavBar from "./components/protectedNavbar";
 import Protected from "./pages/protected";
 import AddListing from "./pages/addListing";
 import ChatPage from "./pages/ChatPage";
+import MarketPlace from "./pages/marketPlace";
 
 function App() {
   
@@ -50,7 +51,7 @@ function MainLayout() {
           <Route path="/dashboard" element={<Protected><Dashboard /></Protected>} />
           <Route path="/addListing" element={<Protected><AddListing /></Protected>} />
           <Route path="/chat" element={<Chat />} />
-          <Route path="/chat/:id" element={<ChatPage/>} /> 
+          <Route path="/marketPlace" element={<Protected><MarketPlace /></Protected>} />
         </Routes>
       </main>
     </div>

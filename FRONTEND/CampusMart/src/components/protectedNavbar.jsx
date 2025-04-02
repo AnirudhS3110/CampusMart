@@ -46,6 +46,8 @@ export default function protectedNavBar()
             setLocation("DASHBOARD");
         else if(location.pathname==='/chat')
             setLocation("CHAT");
+        else if(location.pathname==='/marketPlace')
+            setLocation("MARKETPLACE");
     },[location])
     return(
         <div className="w-full h-[10vh] flex flex-row justify start sticky top-0 z-50 bg-[#062D67]">

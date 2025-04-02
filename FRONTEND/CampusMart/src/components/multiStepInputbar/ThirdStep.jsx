@@ -6,6 +6,7 @@ export default function StepThree({ formData, setFormData }) {
 
     const onDrop = (acceptedFiles) => {
         const file = acceptedFiles[0];
+        console.log(file)
         if (file) {
             setFormData((data) => ({ ...data, file }));
             setPreview(URL.createObjectURL(file)); // Create preview URL

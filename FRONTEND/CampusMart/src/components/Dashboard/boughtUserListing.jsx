@@ -28,7 +28,7 @@ export default function AddBoughtListing()
     return(
         <CarouselContent>
             <CarouselItem className="h-full md:basis-1/2 lg:basis-1/4">
-                                                    <Card  className="bg-[#0f3772] border-[#07295c]" >
+                                                    <Card  className="bg-[#0f3772] max-w-[300px] min-w-[280px] border-[#07295c]" >
                                                         <CardHeader className="mx-auto text-white">
                                                             <h3>Add new Item</h3>
             

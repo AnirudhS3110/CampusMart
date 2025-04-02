@@ -46,9 +46,9 @@ const chatSlice = createSlice({
             if(chatIndex!=-1)
             {
                 let updatedChat = state.chats[chatIndex]
+                let notification = updatedChat.notification + 1;
                 state.chats.splice(chatIndex,1)
-                state.chats.unshift({...updatedChat,lastMessage:action.payload.lastMessage})
-
+                state.chats.unshift({...updatedChat,lastMessage:action.payload.lastMessage,notification:notification})
             }
         }    
     }

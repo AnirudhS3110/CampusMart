@@ -68,7 +68,7 @@ export default function Chat()
             {
                 dispatch(updateMessage());
             }
-            else if(message.type == "offline")
+            else if(message.type == "left")
             {
                 dispatch(setIsChatting(false))
             }
@@ -207,7 +207,7 @@ export default function Chat()
                  <div className="h-[90%] w-full flex flex-col overflow-y-auto">
 
                     {chats.map((chat)=><motion.div whileTap={{ scale: 1.03 }} className="w-full h-[60px] scrollbar-hide ">
-                                <button className="w-full h-full flex justify-start px-[30px] gap-[15px] transition-all duration-200 rounded-[10px] hover:bg-[#0C4CAB]  hover:opacity-60" onClick={()=>{ 
+                                <button className="w-full h-full flex justify-start items-center px-[30px] gap-[15px] transition-all duration-200 rounded-[10px] hover:bg-[#0C4CAB]  hover:opacity-60" onClick={()=>{ 
                                     setChat({id:chat.receiver[0]._id,setView:setview}); 
                                     setUserName(chat.receiver[0].userName);
                                     dispatch(setReceiverName(chat.receiver[0].userName))
@@ -222,6 +222,11 @@ export default function Chat()
                                         <div className="text-[14px] text-gray-400 text-left ">
                                             {chat.lastMessage}
                                         </div>
+                                    </div>
+
+                                    <div className={`h-[25px] w-[25px] rounded-full bg-cblue text-white ${chat.notification ? "hidden":"block"}`}>
+                                        {chat.notification}
+
                                     </div>
                         
                                 </button>

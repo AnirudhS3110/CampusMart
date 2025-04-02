@@ -36,7 +36,7 @@ wss.on('connection',(ws)=>{
 
                 case "message":
                     // console.log("Message: ", json.payload.message.toString()); 
-                    Rooms.get(chatID).forEach((member)=>{
+                    Rooms.get(json.payload.chatID).forEach((member)=>{
                         if(onlineUsers.has(member))
                         {
                             onlineUsers.get(member).send(JSON.stringify({
@@ -135,7 +135,7 @@ wss.on('connection',(ws)=>{
                         }
                         
                     }
-                    else  // if the room doesnt exist, then create a new room with roomID = chatID, then push themselve into it
+                    else  // if the room doesnt exist, then create a new room with roomID = chatID, then push themselve
                     {
                         Rooms.set(chatID, [first]);
                     }
