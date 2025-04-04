@@ -29,19 +29,7 @@ const userSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 })
 
-// const chatSchema = new mongoose.Schema(
-//     {
-//       sender: { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true },
-//       receiver: { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true },
-//       message: { type: String, required: true },
-//       status: {
-//         type: String,
-//         enum: ['sent', 'delivered', 'seen'],
-//         default: 'sent'
-//       }
-//     },
-//     { timestamps: true } // Auto-creates createdAt & updatedAt fields
-//   );
+
 
 const RoomSchema = new mongoose.Schema({
     members:[{type:mongoose.Schema.Types.ObjectId, ref:'Users', required:true}],
