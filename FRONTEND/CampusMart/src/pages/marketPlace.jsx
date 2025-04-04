@@ -193,30 +193,30 @@ function LikeButton({listId,Liked})
     useEffect(()=>{
         if(like)
             {
-            //     async function setLike()
-            //     {
-            //         try{
-            //             const res = await axios.post('http://localhost:3000/marketplace/setLike',
-            //                 {
-            //                     userID:userID,
-            //                     listID:listId
-            //                 },{
-            //                     headers:{
-            //                         'authorization':token,
-            //                         'Content-Type':'application/json'
-            //                     }
-            //                 }
-            //             )
-            //             if(res.data.success)
-            //             {
-            //                 alert("Added to your favorites")
-            //             }
-            //         }catch(e)
-            //         {
-            //             console.log("Error");
-            //         }
-            //     }
-            //     setLike();
+                async function setLike()
+                {
+                    try{
+                        const res = await axios.post('http://localhost:3000/marketplace/setLike',
+                            {
+                                userID:userID,
+                                listID:listId
+                            },{
+                                headers:{
+                                    'authorization':token,
+                                    'Content-Type':'application/json'
+                                }
+                            }
+                        )
+                        if(res.data.success)
+                        {
+                            alert("Added to your favorites")
+                        }
+                    }catch(e)
+                    {
+                        console.log("Error");
+                    }
+                }
+                setLike();
              }
             // if(!like){
             //     async function removeLike()
