@@ -171,7 +171,7 @@ export default function MarketPlace()
     )
 }
 
-function LikeButton({listId,Liked})
+export function LikeButton({listId,Liked})
 {
 
     const userID = useSelector((state)=>state.authentication.userID);
@@ -217,36 +217,36 @@ function LikeButton({listId,Liked})
                 }
                 setLike();
              }
-            // if(!like){
-            //     async function removeLike()
-            //     {
-            //         try{
-            //             const res = await axios.post('http://localhost:3000/marketplace/removeLike',
-            //                 {
-            //                     userID:userID,
-            //                     listID:listId
-            //                 },{
-            //                     headers:{
-            //                         'authorization':token,
-            //                         'Content-Type':'application/json'
-            //                     }
-            //                 }
-            //             )
-            //             if(res.data.success)
-            //             {
-            //                 alert("Removed from your Favorites")
-            //             }
-            //         }catch(e)
-            //         {
-            //             console.log("Error");
-            //         }
-            //     }
-            //     removeLike();
+            if(dummy%2==0 && dummy){
+                async function removeLike()
+                {
+                    try{
+                        const res = await axios.post('http://localhost:3000/marketplace/removeLike',
+                            {
+                                userID:userID,
+                                listID:listId
+                            },{
+                                headers:{
+                                    'authorization':token,
+                                    'Content-Type':'application/json'
+                                }
+                            }
+                        )
+                        if(res.data.success)
+                        {
+                            alert("Removed from your Favorites")
+                        }
+                    }catch(e)
+                    {
+                        console.log("Error");
+                    }
+                }
+                removeLike();
 
                 
-            // }
+            }
 
     },[dummy])
-    return <button onClick={()=>{setLike(!like),setDummy(dummy=>dummy+1);}} className="absolute top-2 right-2  p-1 rounded-full shadow-md"> <Heart color={like? "none":"black"} fill={like ? "red": "none"} /> </button>
+    return <button onClick={()=>{setLike(!like);setDummy(dummy=>dummy+1);}} className="absolute top-2 right-2  p-1 rounded-full shadow-md"> <Heart color={like? "none":"black"} fill={like ? "red": "none"} /> </button>
     
 }
