@@ -230,7 +230,7 @@ function AddUserListing()
                                     <CardContent className={`min-h-[300px] px-0 bg-[#05295e] pt-0 my-0 overflow-hidden rounded-[20px]`} >
                                         <div className="min-w-[300px] w-[310px] max-w-[325px] h-[302px]  min-h-[300px] max-h-[306px] relative rounded-[20px] box-border">
 
-                                            <motion.img whileHover={{scale:1.03}} transition={{duration:0.2, ease: "easeInOut"}}  className="w-full h-full rounded-[20px]  object-cover" src={item.image} />
+                                            {item.image ? <motion.img whileHover={{scale:1.03}} transition={{duration:0.2, ease: "easeInOut"}}  className="w-full h-full rounded-[20px]  object-cover" src={`${item.image}?nocache${new Date()}`} /> : <div>Loafing image</div>}
                                             
 
                                             <motion.div whileTap={{scale:1.03}} transition={{ type: "spring", stiffness: 200, damping: 10 }} className="absolute top-2 left-2 md:top-0">
@@ -348,6 +348,10 @@ async function getItems()
 
         if(res.data.success)
         {
+            console.log("the time i received all dara from backend:", new Date());
+            await new Promise((r)=>setTimeout(r,5000));
+            console.log("the time i am gonna dispatch it to state variable:", new Date());
+            console.log("Jus gonna dispatch teh data");
             dispatch(setUserListing(res.data));
             
             return true;
@@ -400,7 +404,7 @@ async function handleOnCLick({url,id,oldrate,olddescription})
                         const bool = await getItems()
                         if(bool)
                         {
-                            await new Promise(res => setTimeout(res, 3000))
+                            
                             console.log("Update got re rendered");
                             
 
