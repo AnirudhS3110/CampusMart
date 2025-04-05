@@ -63,7 +63,7 @@ router.post('/getDashboard', jwtAuthentication, async(req,res)=>{
             return {...itemObj,image: noCache(itemObj.image)};
         })
         // for(let i = 0 ; i < 800050000 ; i++){};
-        return res.json({success:true,userListing:viewLisitng});
+        return res.json({success:true,userListing:userListing});
     })
 
 router.get('/viewLiked',jwtAuthentication, async(res,req)=>{
