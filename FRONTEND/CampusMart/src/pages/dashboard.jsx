@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {CirclePlus, Ghost} from 'lucide-react'
+import {CirclePlus,Pencil, Ghost} from 'lucide-react'
 import {
     Carousel,
     CarouselContent,
@@ -110,9 +110,9 @@ export default function Dashboard()
 
                 
                 <div className="text-white  md:text-[30px] mb-[15px]">
-                    <h2 className="text-[24px]">Your Listings:</h2>
+                    <h2 className="text-[24px]">YOUR LISITNGS:</h2>
                     <div className="w-full">
-                        {console.log("About to run AdduserListing")}
+                        
                         <AddUserListing  />
                     </div>
                 </div>
@@ -211,113 +211,114 @@ function AddUserListing()
         <Carousel>
             <CarouselContent>
             <CarouselItem className=" md:basis-1/2 lg:basis-1/4 max-h-[450px]">
-                                            <Card  className="bg-[#0f3772] min-h-[300px] h-full border-0 max-w-[300px] min-w-[280px] lg:min-h-[350px]" >
-                                                <CardHeader className="mx-auto text-white">
-                                                    <h3 >Add new Item</h3>
-
-                                                </CardHeader>
-                                                <CardContent  className="h-full mx-auto" >
-                                                    <motion.button whileHover={{scale:1.03}} whileTap={{scale:1.05}} onClick={()=>{nav('/addListing')}} className=" h-full rounded-[50%]" >
+                                            <Card  className="bg-[#0f3772] min-h-[300px] h-full border-0 max-w-[305px] min-w-[300px] lg:min-h-[350px] flex flex-col justify-center " >
+                                                <CardContent  className="h-full mx-auto flex min-w-[305px] flex-col justify-center items-center gap-[15px]" >
+                                                <h3 className="text-white text-[24px]">Add new Item</h3>
+                                                    <motion.button whileHover={{scale:1.03}} whileTap={{scale:1.05}} onClick={()=>{nav('/addListing')}} className=" rounded-[50%]" >
                                                         <CirclePlus className="  w-20 h-20 " color="white" >
                                                             
                                                         </CirclePlus>
                                                     </motion.button>
                                                 </CardContent>
-                                                <CardFooter></CardFooter>
+                                                
                                             </Card>
                                 </CarouselItem>
             
         { userListing.map((item)=><CarouselItem className=" md:basis-1/2 lg:basis-1/4 min-h-[440px]">
-                                    <Card  className="bg-[#0b336e] text-white py-[14px] max-h-[440px] max-w-[300px] min-w-[280px]  border-0" >
-                                    <CardHeader className="flex flex-row justify-between px-[8px]  " >
-                                                <div className="text-white text-[16px] my-auto">
-                                                    <h2 className="text-[20px]">{item.title}</h2>
-                                                </div>
-                                                <motion.div whileTap={{scale:1.03}} transition={{ type: "spring", stiffness: 200, damping: 10 }} className="my-auto">
-                                                <Dialog open={openDel} onOpenChange={setOpenDel}>
-                    <DialogTrigger asChild>
-                        <Button variant="ghost" className="bg-cblue transition-colors duration-300 hover:bg-red-600">
-                            Delete
-                        </Button>
-                    </DialogTrigger>
+            <Card className="max-w-[325px] min-w-[315px] max-h-[450px] py-0 bg-[#0b336e] border-[#05295e] box-border">
+                                    
+                                    <CardContent className={`min-h-[300px] px-0 bg-[#05295e] pt-0 my-0 overflow-hidden rounded-[20px]`} >
+                                        <div className="min-w-[300px] w-[310px] max-w-[325px] h-[302px]  min-h-[300px] max-h-[306px] relative rounded-[20px] box-border">
 
-                    {/* Confirmation Dialog */}
-                    <DialogContent className="p-6">
-                        <DialogHeader>
-                            <h2 className="text-lg font-semibold">Confirm Deletion</h2>
-                            <p className="text-gray-500">Are you sure you want to delete this item? This action cannot be undone.</p>
-                        </DialogHeader>
+                                            <motion.img whileHover={{scale:1.03}} transition={{duration:0.2, ease: "easeInOut"}}  className="w-full h-full rounded-[20px]  object-cover" src={item.image} />
+                                            
 
-                        <DialogFooter className="flex justify-end gap-4">
-                            <Button variant="outline" onClick={() => setOpen(false)}>No</Button>
-                            <Button variant="destructive" onClick={async() => { await onDelete(item._id); setOpenDel(false); }}>
-                                Yes, Delete
-                            </Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
+                                            <motion.div whileTap={{scale:1.03}} transition={{ type: "spring", stiffness: 200, damping: 10 }} className="absolute top-2 left-2 md:top-0">
+                                <Dialog open={openDel} onOpenChange={setOpenDel}>
+                                        <DialogTrigger asChild>
+                                            <motion.div whileTap={{scale:.95}}>
+                                            <Button variant="ghost" className="bg-cyello text-white rounded-full transition-colors duration-300 hover:bg-red-600">
+                                                Delete
+                                            </Button>
+                                            </motion.div>
+                                        </DialogTrigger>
 
-                                                </motion.div>
-                                            </CardHeader>
-                                            <CardContent className="h-[200px] px-0 pb-0 mb-0 overflow-hidden">
-                                                <motion.img whileHover={{scale:1.03}}  transition={{duration:0.2, ease: "easeInOut"}} className="rounded-tr-md h-full w-full object-fill rounded-tl-md" src={item.image}/>
-                                            </CardContent>
-                                            <CardFooter className="flex w-full flex-col px-0 gap-[8px]">
+                                        {/* Confirmation Dialog */}
+                                        <DialogContent className="p-6">
+                                            <DialogHeader>
+                                                <h2 className="text-lg font-semibold">Confirm Deletion</h2>
+                                                <p className="text-gray-500">Are you sure you want to delete this item? This action cannot be undone.</p>
+                                            </DialogHeader>
 
-                                                <div className="text-white flex w-full  justify-between px-[8px] ">
-                                                    <div className="w-[50%]">
-                                                    <h2 className="text-[26px] text-cyello ">{item.price}</h2>
-                                                    </div>
-                                                    <div className=" my-auto">
-                                                        <h2 className="text-[20px] ">{item.createdAt.split("T")[0]}</h2>
-                                                    </div>
-                                                </div>
+                                            <DialogFooter className="flex justify-end gap-4">
+                                                <Button variant="outline" onClick={() => setOpen(false)}>No</Button>
+                                                <Button variant="destructive" onClick={async() => { await onDelete(item._id); setOpenDel(false); }}>
+                                                    Yes, Delete
+                                                </Button>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
+                            </motion.div>
 
-                                                
+                                        </div>
+                                    </CardContent>
+                
+                                    <CardFooter className={`px-[4px] pt-0 my-0 py-0 `}>
+                                        <div className="min-w-[300px] w-[302px] py-0 max-w-[325px] h-[302px] box-border px-[8px]  min-h-[300px] max-h-[306px] flex flex-col gap-[8px]">
+                
+                                            <div className="w-full flex py-0 justify-between items-center">
 
-                                                <div className="text-white w-full max-h-[40px] px-[8px]">
-                                                    <div className="text-[12px] w-full overflow-y-hidden scrollbar-hide">
-                                                        {item.description}
-                                                    </div>
-                                                </div>
+                                                <h2 className="text-cyello md:text-[24px] truncate">{item.title}</h2>
+
 
                                                 <Dialog open={open} onOpenChange={setOpen}>
-                                                    <DialogTrigger asChild>
-                                                        <motion.div className="w-full flex justify-center" whileTap={{scale:1.03}} transition={{ type: "spring", stiffness: 200, damping: 10 }}>
-                                                            <Button variant={Ghost} className="bg-[#0f4eec] w-[90%] mx-auto pb-[6px]">
-                                                                    Edit
-                                                            </Button>
-                                                        </motion.div>
-                                                    </DialogTrigger>
-                                                    <DialogContent>
-                                                        <DialogHeader>
-                                                            <DialogTitle>Edit your listing:</DialogTitle>
-                                                        </DialogHeader>
-                                                        <div>
-                                                            <Label>Set Rate</Label>
-                                                            <Input type="number" value={rate} onChange={(e)=>setRate(e.target.value)}></Input>
-                                                            <Label> Set Description</Label>
-                                                            <Textarea  maxLength={100} value={description} onChange={(e)=>setDescription(e.target.value)} placeholder="Description must be less than 100 characters" type="text"></Textarea>
-                                                            <Label>Set image</Label>
-                                                            <Input type="file" onChange={(e)=>setFile(e.target.files[0])}></Input>
-                                                            
-                                                        </div>
+                                <DialogTrigger asChild>
+                                    <motion.div className="max-w-[50%] flex justify-center" whileHover={{scale:1.03}} whileTap={{scale:.95}} transition={{ type: "spring", stiffness: 200, damping: 10 }}>
+                                        <Button variant={Ghost} className="bg-white text-[#05295e] px-[10px] text-[18px] rounded-full w-[100%] mx-auto pb-[6px]">
+                                                <Pencil/>  Edit
+                                        </Button>
+                                    </motion.div>
+                                </DialogTrigger>
+                                <DialogContent className={`bg-white text-[#05295e] border-0`}>
+                                    <DialogHeader>
+                                        <DialogTitle>Edit your listing:</DialogTitle>
+                                    </DialogHeader>
+                                    <div>
+                                        <Label>Set Rate</Label>
+                                        <Input type="number" value={rate} onChange={(e)=>setRate(e.target.value)}></Input>
+                                        <Label> Set Description</Label>
+                                        <Textarea  maxLength={100} value={description} onChange={(e)=>setDescription(e.target.value)} placeholder="Description must be less than 100 characters" type="text"></Textarea>
+                                        <Label>Set image</Label>
+                                        <Input type="file" onChange={(e)=>setFile(e.target.files[0])}></Input>
+                                        
+                                    </div>
 
-                                                        <DialogFooter className="flex justify-center">
-                                                            <div className="text-gray">
-                                                                {loading && <h2 className="text-[14px]">Saving the changes..</h2>}
-                                                            </div>
-                                                            <motion.div >
-                                                            <Button variant="outline" onClick={async()=>{console.log("Save button clicked");await handleOnCLick({url:item.image ,id:item._id ,oldrate:item.price ,olddescription:item.description}); setOpen(false);}}>Save</Button>
-                                                            </motion.div>
-                                                        </DialogFooter>
-                                                    </DialogContent>
-                                                </Dialog>
-                                                
+                                    <DialogFooter className="flex justify-center">
+                                        <div className="text-gray">
+                                            {loading && <h2 className="text-[14px]">Saving the changes..</h2>}
+                                        </div>
+                                        <motion.div >
+                                        <Button variant="outline" onClick={async()=>{console.log("Save button clicked");await handleOnCLick({url:item.image ,id:item._id ,oldrate:item.price ,olddescription:item.description}); await new Promise(r=>setTimeout(r,500)); setOpen(false);}}>Save</Button>
+                                        </motion.div>
+                                    </DialogFooter>
+                                </DialogContent>
+                            </Dialog>
 
-                                                
-                                                
-                                            </CardFooter>
+
+
+                                            </div>
+                
+                                            <div className="w-full text-gray-400 text-[14px] text-ellipsis line-clamp-2">
+                                            {item.description}
+                                            </div>
+                                            
+                                            <div className="w-full flex justify-items-start text-[15px] md:text-[18px] text-cyello justify-between">
+                                                <h3>{item.price}</h3>
+                                                {/* <h3>{item.seller? item.seller.userName.toUpperCase() : "Seller"}</h3> */}
+                                            </div>
+                
+                                        </div>
+                                    </CardFooter>
                                     </Card>
                                 </CarouselItem>)}
 
@@ -348,6 +349,7 @@ async function getItems()
         if(res.data.success)
         {
             dispatch(setUserListing(res.data));
+            
             return true;
         }
        }
@@ -398,6 +400,7 @@ async function handleOnCLick({url,id,oldrate,olddescription})
                         const bool = await getItems()
                         if(bool)
                         {
+                            await new Promise(res => setTimeout(res, 3000))
                             console.log("Update got re rendered");
                             
 

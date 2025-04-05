@@ -119,10 +119,25 @@ export default function AddListing()
     return(
         <section className=" w-[100vw] min-h-[100vh] lg:px-[120px] bg-[#05295e] flex flex-col justify-center items-center px-[15px]">
              {loading==false &&  <MultiStepForm formData={formData} setFormData={setFormData} onClickSend={onClickSend}/> }
-            {loading && <div className="mx-auto my-auto text-white text-[40px]">Creating new List...</div>}
+            {loading && <div className="mx-auto my-auto flex flex-col gap-[3px] justify-center items-center text-white text-[40px]">
+                <LoadingDots/>
+                <h3 className="text-[32px] text-cyello">Creating new List...</h3></div>}
 
             
 
         </section>
     )
 }
+
+const LoadingDots = () => {
+    return (
+      <div className="flex justify-center items-center space-x-2 h-24">
+        <span className="w-6 h-6 bg-cyello rounded-full animate-bounce"></span>
+        <span className="w-6 h-6 bg-cyello rounded-full animate-bounce [animation-delay:0.2s]"></span>
+        <span className="w-6 h-6 bg-cyello rounded-full animate-bounce [animation-delay:0.4s]"></span>
+      </div>
+    );
+  };
+  
+ 
+  

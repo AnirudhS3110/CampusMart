@@ -19,7 +19,8 @@ router.post('/editupload',upload.single('image'),async(req,res)=>{
             {
                 public_id:publicID,
                 overwrite:true,
-                invalidate:true
+                invalidate:true,
+                cache: false
             }
         
         )

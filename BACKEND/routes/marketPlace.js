@@ -7,12 +7,25 @@ import { Listings, Users } from "../models/db.js";
 
 router.post('/getMarketPlace',async(req,res)=>{
     const {userID} = req.body;
+    const noCache = (url)=>`${url}?nocache=${Date.now()}`;
     try{
         const listings = await Listings.find({}).populate('seller','userName');
         const user = await Users.findById(userID).populate('favorites','_id');
+        res.set({'Cache-Control': 'no-store,no-cache, must-revalidate, proxy-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0',
+            'Content-Type': 'image/jpeg'
+        });
         if(listings&& user)
         {
-            res.json({success:true, listings:listings , likedList:user.favorites})
+            const Listings = listings.map((item)=>{
+                const itemObj =item.toObject();
+                return {...itemObj,image:noCache(itemObj.image)}});
+            const favorites = user.favorites.map((item)=>{
+                    const itemObj = item.toObject();
+                    return {...itemObj,image: noCache(itemObj.image)}
+                })
+            res.json({success:true, listings:Listings , likedList:favorites})
         }
         else{
             res.status(500).json({success:false,"message":"Error while fetching MarketPlace details form db"})
