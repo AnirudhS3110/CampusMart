@@ -28,12 +28,10 @@ export default function AddBoughtListing()
     return(
         <CarouselContent>
             <CarouselItem className="h-full md:basis-1/2 lg:basis-1/4">
-                                                    <Card  className="bg-[#0f3772] max-w-[300px] min-w-[280px] border-[#07295c]" >
-                                                        <CardHeader className="mx-auto text-white">
-                                                            <h3>Add new Item</h3>
-            
-                                                        </CardHeader>
-                                                        <CardContent  className=" mx-auto h-[200px]" >
+                                                    <Card  className="bg-[#0f3772] max-w-[305px] min-w-[302px] min-h-[440px] border-[#07295c] flex flex-col justify-center" >
+                                                        
+                                                        <CardContent  className=" h-[200px] flex flex-col  items-center" >
+                                                           <h3 className="text-[26px] text-white">Add new Item</h3>
                                                             <motion.button whileTap={{scale:1.05}} onClick={()=>{nav('/marketPlace')}} className=" h-full rounded-[50%]" >
                                                                 <CirclePlus className="w-20 h-20" color="white">
                                                                     Add

@@ -84,12 +84,12 @@ export default function Dashboard()
             
             <hr className="bg-white"></hr>
             <div className="w-full h-[90%]">
-                <div className="text-white font-semibold mb-[20px] md:text-[30px] ">
+                <div className="text-white font-semibold mb-[20px] md:text-[36px] ">
                     <h3>Welcome back <span className="text-cyello">{userName}</span>!</h3>
                 </div >
                     
-                <div className="text-white lg:text-[30px] mb-[15px]">
-                    <h2 className="text-[24px]">YOUR PURCHASES:</h2>
+                <div className="text-white lg:text-[30px] mb-[18px]">
+                    <h2 className="text-[28px]">YOUR PURCHASES:</h2>
                     <div className="w-full ">
                             <Carousel className="h-full">
                                 <AddBoughtListing/>
@@ -98,8 +98,8 @@ export default function Dashboard()
 
                 </div>
 
-                <div className="text-white md:text-[30px] mb-[15px]">
-                    <h2 className="text-[24px]">YOUR FAVOURITES:</h2>
+                <div className="text-white md:text-[30px] mb-[18px]">
+                    <h2 className="text-[28px]">YOUR FAVOURITES:</h2>
                     <div className="w-full">
                             <Carousel className="">
                                 <AddLikedListing likedList={likedList}/>
@@ -109,8 +109,8 @@ export default function Dashboard()
                 </div>
 
                 
-                <div className="text-white  md:text-[30px] mb-[15px]">
-                    <h2 className="text-[24px]">YOUR LISITNGS:</h2>
+                <div className="text-white  md:text-[30px] mb-[18px]">
+                    <h2 className="text-[28px]">YOUR LISITNGS:</h2>
                     <div className="w-full">
                         
                         <AddUserListing  />
@@ -313,7 +313,7 @@ function AddUserListing()
                                             </div>
                                             
                                             <div className="w-full flex justify-items-start text-[15px] md:text-[18px] text-cyello justify-between">
-                                                <h3>{item.price}</h3>
+                                                <h3>₹{item.price}</h3>
                                                 {/* <h3>{item.seller? item.seller.userName.toUpperCase() : "Seller"}</h3> */}
                                             </div>
                 

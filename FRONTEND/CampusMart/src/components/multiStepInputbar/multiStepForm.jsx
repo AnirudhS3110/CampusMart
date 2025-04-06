@@ -80,8 +80,8 @@ export default function MultiStepForm({formData,setFormData,onClickSend})
 
 function Step({index,number})
 {
-    return <div className={`border-[4px] text-[20px] font-semibold  transition-all duration-300 ${index===number ? "border-white bg-white h-[100px] w-[100px]":"border-white bg-cyello"} ${number < index ?  "border-0 border-cyello" : "border-[4px]"} rounded-full w-[80px] h-[80px] flex justify-center items-center text-white`}>
-                {number >= index ? <div className={index==number ? "text-cyello" : "text-white"}>Step {number+1}</div> : <CircleCheck size={300}/>}
+    return <div className={`border-[4px] text-[20px] font-semibold  transition-all duration-300 ${index===number ? "border-white bg-white h-[100px] w-[100px]":"border-white bg-cyello" } ${number < index ?  "border-0 " : "border-[4px]"} rounded-full w-[80px] h-[80px] flex justify-center items-center text-white`}>
+                {number >= index ? <div className={index==number ? "text-cyello" : "text-white"}>Step {number+1}</div> : <CircleCheck size={190}/>}
             </div>
 }
 

@@ -19,17 +19,17 @@ router.post('/getDashboard', jwtAuthentication, async(req,res)=>{
         const boughtListings = await Listings.find({buyer:user._id});
        
        
-         const favorites = user.favorites.map((item)=>{
-            const itemObj = item.toObject();
-            return {...itemObj,image: noCache(itemObj.image)}
-        })
+        //  const favorites = user.favorites.map((item)=>{
+        //     const itemObj = item.toObject();
+        //     return {...itemObj,image: noCache(itemObj.image)}
+        // })
 
-        const listings = userListing.map((item)=>{
-            const itemObj =item.toObject();
-            return {...itemObj,image:noCache(itemObj.image)}});
+        // const listings = userListing.map((item)=>{
+        //     const itemObj =item.toObject();
+        //     return {...itemObj,image:noCache(itemObj.image)}});
         
-            console.log("user.favs: ",user.favorites);
-            console.log("userListing: ",userListing);
+        //     console.log("user.favs: ",user.favorites);
+        //     console.log("userListing: ",userListing);    
 
             res.set({'Cache-Control': 'no-store,no-cache, must-revalidate, proxy-revalidate',
                 'Pragma': 'no-cache',
@@ -52,16 +52,16 @@ router.post('/getDashboard', jwtAuthentication, async(req,res)=>{
         const user = await Users.findOne({rollNumber:rollNo});
         const userListing = await Listings.find({seller:user._id})
 
-        const noCache = (url)=>`${url}?nocache=${new Date().getTime()}`;
+        //const noCache = (url)=>`${url}?nocache=${new Date().getTime()}`;
         res.set({'Cache-Control': 'no-store,no-cache, must-revalidate, proxy-revalidate',
             'Pragma': 'no-cache',
             'Expires': '0',
             'Vary': 'Accept-Encoding'
         });
-        const viewLisitng = userListing.map((item)=>{
-            const itemObj = item.toObject();
-            return {...itemObj,image: noCache(itemObj.image)};
-        })
+        // const viewLisitng = userListing.map((item)=>{
+        //     const itemObj = item.toObject();
+        //     return {...itemObj,image: noCache(itemObj.image)};
+        // })
         // for(let i = 0 ; i < 800050000 ; i++){};
         return res.json({success:true,userListing:userListing});
     })

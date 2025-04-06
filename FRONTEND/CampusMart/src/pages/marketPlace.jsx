@@ -156,7 +156,7 @@ export default function MarketPlace()
                             </div>
                             
                             <div className="w-full flex justify-items-start text-[15px] md:text-[18px] text-cyello justify-between">
-                                <h3>{list.price}</h3>
+                                <h3>₹{list.price}</h3>
                                 <h3>{list.seller? list.seller.userName.toUpperCase() : "Seller"}</h3>
                             </div>
 
