@@ -36,6 +36,23 @@ router.post('/getMarketPlace',async(req,res)=>{
 
 })
 
+router.post('/getItems',async(req,res)=>{
+    const {pageNo,limit} = req.body;
+    const skip = (pageNo-1)*limit;
+    const noCache = (url)=>`${url}?nocache=${Date.now()}`;
+    try{
+        const listings = await Listings.find({}).populate('seller','userName').skip(skip).limit(limit);
+        const listingss = listings.map((list)=>{
+            const listObj = list.toObject();
+            return {...listObj,image:noCache(listObj.image)}
+        });
+        res.status(200).json({success:true,listings:listingss})
+    }catch(e)
+    {
+        res.status(500).json({success:false, message:"Internal Server error while Fetching Getting Items"});
+    }
+})
+
 router.post('/setLike',async(req,res)=>{
     const userID = req.body.userID;
     const listID = req.body.listID;
