@@ -47,6 +47,8 @@ const messageSchema = new mongoose.Schema({
 
 })
 
+
+
 messageSchema.post('save', async(doc)=>{
   await Chats.findByIdAndUpdate(doc.chatID,{$set:{lastMessage:doc.message, lastMessageAt: doc.createdAt}})
 })

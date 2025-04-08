@@ -31,7 +31,7 @@ export default function AddLikedListing({likedList})
     
     const nav = useNavigate();
     const userID = store.getState().authentication.userID;
-    console.log("UserID ",userID)
+
 
     async function createChat({second})
     {

@@ -6,11 +6,11 @@ import { Listings, Users } from "../models/db.js";
 
 
 router.post('/getMarketPlace',async(req,res)=>{
-    const {userID} = req.body;
+    const {userID,limit} = req.body;
     const noCache = (url)=>`${url}?nocache=${Date.now()}`;
     try{
-        const listings = await Listings.find({}).populate('seller','userName');
-        const user = await Users.findById(userID).populate('favorites','_id');
+        const listings = await Listings.find({}).populate('seller','userName').skip(0).limit(12);
+        const user = await Users.findById(userID).populate('favorites','_id').populate('cart','_id');
         res.set({'Cache-Control': 'no-store,no-cache, must-revalidate, proxy-revalidate',
             'Pragma': 'no-cache',
             'Expires': '0',
@@ -25,7 +25,7 @@ router.post('/getMarketPlace',async(req,res)=>{
                     const itemObj = item.toObject();
                     return {...itemObj,image: noCache(itemObj.image)}
                 })
-            res.json({success:true, listings:Listings , likedList:favorites})
+            res.json({success:true, listings:listings , likedList:favorites})
         }
         else{
             res.status(500).json({success:false,"message":"Error while fetching MarketPlace details form db"})
@@ -100,6 +100,29 @@ router.post('/removeLike',async(req,res)=>{
         return res.status(500).json({success:false, message:"Internal server error while adding favourite to the user"});
     }
 })
+
+router.post('/addtocart',jwtAuthentication,async(req,res)=>{
+    const {userID,listingID} = req.body;
+    try{
+        await Users.findByIdAndUpdate(userID,{$addToSet:{cart:listingID}});
+        res.status(200).json({success:true, message:"item succesfully added to cart!"});
+    }catch(e)
+    {
+        res.status(500).json({success:false, message:"Internal server error while Adding item to cart"})
+
+    }
+})
+
+router.post('/removefromcart',jwtAuthentication,async(req,res)=>{
+    const {userID,listingID} = req.body;
+    try{
+        await Users.findByIdAndUpdate(userID,{$pull:{cart:listingID}});
+        res.status(200).json({success:true, message:"item succesfully removed from cart!"});
+    }catch(e)
+    {
+        res.status(500).json({success:false, message:"Internal server error while removing item from cart"})
+
+    }})
 
 export default router;
 

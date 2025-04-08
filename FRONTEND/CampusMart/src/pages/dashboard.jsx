@@ -211,7 +211,7 @@ function AddUserListing()
         <Carousel>
             <CarouselContent>
             <CarouselItem className=" md:basis-1/2 lg:basis-1/4 max-h-[450px]">
-                                            <Card  className="bg-[#0f3772] min-h-[300px] h-full border-0 max-w-[305px] min-w-[300px] lg:min-h-[350px] flex flex-col justify-center " >
+                                            <Card  className="bg-[#0f3772] min-h-[440px] h-full border-0 max-w-[305px] min-w-[300px] lg:min-h-[350px] flex flex-col justify-center " >
                                                 <CardContent  className="h-full mx-auto flex min-w-[305px] flex-col justify-center items-center gap-[15px]" >
                                                 <h3 className="text-white text-[24px]">Add new Item</h3>
                                                     <motion.button whileHover={{scale:1.03}} whileTap={{scale:1.05}} onClick={()=>{nav('/addListing')}} className=" rounded-[50%]" >

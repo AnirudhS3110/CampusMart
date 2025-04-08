@@ -38,7 +38,7 @@ router.post('/getDashboard', jwtAuthentication, async(req,res)=>{
             });
             
 
-        return res.json({success:true,username:user.userName, likedListings:user.favorites, userListing:listings, boughtListings:boughtListings});
+        return res.json({success:true,username:user.userName, likedListings:user.favorites, userListing:userListing, boughtListings:boughtListings});
     } 
     catch(e){
         return res.status(500).json({success:false, message:"Internal server error while sending liked list"});

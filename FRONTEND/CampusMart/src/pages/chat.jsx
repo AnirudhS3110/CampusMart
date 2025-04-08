@@ -252,7 +252,7 @@ export default function Chat()
     )  
 }
 
-    function ChatElement({setview,isPhone,socketRef,setIsChatView}) 
+    export function ChatElement({setview,isPhone,socketRef,setIsChatView}) 
     {  
     const isChatting = useSelector((state)=>state.chat.isChatting);
     const messages = useSelector((state)=>state.chat.messages);     
