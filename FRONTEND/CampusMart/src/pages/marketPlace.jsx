@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import store from "@/redux/store";
 import { ChatElement } from "./chat";
+import MarketPlaceCard from "@/components/MarketPlace/ListingCard";
 
 
  const useGetListings= ()=>
@@ -16,11 +17,7 @@ import { ChatElement } from "./chat";
     const userID = store.getState().authentication.userID;
     const [listing,setListing] = useState([])
     const [liked,setLiked] = useState([])
-
-    
-
-
-   
+    const [cartlist,setCartList] =useState([]);
     
     useEffect(()=>{
         try{
@@ -42,6 +39,7 @@ import { ChatElement } from "./chat";
                 {
                     setListing(res.data.listings);
                     setLiked(res.data.likedList)
+                    setCartList(res.data.cartList);
                 }
             }
             getListing()
@@ -50,21 +48,44 @@ import { ChatElement } from "./chat";
             console.log("Error while getting lists")
         }
     },[])
-    return {listing,liked};
+    return {listing,liked,cartlist};
     
 }
 
 export default function MarketPlace()
 {
     const [search,setSearch] =useState("")
-    const {listing,liked} =  useGetListings();
+    const {listing,liked,cartlist} =  useGetListings();
     const[loading,setLoading] = useState(true)
     const token = localStorage.getItem('Authtoken')
-    //const userID = useSelector((state)=>state.authentication.userID)
     const nav = useNavigate();
     const Liked = liked.map((list)=>list._id);
     const [listings,setListings] = useState(null);
     const [pageNumber,setPageNumber] = useState(1);
+    const cartList = cartlist.map((list)=>list._id);
+    const [minPrice,setMinPrice] = useState(0)
+    const [maxPrice,setMaxPrice] = useState(0);
+    const [category,setCategory] = useState("");
+
+
+    useEffect(()=>{
+        const min = Number(minPrice);
+        const max = Number(maxPrice);
+        if(!loading)
+        {
+            if(category=='')
+                {
+                    setListings((prevListings)=>prevListings.filter((list)=>list.price > min && list.price <max))
+                }
+            else
+            {
+                setListings((prevListings)=>prevListings.filter((list)=>list.price > min && list.category===category && list.price <max))
+            }
+        }
+
+    },[minPrice,maxPrice,category])
+
+    
    
     useEffect(()=>{
         //Implementing Pagination
@@ -122,32 +143,6 @@ export default function MarketPlace()
 
         }
     },[search])
-
-    async function createChat({first,second})
-    {
-        const token = localStorage.getItem('Authtoken');
-        try{
-            const res = await axios.post('http://localhost:3000/chats/createChat',
-                {
-                    first:first,
-                    second:second
-                },{
-                    headers:{
-                        "authorization":token,
-                        "Content-Type":"application/json"
-                    }
-                }
-            )
-
-            if(res.data.success)
-            {
-                nav('/chat')
-            }
-        }catch(e){
-            console.log("Error while creating chat")
-        }
-
-    }
     
 
     
@@ -163,7 +158,7 @@ export default function MarketPlace()
                 <div className=" h-full flex flex-row flex-wrap gap-[10px] justify-center md:justify-start md:gap-[20px]  ">
 
                     
-                    {!loading && listings.length>0 && (listings.map((list)=><DisplayListings list={list} createChat={createChat} Liked={Liked}/>))}
+                    {!loading && listings.length>0 && (listings.map((list)=><MarketPlaceCard list={list}  Liked={Liked} cartList={cartList}/>))}
 
                     {!loading && listings.length %12 ==0 ? <Button onClick={showMore} className={`w-[330px] mt-[20px] md:min-w-[80%] mx-auto rounded-full bg-[#0b336e] text-[20px] py-[15px] transition-all duration-300`}>Show More</Button> : null}
 
@@ -176,144 +171,3 @@ export default function MarketPlace()
 }
 
 
-function DisplayListings({list,createChat,Liked})
-{
-    const userID = store.getState().authentication.userID;
-    return <Card className="max-w-[325px] max-h-[450px] py-0 bg-[#0b336e] border-[#05295e] box-border lg:mb-[15px]">
-
-    <CardContent className={`min-h-[300px] px-0 bg-[#05295e] pt-0 my-0 overflow-hidden rounded-[20px] `} >
-        <div className="min-w-[300px] w-[310px] max-w-[325px] h-[302px]  min-h-[300px] max-h-[306px] relative rounded-[20px] box-border">
-            <Image image={list.image}/>
-            <LikeButton listId={list._id} Liked={Liked} />
-            <ChatWithSeller createChat={createChat} seller={list.seller}/>
-        </div>
-    </CardContent>
-
-    <CardFooter className={`px-[4px] pt-0 my-0 py-0 `}>
-        <div className="min-w-[300px] w-[302px] py-0 max-w-[325px] h-[302px] box-border px-[8px]  min-h-[300px] max-h-[306px] flex flex-col gap-[8px]">
-
-            <div className="w-full flex py-0 justify-between items-center">
-                <h2 className="text-cyello md:text-[24px] truncate">{list.title}</h2>
-                <motion.div >
-                    <Button variant="ghost" className={`bg-white rounded-full text-[#05295e] md:text-[16px]`}>
-                        <ShoppingCart/>
-                        AddtoCart    
-                    </Button>
-                </motion.div>
-            </div>
-
-            <div className="w-full text-gray-400 text-[14px] text-ellipsis line-clamp-2">
-            {list.description}
-            </div>
-            
-            <div className="w-full flex justify-items-start text-[15px] md:text-[18px] text-cyello justify-between">
-                <h3>₹{list.price}</h3>
-                <h3>{list.seller? list.seller.userName.toUpperCase() : "Seller"}</h3>
-            </div>
-
-        </div>
-    </CardFooter>
-    </Card>
-
-}
-
-
-
-function Image({image})
-{
-    const [loading,setLoading] = useState(true);
-    return <div className="w-full h-full  relative  ">
-                {loading && <h2 className="text-center absolute inset-0 flex justify-center items-center text-cyello">ImageLoading...</h2>}
-                <motion.img onLoad={()=>{setLoading(false)}} whileHover={{scale:1.03}} transition={{duration:0.2, ease: "easeInOut"}}  className={`w-full h-full rounded-[20px]  object-cover ${loading ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'} `}src={image} />
-            </div>
-        
-
-}
-
-export function LikeButton({listId,Liked})
-{
-
-    const userID = useSelector((state)=>state.authentication.userID);
-    const token = localStorage.getItem('Authtoken');
-    const [like,setLike] = useState(false);
-    const [dummy,setDummy] = useState(0) 
-    console.log("dummy",dummy)
-
-    useEffect(()=>{
-        if(Liked.includes(listId))
-            {
-                setLike(true);
-                
-            }
-    },[]);
-
-    
-    useEffect(()=>{
-        // if(like)
-        //     {
-        //         async function setLike()
-        //         {
-        //             try{
-        //                 const res = await axios.post('http://localhost:3000/marketplace/setLike',
-        //                     {
-        //                         userID:userID,
-        //                         listID:listId
-        //                     },{
-        //                         headers:{
-        //                             'authorization':token,
-        //                             'Content-Type':'application/json'
-        //                         }
-        //                     }
-        //                 )
-        //                 if(res.data.success)
-        //                 {
-        //                     alert("Added to your favorites")
-        //                 }
-        //             }catch(e)
-        //             {
-        //                 console.log("Error");
-        //             }
-        //         }
-        //         setLike();
-        //      }
-            if(dummy%2==0 && dummy){
-                async function removeLike()
-                {
-                    try{
-                        const res = await axios.post('http://localhost:3000/marketplace/removeLike',
-                            {
-                                userID:userID,
-                                listID:listId
-                            },{
-                                headers:{
-                                    'authorization':token,
-                                    'Content-Type':'application/json'
-                                }
-                            }
-                        )
-                        if(res.data.success)
-                        {
-                            alert("Removed from your Favorites")
-                        }
-                    }catch(e)
-                    {
-                        console.log("Error");
-                    }
-                }
-                removeLike();
-
-                
-            }
-
-    },[dummy])
-    return <button onClick={()=>{setLike(!like);setDummy(dummy=>dummy+1);}} className="absolute top-2 right-2  p-1 rounded-full shadow-md"> <Heart color={like? "none":"black"} fill={like ? "red": "none"} /> </button>
-    
-}
-
-function ChatWithSeller({createChat,seller})
-{
-    const userID = store.getState().authentication.userID;
-    return <motion.div className="absolute top-2 left-1">
-              <Button onClick={()=>{createChat({first:userID,second:seller ? seller._id : null})}} variant="ghost" className={`bg-cyello rounded-full text-white md:text-[16px]`} >Chat with Seller!</Button>
-           </motion.div>
-}
