@@ -1,15 +1,17 @@
-import { Heart, Search ,ShoppingCart} from "lucide-react";
+import { Heart ,ShoppingCart} from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
 import store from "@/redux/store";
+import { useNavigate } from "react-router-dom";
 
 
 export default function MarketPlaceCard({list,Liked,cartList})
 {
+    const nav = useNavigate();
     
     async function createChat({first,second})
     {

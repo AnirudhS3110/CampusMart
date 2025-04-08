@@ -1,64 +1,17 @@
-import { Heart, Search ,ShoppingCart} from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import axios from "axios";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import store from "@/redux/store";
-import { ChatElement } from "./chat";
 import MarketPlaceCard from "@/components/MarketPlace/ListingCard";
+import useGetmarketPlace from "@/hooks/useGetmarketPlace";
 
-
- const useGetListings= ()=>
-{
-    const token = localStorage.getItem('Authtoken')
-    const userID = store.getState().authentication.userID;
-    const [listing,setListing] = useState([])
-    const [liked,setLiked] = useState([])
-    const [cartlist,setCartList] =useState([]);
-    
-    useEffect(()=>{
-        try{
-            async function getListing()
-            {
-                const res = await axios.post('http://localhost:3000/marketplace/getMarketPlace',
-                    {
-                        userID: userID,
-                        limit:12
-                    },
-                    {
-                        headers:{
-                            "token":token,
-                            "Content-Type":"application/json"
-                        }
-                    }
-                )
-                if( res.data.success)
-                {
-                    setListing(res.data.listings);
-                    setLiked(res.data.likedList)
-                    setCartList(res.data.cartList);
-                }
-            }
-            getListing()
-        }catch(e)
-        {
-            console.log("Error while getting lists")
-        }
-    },[])
-    return {listing,liked,cartlist};
-    
-}
 
 export default function MarketPlace()
 {
     const [search,setSearch] =useState("")
-    const {listing,liked,cartlist} =  useGetListings();
+    const {listing,liked,cartlist} =  useGetmarketPlace();
     const[loading,setLoading] = useState(true)
     const token = localStorage.getItem('Authtoken')
-    const nav = useNavigate();
+    
     const Liked = liked.map((list)=>list._id);
     const [listings,setListings] = useState(null);
     const [pageNumber,setPageNumber] = useState(1);
