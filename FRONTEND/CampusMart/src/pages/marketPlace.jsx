@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import MarketPlaceCard from "@/components/MarketPlace/ListingCard";
 import useGetmarketPlace from "@/hooks/useGetmarketPlace";
+import Filter from "@/components/MarketPlace/filter";
 
 
 export default function MarketPlace()
@@ -16,27 +17,31 @@ export default function MarketPlace()
     const [listings,setListings] = useState(null);
     const [pageNumber,setPageNumber] = useState(1);
     const cartList = cartlist.map((list)=>list._id);
-    const [minPrice,setMinPrice] = useState(0)
-    const [maxPrice,setMaxPrice] = useState(0);
-    const [category,setCategory] = useState("");
+    const [filter,setFilter] = useState({
+        minPrice:"",
+        maxPrice:"",
+        category:""
+    })
 
 
     useEffect(()=>{
-        const min = Number(minPrice);
-        const max = Number(maxPrice);
+        const min = Number(filter.minPrice);
+        const max = Number(filter.maxPrice);
+        console.log("min and max:",min, max)
         if(!loading)
         {
-            if(category=='')
+            if(filter.category=='')
                 {
-                    setListings((prevListings)=>prevListings.filter((list)=>list.price > min && list.price <max))
+                    console.log(listings.filter((list)=>list.price > min && list.price <max))
+                    setListings((prevListings)=>prevListings.filter((list)=>Number(list.price) > min && Number(list.price) <max))
                 }
             else
             {
-                setListings((prevListings)=>prevListings.filter((list)=>list.price > min && list.category===category && list.price <max))
+                setListings((prevListings)=>prevListings.filter((list)=>list.price > min && list.category===filter.category && list.price <max))
             }
         }
 
-    },[minPrice,maxPrice,category])
+    },[filter])
 
     
    
@@ -62,7 +67,6 @@ export default function MarketPlace()
             {
                 const newList = res.data.listings;
                 setListings((prev)=>[...prev,...newList]);
-                console.log(listings)
             }
         }
         getItems();
@@ -86,9 +90,9 @@ export default function MarketPlace()
     },[listing])
 
     useEffect(()=>{
-        if(listing)
+        if(!loading)
         {
-            let newlistings = listing.filter((list)=>list.title.toLowerCase().includes(search.toLowerCase()) ||
+            let newlistings = listings.filter((list)=>list.title.toLowerCase().includes(search.toLowerCase()) ||
             list.description.toLowerCase().includes(search.toLowerCase()) ||
             list.category.toLowerCase().includes(search.toLowerCase())) 
             
@@ -101,9 +105,10 @@ export default function MarketPlace()
     
     return(
         <section className="w-full min-h-[100vh] bg-[#05295e]  ">
-            <div className="w-full h-[10vh] bg-[#062D67] flex flex-row justify-around items-center border-b-[1px] border-b-cyello sticky top-[10vh] z-50">
-                <div className=" min-w-[85%] max-w-[90%] sm:min-w-[400px] md:h-[40px] rounded-full border-white">
+            <div className="w-full h-[20vh] bg-[#062D67] flex flex-row justify-around items-center border-b-[1px] border-b-cyello sticky top-[10vh] z-50">
+                <div className=" min-w-[85%] max-w-[90%] sm:min-w-[600px] md:h-[40px] rounded-full border-white flex flex-col gap-[15px] justify-center">
                     <input value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="search by title, category , description.." className="h-full w-full px-[20px] py-[8px] rounded-full bg-white text-black md:px-[30px] focus:border-white"></input>
+                    <Filter filter={filter} setFilter={setFilter}/>
                 </div>
             </div>
 
