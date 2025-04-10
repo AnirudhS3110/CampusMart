@@ -11,6 +11,7 @@ export default function MarketPlace()
     const [search,setSearch] =useState("")
     const {listing,liked,cartlist} =  useGetmarketPlace();
     const[loading,setLoading] = useState(true)
+    const [backup,setBackup] = useState([])
     const token = localStorage.getItem('Authtoken')
     
     const Liked = liked.map((list)=>list._id);
@@ -18,22 +19,29 @@ export default function MarketPlace()
     const [pageNumber,setPageNumber] = useState(1);
     const cartList = cartlist.map((list)=>list._id);
     const [filter,setFilter] = useState({
-        minPrice:"",
-        maxPrice:"",
+        minPrice:0,
+        maxPrice:100000,
         category:""
     })
 
 
     useEffect(()=>{
-        const min = Number(filter.minPrice);
-        const max = Number(filter.maxPrice);
+        const min = filter.minPrice;
+        const max = filter.maxPrice;
         console.log("min and max:",min, max)
         if(!loading)
         {
             if(filter.category=='')
                 {
-                    console.log(listings.filter((list)=>list.price > min && list.price <max))
-                    setListings((prevListings)=>prevListings.filter((list)=>Number(list.price) > min && Number(list.price) <max))
+                   
+                    const newList = backup.filter((list)=>{
+                        const price = list.price;
+                        console.log("Price of Listinig:",price)
+                        const result = price > min && price < max;
+                        return result;
+                    })
+                    console.log(newList)
+                    setListings(newList);
                 }
             else
             {
@@ -67,6 +75,7 @@ export default function MarketPlace()
             {
                 const newList = res.data.listings;
                 setListings((prev)=>[...prev,...newList]);
+                setBackup((prev)=>[...prev,...newList])
             }
         }
         getItems();
@@ -83,6 +92,7 @@ export default function MarketPlace()
     useEffect(()=>{
         if (listing) {
             setListings(listing);
+            setBackup(listing);
             setLoading(false)
         }
         
