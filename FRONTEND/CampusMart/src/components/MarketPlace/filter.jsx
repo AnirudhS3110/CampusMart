@@ -37,8 +37,8 @@ export default function Filter({filter,setFilter})
                 </SelectItem>
             </SelectContent>
         </Select> 
-        <input value={filter.minPrice} onChange={(e)=>setFilter((filter)=>({...filter,minPrice:e.target.value}))} type="text" placeholder="MinPrice" className="max-w-[20%] rounded-[10px] md:px-[10px] md:py-[4px] text-black bg-white " ></input>
-        <input value={filter.maxPrice} onChange={(e)=>setFilter((filter)=>({...filter,maxPrice:e.target.value}))} type="text" placeholder="MaxPrice" className="max-w-[20%] rounded-[10px] md:px-[10px] md:py-[4px] text-black bg-white" ></input>
+        <input value={filter.minPrice} onChange={(e)=>setFilter((filter)=>({...filter,minPrice:e.target.value}))} type="number" placeholder="MinPrice" className="max-w-[20%] rounded-[10px] md:px-[10px] md:py-[4px] text-black bg-white " ></input>
+        <input value={filter.maxPrice} onChange={(e)=>setFilter((filter)=>({...filter,maxPrice:e.target.value}))} type="number" placeholder="MaxPrice" className="max-w-[20%] rounded-[10px] md:px-[10px] md:py-[4px] text-black bg-white" ></input>
         <Select>
         <SelectTrigger className="bg-white text-cblue border-white rounded-[10px] ">
                 <SelectValue className="text-cblue" placeholder="Sort by"> </SelectValue>
@@ -53,7 +53,7 @@ export default function Filter({filter,setFilter})
             </SelectContent>
         </Select>
         <motion.div whileTap={{scale:.95}}>
-        <Button className={`bg-cyello`} onClick={()=>setFilter(({minPrice:"",maxPrice:"",category:""}))}>Clear all</Button>
+        <Button className={`bg-cyello`} onClick={()=>setFilter(({minPrice:0,maxPrice:10000,category:""}))}>Clear all</Button>
         </motion.div>
 
     </div>
