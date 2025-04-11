@@ -28,7 +28,7 @@ export default function MarketPlace()
     useEffect(()=>{
         const min = filter.minPrice;
         const max = filter.maxPrice;
-        console.log("min and max:",min, max)
+        console.log("Category: ",filter.category);
         if(!loading)
         {
             if(filter.category=='')
@@ -57,7 +57,7 @@ export default function MarketPlace()
         //Implementing Pagination
         async function getItems()
         {
-            console.log(pageNumber)
+           
             const res = await axios.post('http://localhost:3000/marketplace/getItems',
                 {
                     pageNo:pageNumber,

@@ -1,4 +1,4 @@
-import { Heart ,ShoppingCart} from "lucide-react";
+import { Heart ,ListEnd,ShoppingCart} from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -39,135 +39,9 @@ export default function MarketPlaceCard({list,Liked,cartList})
 
     }
 
-
-    return <Card className="max-w-[325px] max-h-[450px] py-0 bg-[#0b336e] border-[#05295e] box-border lg:mb-[15px]">
-
-    <CardContent className={`min-h-[300px] px-0 bg-[#05295e] pt-0 my-0 overflow-hidden rounded-[20px] `} >
-        <div className="min-w-[300px] w-[310px] max-w-[325px] h-[302px]  min-h-[300px] max-h-[306px] relative rounded-[20px] box-border">
-            <Image image={list.image}/>
-            <LikeButton listId={list._id} Liked={Liked} />
-            <ChatWithSeller createChat={createChat} seller={list.seller}/>
-        </div>
-    </CardContent>
-
-    <CardFooter className={`px-[4px] pt-0 my-0 py-0 `}>
-        <div className="min-w-[300px] w-[302px] py-0 max-w-[325px] h-[302px] box-border px-[8px]  min-h-[300px] max-h-[306px] flex flex-col gap-[8px]">
-
-            <div className="w-full flex py-0 justify-between items-center">
-                <h2 className="text-cyello md:text-[24px] truncate">{list.title}</h2>
-                <AddToCartButton listingID={list._id} cartList={cartList}/>
-            </div>
-
-            <div className="w-full text-gray-400 text-[14px] text-ellipsis line-clamp-2">
-            {list.description}
-            </div>
-            
-            <div className="w-full flex justify-items-start text-[15px] md:text-[18px] text-cyello justify-between">
-                <h3>₹{list.price}</h3>
-                <h3>{list.seller? list.seller.userName.toUpperCase() : "Seller"}</h3>
-            </div>
-
-        </div>
-    </CardFooter>
-    </Card>
-
-}
-
-function AddToCartButton({listingID,cartList})
+     function LikeButton({listId,Liked})
 {
-    const userID = store.getState().authentication.userID;
-    const token = localStorage.getItem('Authtoken');
-    const [added,setAdded] = useState(false);
-    console.log("cartlist:",cartList);
-
-    useEffect(()=>{
-        if(cartList.includes(listingID))
-        {
-            console.log(listingID);
-            setAdded(true);
-        }
-    },[])
-
-    async function addToCart()
-    {
-        try{
-            const res = await axios.post('http://localhost:3000/marketplace/addtocart',{
-                userID:userID,
-                listingID:listingID
-            },
-            {
-                headers:{
-                    authorization:token,
-                    "Content-Type":"application/json"
-                }
     
-            }
-            )
-            if(res.data.success)
-            {
-                setAdded(true);
-                console.log("SetAdde status:", added)
-            }
-        }catch(e)
-        {
-
-        }
-        
-    }
-
-    async function removeFromCart()
-    {
-        try{
-            const res = await axios.post('http://localhost:3000/marketplace/removefromcart',{
-                userID:userID,
-                listingID:listingID
-            },
-            {
-                headers:{
-                    authorization:token,
-                    "Content-Type":"application/json"
-                }
-    
-            }
-            )
-            if(res.data.success)
-            {
-                setAdded(false);
-            }
-        }catch(e)
-        {
-
-        }
-
-    }
-
-    return<motion.div >
-            {added &&  <motion.div>
-                    <Button onClick={removeFromCart} className={`bg-white rounded-full text-[#05295e] md:text-[16px]`}>
-                        DelFromCart
-                    </Button>
-                 </motion.div> }
-            {!added && <Button onClick={addToCart} variant="ghost" className={`bg-white rounded-full text-[#05295e] md:text-[16px]`}>
-                <div className="flex justify-center gap-[6px] items-center"><ShoppingCart/>
-                    AddtoCart</div>  
-            </Button>}
-        </motion.div>
-}
-
-
-function Image({image})
-{
-    const [loading,setLoading] = useState(true);
-    return <div className="w-full h-full  relative  ">
-                {loading && <h2 className="text-center absolute inset-0 flex justify-center items-center text-cyello">ImageLoading...</h2>}
-                <motion.img onLoad={()=>{setLoading(false)}} whileHover={{scale:1.03}} transition={{duration:0.2, ease: "easeInOut"}}  className={`w-full h-full rounded-[20px]  object-cover ${loading ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'} `}src={image} />
-            </div>
-        
-
-}
-
-export function LikeButton({listId,Liked})
-{
 
     const userID = useSelector((state)=>state.authentication.userID);
     const token = localStorage.getItem('Authtoken');
@@ -177,8 +51,9 @@ export function LikeButton({listId,Liked})
     useEffect(()=>{
         if(Liked.includes(listId))
             {
+               
                 setLike(true);
-                
+               
             }
     },[]);
 
@@ -186,7 +61,7 @@ export function LikeButton({listId,Liked})
     useEffect(()=>{
         if(like)
             {
-                async function setLike()
+                async function setlike()
                 {
                     try{
                         const res = await axios.post('http://localhost:3000/marketplace/setLike',
@@ -202,14 +77,14 @@ export function LikeButton({listId,Liked})
                         )
                         if(res.data.success)
                         {
-                            alert("Added to your favorites")
+                            //alert("Added to your favorites")
                         }
                     }catch(e)
                     {
                         console.log("Error");
                     }
                 }
-                setLike();
+                setlike();
              }
             if(dummy%2==0 && dummy){
                 async function removeLike()
@@ -244,6 +119,136 @@ export function LikeButton({listId,Liked})
     return <button onClick={()=>{setLike(!like);setDummy(dummy=>dummy+1);}} className="absolute top-2 right-2  p-1 rounded-full shadow-md"> <Heart color={like? "none":"black"} fill={like ? "red": "none"} /> </button>
     
 }
+
+
+function AddToCartButton({listingID,cartList})
+{
+    const userID = store.getState().authentication.userID;
+    const token = localStorage.getItem('Authtoken');
+    const [added,setAdded] = useState(false);
+    useEffect(()=>{
+        if(cartList.includes(listingID))
+        {
+            setAdded(true);
+        }
+    },[])
+
+    async function addToCart()
+    {
+        try{
+            const res = await axios.post('http://localhost:3000/marketplace/addtocart',{
+                userID:userID,
+                listingID:listingID
+            },
+            {
+                headers:{
+                    authorization:token,
+                    "Content-Type":"application/json"
+                }
+    
+            }
+            )
+            if(res.data.success)
+            {
+                setAdded(true);
+                alert("Added to cart!")
+            }
+        }catch(e)
+        {
+
+        }
+        
+    }
+
+    async function removeFromCart()
+    {
+        try{
+            const res = await axios.post('http://localhost:3000/marketplace/removefromcart',{
+                userID:userID,
+                listingID:listingID
+            },
+            {
+                headers:{
+                    authorization:token,
+                    "Content-Type":"application/json"
+                }
+    
+            }
+            )
+            if(res.data.success)
+            {
+                setAdded(false);
+                alert("Removed from your cart")
+            }
+        }catch(e)
+        {
+
+        }
+
+    }
+
+    return<motion.div >
+            {added &&  <motion.div>
+                    <Button onClick={removeFromCart} className={`bg-white rounded-full text-[#05295e] md:text-[16px]`}>
+                        DelFromCart
+                    </Button>
+                 </motion.div> }
+            {!added && <Button onClick={addToCart} variant="ghost" className={`bg-white rounded-full text-[#05295e] md:text-[16px]`}>
+                <div className="flex justify-center gap-[6px] items-center"><ShoppingCart/>
+                    AddtoCart</div>  
+            </Button>}
+        </motion.div>
+}
+
+
+
+
+    return <Card className="max-w-[325px] max-h-[450px] py-0 bg-[#0b336e] border-[#05295e] box-border lg:mb-[15px]">
+
+    <CardContent className={`min-h-[300px] px-0 bg-[#05295e] pt-0 my-0 overflow-hidden rounded-[20px] `} >
+        <div className="min-w-[300px] w-[310px] max-w-[325px] h-[302px]  min-h-[300px] max-h-[306px] relative rounded-[20px] box-border">
+            <Image image={list.image}/>
+            <LikeButton listId={list._id} Liked={Liked} />
+            <ChatWithSeller createChat={createChat} seller={list.seller}/>
+        </div>
+    </CardContent>
+
+    <CardFooter className={`px-[4px] pt-0 my-0 py-0 `}>
+        <div className="min-w-[300px] w-[302px] py-0 max-w-[325px] h-[302px] box-border px-[8px]  min-h-[300px] max-h-[306px] flex flex-col gap-[8px]">
+
+            <div className="w-full flex py-0 justify-between items-center">
+                <h2 className="text-cyello md:text-[24px] truncate">{list.title}</h2>
+                <AddToCartButton listingID={list._id} cartList={cartList}/>
+            </div>
+
+            <div className="w-full text-gray-400 text-[14px] text-ellipsis line-clamp-2">
+            {list.description}
+            </div>
+            
+            <div className="w-full flex justify-items-start text-[15px] md:text-[18px] text-cyello justify-between">
+                <h3>₹{list.price}</h3>
+                <h3>{list.seller? list.seller.userName.toUpperCase() : "Seller"}</h3>
+            </div>
+
+        </div>
+    </CardFooter>
+    </Card>
+
+}
+
+
+
+function Image({image})
+{
+    const [loading,setLoading] = useState(true);
+    return <div className="w-full h-full  relative  ">
+                {loading && <h2 className="text-center absolute inset-0 flex justify-center items-center text-cyello">ImageLoading...</h2>}
+                <motion.img onLoad={()=>{setLoading(false)}} whileHover={{scale:1.03}} transition={{duration:0.2, ease: "easeInOut"}}  className={`w-full h-full rounded-[20px]  object-cover ${loading ? 'opacity-0' : 'opacity-100 transition-opacity duration-500'} `}src={image} />
+            </div>
+        
+
+}
+
 
 function ChatWithSeller({createChat,seller})
 {

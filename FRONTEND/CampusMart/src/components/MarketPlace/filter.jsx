@@ -7,7 +7,6 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
-import { SelectGroup } from "@radix-ui/react-select";
 import { Button } from "../ui/button";
   
 
@@ -15,7 +14,7 @@ import { Button } from "../ui/button";
 export default function Filter({filter,setFilter})
 {
     return <div className="sm:min-w-[500px] md:flex md:flex-row md:justify-between md:items-center bg-cblue rounded-[10px] py-[6px] md:px-[15px]">
-        <Select value={filter.category} onChange={()=>{ setFilter((filter)=>({...filter,category:e.target.value})) }} >
+        <Select value={filter.category} onChange={(e)=>{ setFilter((filter)=>({...filter,category:e.target.value})) }} >
             <SelectTrigger className="bg-white text-cblue border-white rounded-[10px] appearance-none ">
                 <SelectValue placeholder="Category" className="text-cblue"></SelectValue>
                 <span className="absolute right-3 top-1/2 transform -translate-y-1/2 text-black">
