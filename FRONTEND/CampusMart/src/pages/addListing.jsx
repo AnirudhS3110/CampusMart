@@ -53,9 +53,36 @@ export default function AddListing()
             )
             if(response.data.success)
             {
-                const url = response.data.url.toString();
-                console.log("url: ", url)
-                return url;
+                const jobID = response.data.jobID
+                const polling =  setInterval(async()=>{
+                    try{const res = await axios.post('http://localhost:3000/uploads/geturl',{
+                        jobID:jobID
+                    },{
+                        headers:{
+                            "Content-Type":"application/json"
+                        }
+                    })
+                    if(res.data.success && res.data.status === 'completed')
+                    {
+                        clearInterval(polling);
+                        return res.data.url
+                    }
+                    else if(!res.data.success)
+                    {
+                        clearInterval(polling);
+                    }}
+                    catch(e)
+                    {
+                        console.log("Error while polling");
+                        clearInterval(polling);
+                    }
+
+                },1000)
+
+                setTimeout(() => {
+                    clearInterval(polling);  // Stop after 30 seconds
+                    console.log("Polling stopped after timeout.");
+                }, 30000);
             }
             else{
                 setError(response.data.message)
