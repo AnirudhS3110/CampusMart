@@ -136,7 +136,7 @@ export default function MarketPlace()
                     {!loading && listings.length>0 && (listings.map((list)=><MarketPlaceCard list={list}  Liked={Liked} cartList={CartList} setCartList={setCartList}/>))}
                     
 
-                    {!loading && listings.length %12 ==0 ? <motion.div className="md:min-w-[100%] flex justify-center" whileTap={{scale:.95}}><Button onClick={showMore} className={`w-[330px] mt-[20px] md:min-w-[80%]  rounded-full bg-[#0b336e] text-[20px] py-[15px] transition-all duration-300 hover:bg-white hover:text-[#0b336e]`}>Show More</Button></motion.div> : null}
+                    {!loading && listings.length %12 ==0 && listings.length > 0 ? <motion.div className="md:min-w-[100%] flex justify-center" whileTap={{scale:.95}}><Button onClick={showMore} className={`w-[330px] mt-[20px] md:min-w-[80%]  rounded-full bg-[#0b336e] text-[20px] py-[15px] transition-all duration-300 hover:bg-white hover:text-[#0b336e]`}>Show More</Button></motion.div> : null}
 
                     {loading && <div className="text-cyello text-center my-auto mx-auto font-semibold md:text-[24px]"> Loading Marketplace...</div>}
                 </div>
