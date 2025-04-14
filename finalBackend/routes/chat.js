@@ -41,7 +41,7 @@ router.post('/getChats',async(req,res)=>{
         const chatList = await Chats.find({members:userId}).populate('members','userName').sort({lastMessageAt: -1});
         console.log("Chat List:", chatList);
         const chats = chatList.map((chat)=>{
-            return { chatID:chat._id , receiver: chat.members.filter((member)=>member._id.toString()!==userId), lastMessage:chat.lastMessage , lastMessageAt:chat.lastMessageAt};
+            return { chatID:chat._id , receiver: chat.members.filter((member)=>member._id.toString()!==userId), lastMessage:chat.lastMessage , lastMessageAt:chat.lastMessageAt , unreadMessages: chat.unreadMessages};
               
         }
     )

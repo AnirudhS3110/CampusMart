@@ -34,7 +34,8 @@ const userSchema = new mongoose.Schema({
 const RoomSchema = new mongoose.Schema({
     members:[{type:mongoose.Schema.Types.ObjectId, ref:'Users', required:true}],
     lastMessage:{type:mongoose.Schema.Types.String, ref:'Messages'},
-    lastMessageAt:{type:Date, default: Date.now}
+    lastMessageAt:{type:Date, default: Date.now},
+    unreadMessages:{type:Number, default:0}
 })
 
 const messageSchema = new mongoose.Schema({
@@ -50,9 +51,10 @@ const messageSchema = new mongoose.Schema({
 
 
 messageSchema.post('save', async(doc)=>{
-  await Chats.findByIdAndUpdate(doc.chatID,{$set:{lastMessage:doc.message, lastMessageAt: doc.createdAt}})
-})
-  
+    
+    (doc.status == 'sent' || doc.status=='delivered') ? 
+  await Chats.findByIdAndUpdate(doc.chatID,{$set:{lastMessage:doc.message, lastMessageAt: doc.createdAt }, $inc:{unreadMessages:1}}) : await Chats.findByIdAndUpdate(doc.chatID,{$set:{lastMessage:doc.message, lastMessageAt: doc.createdAt} })
+})  
 
 export const Chats = mongoose.model('Chats',RoomSchema);
 export const Messages = mongoose.model('Messages',messageSchema)
