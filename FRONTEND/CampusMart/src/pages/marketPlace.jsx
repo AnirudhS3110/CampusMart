@@ -6,6 +6,7 @@ import MarketPlaceCard from "@/components/MarketPlace/ListingCard";
 import useGetmarketPlace from "@/hooks/useGetmarketPlace";
 import Filter from "@/components/MarketPlace/filter";
 import SellButton from "@/components/MarketPlace/sellButton";
+import { Cross } from "lucide-react";
 
 
 export default function MarketPlace()
