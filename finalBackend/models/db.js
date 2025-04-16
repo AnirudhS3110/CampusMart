@@ -34,8 +34,8 @@ const userSchema = new mongoose.Schema({
 const RoomSchema = new mongoose.Schema({
     members:[{type:mongoose.Schema.Types.ObjectId, ref:'Users', required:true}],
     lastMessage:{type:mongoose.Schema.Types.String, ref:'Messages'},
-    lastMessageAt:{type:Date, default: Date.now},
-    unreadMessages:{type:Number, default:0}
+    lastMessageAt:{type:Date, default: Date.now},   
+    unreadMessages:{type:Object}
 })
 
 const messageSchema = new mongoose.Schema({
@@ -51,9 +51,11 @@ const messageSchema = new mongoose.Schema({
 
 
 messageSchema.post('save', async(doc)=>{
-    
+    const chat = await Chats.findById(doc.chatID)
+    if (!chat || !chat.members) return;
+    const receiverID = chat.members.find(id=>id.toString()!== doc.sender.toString())
     (doc.status == 'sent' || doc.status=='delivered') ? 
-  await Chats.findByIdAndUpdate(doc.chatID,{$set:{lastMessage:doc.message, lastMessageAt: doc.createdAt }, $inc:{unreadMessages:1}}) : await Chats.findByIdAndUpdate(doc.chatID,{$set:{lastMessage:doc.message, lastMessageAt: doc.createdAt} })
+  await Chats.findByIdAndUpdate(doc.chatID,{$set:{lastMessage:doc.message, lastMessageAt: doc.createdAt }, $inc:{[`unreadMessages.${receiverID}`]: 1}}) : await Chats.findByIdAndUpdate(doc.chatID,{$set:{lastMessage:doc.message, lastMessageAt: doc.createdAt} })
 })  
 
 export const Chats = mongoose.model('Chats',RoomSchema);

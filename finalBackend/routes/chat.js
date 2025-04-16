@@ -13,8 +13,7 @@ router.post('/createChat',jwtAuthentication,async(req,res)=>{
         const chat = await Chats.findOne({members:{$all:[first, second]}});
         if(!chat)
         {
-            const newChat = await Chats.create({members:[first,second]});
-            
+            const newChat = await Chats.create({members:[first,second],unreadMessages:{[first.toString()]:0,[second.toString()]:0}});
             if(newChat._id != null)  
             {
                 
