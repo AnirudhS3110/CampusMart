@@ -73,11 +73,12 @@ router.post('/unreadMessages',async(req,res)=>{
 })
 
 router.post('/setRead',async(req,res)=>{
-    const {chatID,receiver} = req.body;
+    const {chatID,receiver,sender} = req.body;
     console.log("ChatID:",chatID);
     console.log("Receiver:",receiver);
     try{    
         const isRead = await Messages.updateMany({chatID:chatID,receiver:receiver},{$set:{status:"seen"}})
+        const isUpdated = await Chats.findByIdAndUpdate(chatID,{$set:{[`unreadMessages.${sender}`]: 0}})
         console.log("isRead:",isRead.modifiedCount);
         if(isRead.modifiedCount > 0)
         {

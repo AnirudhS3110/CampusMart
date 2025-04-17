@@ -38,6 +38,10 @@ const RoomSchema = new mongoose.Schema({
     unreadMessages:{type:Object}
 })
 
+export const Chats = mongoose.model('Chats',RoomSchema);
+
+ 
+
 const messageSchema = new mongoose.Schema({
     chatID:{type:mongoose.Schema.Types.ObjectId, ref:'Chats'},
     sender:{type:mongoose.Schema.Types.ObjectId, ref:'Users'},
@@ -48,18 +52,35 @@ const messageSchema = new mongoose.Schema({
 
 })
 
-
-
 messageSchema.post('save', async(doc)=>{
-    const chat = await Chats.findById(doc.chatID)
-    if (!chat || !chat.members) return;
-    const receiverID = chat.members.find(id=>id.toString()!== doc.sender.toString())
-    (doc.status == 'sent' || doc.status=='delivered') ? 
-  await Chats.findByIdAndUpdate(doc.chatID,{$set:{lastMessage:doc.message, lastMessageAt: doc.createdAt }, $inc:{[`unreadMessages.${receiverID}`]: 1}}) : await Chats.findByIdAndUpdate(doc.chatID,{$set:{lastMessage:doc.message, lastMessageAt: doc.createdAt} })
-})  
+    console.log("Entered the save post thingy")
+    try{
+        const chat = await Chats.findById(doc.chatID);
+        console.log("Got the chat");
+        if (!chat || !chat.members) return;
+        console.log("Okay chat is presrnt");
+        const membersArray = Array.isArray(chat.members) ? chat.members : chat.members?.toObject?.()?.members || [];
+        console.log("Members array:",membersArray);
+        const members = chat.members.map(id => id.toString());
+        console.log("Menmebrs: ",members);
+        const receiverID = members.filter(id=>id.toString()!== doc.sender.toString())
+        console.log("RecieverID: ",receiverID[0]);
+        (doc.status == 'sent' || doc.status=='delivered') ? 
+        await Chats.findByIdAndUpdate(doc.chatID,{$set:{lastMessage:doc.message, lastMessageAt: doc.createdAt }, $inc:{[`unreadMessages.${receiverID[0]}`]: 1}}) : await Chats.findByIdAndUpdate(doc.chatID,{$set:{lastMessage:doc.message, lastMessageAt: doc.createdAt} })
+    }
+    catch(e)
+    {
+        console.log("Error while saving: ",e);
+    }
+}) 
 
-export const Chats = mongoose.model('Chats',RoomSchema);
+
 export const Messages = mongoose.model('Messages',messageSchema)
 export const Users = mongoose.model('Users',userSchema);
 export const Listings = mongoose.model('Listings',listingSchema);
+
+
+
+
+
 

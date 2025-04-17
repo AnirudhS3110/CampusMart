@@ -80,7 +80,9 @@ wss.on('connection',(ws)=>{
                             "payload":{
                                 "chatID":json.payload.chatID,
                                 "lastMessage":json.payload.message,
-                                "status":"sent"
+                                "status":"sent",
+                                "unreadMessages":1,
+                                "recieverID":json.payload.receiver
                             }
                         })) 
                         try{const res = await Messages.create({
@@ -99,6 +101,7 @@ wss.on('connection',(ws)=>{
                        
                         
                         console.log("Message is to be stored ot db");
+                        console.log("The message is: ",json.payload.message);
                         try{const res = await Messages.create({
                             chatID:json.payload.chatID,
                             sender:json.payload.sender,
