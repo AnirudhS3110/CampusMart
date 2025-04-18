@@ -37,8 +37,17 @@ const chatSlice = createSlice({
         'setReceiverName':(state,action)=>{
             state.receiverName = action.payload
         },
-        'updateMessage':(state)=>{   
+        'updateMessage':(state,action)=>{   
             state.messages = state.messages.map((message)=>(message.status === 'sent') ? { ...message, status: 'seen' } : message)
+            let chatIndex = state.chats.findIndex(chat => chat.chatID === action.payload.chatID);
+            if(chatIndex!=-1)
+            {
+                if(action.payload.unreadMessages)
+                {
+                    state.chats[chatIndex].unreadMessages[action.payload.recieverID]+=1;
+                }
+            }
+       
         },
         'updateLastMessage':(state,action)=>{
             let chatIndex = state.chats.findIndex(chat => chat.chatID === action.payload.chatID);

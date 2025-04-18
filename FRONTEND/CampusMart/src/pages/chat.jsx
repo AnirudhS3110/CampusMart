@@ -123,7 +123,8 @@ export default function Chat()
         try{
             const response = await axios.post('http://localhost:3000/chats/setRead',{
                 chatID:id,
-                receiver:userID
+                receiver:userID,
+                sender:userID
             },{
                 headers:{
                     "authorization":token,
@@ -226,9 +227,10 @@ export default function Chat()
                                         </div>
                                     </div>
 
-                                    <div className={`h-[25px] w-[25px] rounded-full bg-cblue text-white ${chat.notification ? "hidden":"block"}`}>
-                                        {chat.notification}
+                                    <div className={`h-[25px] w-[25px] rounded-full bg-cblue text-white ${chat.unreadMessages?.[userID] ? "block" : "hidden"}`}>
+                                        {chat.unreadMessages?.[userID]}
                                     </div>
+
                         
                                 </button>
                                 <hr className="bg-blue-500 opacity-25"></hr>

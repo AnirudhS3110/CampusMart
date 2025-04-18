@@ -9,8 +9,7 @@ import store from "@/redux/store";
 import { useNavigate } from "react-router-dom";
 import ProductDetailPopup from "./popup";
 
-// New Product Detail Popup Component
-// Update the MarketPlaceCard component to include popup functionality
+
 export default function MarketPlaceCard({list, Liked, cartList,setCartList}) {
   const nav = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -67,7 +66,7 @@ export default function MarketPlaceCard({list, Liked, cartList,setCartList}) {
               }
             );
             if(res.data.success) {
-              //alert("Added to your favorites")
+              alert("Added to your favorites❤!")
             }
           } catch(e) {
             console.log("Error");

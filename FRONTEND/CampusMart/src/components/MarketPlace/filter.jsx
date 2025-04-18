@@ -28,6 +28,9 @@ export default function Filter({filter,setFilter})
                 <SelectItem value="Electronics" className="py-[5px]">
                     Electronics
                 </SelectItem>
+                <SelectItem value="Instruments" className="py-[5px]">
+                    Instruments
+                </SelectItem>
                 <SelectItem value="Dresses" className="py-[5px]">
                     Dresses
                 </SelectItem>
