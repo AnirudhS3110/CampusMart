@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect,useMemo , useRef, useState} from "react";
-import { Rocket, ArrowLeft, ArrowRight ,MessageSquare  } from "lucide-react";
+import { Rocket, ArrowLeft, ArrowRight ,MessageSquare, SearchIcon  } from "lucide-react";
 import { LogOut } from "lucide-react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { setChatID, setChats, setRoomID , setReceiverID, setMessages, addMessage,setIsChatting, setReceiverName, updateMessage, updateLastMessage} from "@/redux/slices/ChatSlice";
+import { setChatID,setread, setChats, setRoomID , setReceiverID, setMessages, addMessage,setIsChatting, setReceiverName, updateMessage, updateLastMessage} from "@/redux/slices/ChatSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
 import { ChatElement } from "@/components/ChatPage/chatElement";
@@ -15,7 +15,6 @@ import {
   } from "@/components/ui/resizable";
 import {CheckCheck} from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
 export default function Chat()
 {
     
@@ -23,12 +22,16 @@ export default function Chat()
     const userID = useSelector((state)=>state.authentication.userID)
     const chats = useSelector((state)=>state.chat.chats)
     const token = localStorage.getItem("Authtoken");
+    const [Chats,setchats] = useState(chats)
     const messages = useSelector((state)=>state.chat.messages)
     const dispatch =  useDispatch();
     const socketRef = useRef(null);
     const nav = useNavigate()
     const [isPhone,setIsPhone] = useState(window.innerWidth <= 768); 
     const [isChatView,setIsChatView] = useState(true);
+    useEffect(()=>{
+        setchats(chats);
+    },[chats])
 
     useEffect(()=>{
         function handleResize()
@@ -121,6 +124,8 @@ export default function Chat()
     async function setRead(id) //function to update in db that message are seen
     {
         try{
+            console.log("into teh set read fn in chat.jsx")
+            dispatch(setread({chatID:id,sender:userID}));
             const response = await axios.post('http://localhost:3000/chats/setRead',{
                 chatID:id,
                 receiver:userID,
@@ -173,9 +178,10 @@ export default function Chat()
             <div className="h-[90vh] w-full flex flex-col overflow-y-auto bg-[#05295e]">
                 {
                 isChatView ? 
-                    <div className="w-full h-full bg-[#05295e]">
-                    {chats.map((chat)=><motion.div whileTap={{ scale: 1.03 }} className="w-full h-[60px] scrollbar-hide ">
-                                <button className="w-full, h-full flex justify-start px-[30px] gap-[15px]  hover:bg-white hover:opacity-15" onClick={()=>{ 
+                    <div className="w-full h-full flex flex-col bg-[#05295e]">
+                        <SearchBar chats={chats} setchats={setchats}/>
+                    {Chats.map((chat)=><motion.div whileTap={{ scale: 1.03 }} className="w-full h-[60px] scrollbar-hide ">
+                                <button className="w-full h-full flex justify-between items-center px-[30px] gap-[15px]  hover:bg-white hover:opacity-15" onClick={()=>{ 
                                     setChat({id:chat.receiver[0]._id,setView:setViewAndManageMobile}); 
                                     setUserName(chat.receiver[0].userName);
                                     dispatch(setReceiverName(chat.receiver[0].userName))
@@ -183,6 +189,7 @@ export default function Chat()
                                     enterRoom(chat.chatID,chat.receiver[0]._id);
                                     setIsChatView(false)
                                     }}> 
+                                    <div className="w-full h-full flex gap-[15px]">
                                     <div className="h-[40px] w-[40px] border-[1px] border-cyello rounded-[50%] my-auto">
                                         <img className="border-[1px] rounded-[50%] object-cover w-full h-full"/>
                                     </div>
@@ -191,6 +198,12 @@ export default function Chat()
                                         <div className="text-[14px] text-gray-400 text-left min-w-[250px]max-w-[300px]">
                                             {chat.lastMessage}
                                         </div>
+                                    </div>
+                                    </div>
+                                    <div>
+                                    <div className={`h-[30px] w-[30px] text-[14px] rounded-full flex justify-center items-center bg-cblue text-white ${chat.unreadMessages?.[userID] ? "block" : "hidden"}`}>
+                                        {chat.unreadMessages?.[userID]}
+                                    </div>
                                     </div>
                         
                                 </button>
@@ -208,15 +221,17 @@ export default function Chat()
         <ResizablePanelGroup direction="horizontal"  className={`hidden md:flex min-h-[90vh] bg-[#05295e]  md:justify-between`}>
          <ResizablePanel defaultSize={45} minSize={38} maxSize={60}>
                  <div className="h-[90%] w-full flex flex-col overflow-y-auto">
+                    <SearchBar chats={chats} setchats={setchats}/>
 
-                    {chats.map((chat)=><motion.div whileTap={{ scale: 1.03 }} className="w-full h-[60px] scrollbar-hide ">
-                                <button className="w-full h-full flex justify-start items-center px-[30px] gap-[15px] transition-all duration-200 rounded-[10px] hover:bg-[#0C4CAB]  hover:opacity-60" onClick={()=>{ 
+                    {Chats.map((chat)=><motion.div whileTap={{ scale: 1.03 }} className="w-full h-[60px] scrollbar-hide ">
+                                <button className="w-full h-full flex justify-between items-center px-[30px] gap-[15px] transition-all duration-200 rounded-[10px] hover:bg-[#0C4CAB]  hover:opacity-60" onClick={()=>{ 
                                     setChat({id:chat.receiver[0]._id,setView:setview}); 
                                     setUserName(chat.receiver[0].userName);
                                     dispatch(setReceiverName(chat.receiver[0].userName))
                                     setRead(chat.chatID)
                                     enterRoom(chat.chatID,chat.receiver[0]._id);
                                     }}> 
+                                    <div className="w-full h-full flex gap-[15px]">
                                     <div className="h-[40px] w-[40px] border-[1px] border-cyello rounded-[50%] my-auto">
                                         <img className="border-[1px] rounded-[50%] object-cover w-full h-full"/>
                                     </div>
@@ -226,8 +241,9 @@ export default function Chat()
                                             {chat.lastMessage}
                                         </div>
                                     </div>
+                                    </div>
 
-                                    <div className={`h-[25px] w-[25px] rounded-full bg-cblue text-white ${chat.unreadMessages?.[userID] ? "block" : "hidden"}`}>
+                                    <div className={`h-[30px] w-[30px] text-[14px] rounded-full flex justify-center items-center bg-cblue text-white ${chat.unreadMessages?.[userID] ? "block" : "hidden"}`}>
                                         {chat.unreadMessages?.[userID]}
                                     </div>
 
@@ -253,6 +269,42 @@ export default function Chat()
         
        
     )  
+}
+
+const SearchBar = ({chats,setchats})=>{
+    const [search,setSearch] = useState("")
+
+    useEffect(()=>{
+        function searchChat()
+        {
+            if(search!='')
+            {
+                console.log("chats: ",chats.filter((chat)=>chat.receiver[0].userName.toLowerCase().includes(search.toLowerCase())));
+                setchats(chats.filter((chat)=>chat.receiver[0].userName.toLowerCase().includes(search.toLowerCase())))
+            }
+            else
+            {
+                setchats(chats);
+            }
+        }
+        searchChat()
+    },[search])
+
+    return <div className="w-full h-[10vh] flex items-center px-[25px] shadow-sm">
+  <div className="relative flex items-center w-full max-w-[100%px] mx-auto">
+    <div className="absolute left-4 text-gray-400">
+      <SearchIcon className="w-4 h-4" />
+    </div>
+    <input 
+      type="text" 
+      placeholder="Search Chat" 
+      value={search} 
+      onChange={(e) => setSearch(e.target.value)} 
+      className="bg-white px-[40px] py-[8px] w-full rounded-[20px] shadow-sm focus:outline-none  focus:ring-blue-500 transition-all"
+    />
+    
+  </div>
+</div>
 }
 
 const EmptyChatPanel = () => {

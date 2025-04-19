@@ -133,7 +133,7 @@ const ChatHeader = React.memo(({userName, dispatch, setview, onExit, isPhone, ha
         
     <div className="flex flex-row justify-start gap-[20px] w-[90%] md:w-[80%] px-[40px]">
         <div className="w-[45px] h-[45px] md:w-[50px] md:h-[50px] border-1 rounded-[50%] overflow-hidden my-auto ">
-            <img src="https://plus.unsplash.com/premium_photo-1664474619075-644dd191935f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW1hZ2V8ZW58MHx8MHx8fDA%3D" className="w-full h-full object-cover border-[2px] border-cyello rounded-[50%] "/>
+            {/* <img src="" className="w-full h-full object-cover border-[2px] border-cyello rounded-[50%] "/> */}
         </div>
         <div className="w-[80%] text-[16px] my-auto text-white  nmd:text-[28px]">
             {/* {console.log("UserName:",userName)} */}

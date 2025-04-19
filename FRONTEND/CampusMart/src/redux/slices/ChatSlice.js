@@ -38,30 +38,34 @@ const chatSlice = createSlice({
             state.receiverName = action.payload
         },
         'updateMessage':(state,action)=>{   
+            console.log("Into the updaemesssage reducer")
             state.messages = state.messages.map((message)=>(message.status === 'sent') ? { ...message, status: 'seen' } : message)
-            let chatIndex = state.chats.findIndex(chat => chat.chatID === action.payload.chatID);
-            if(chatIndex!=-1)
-            {
-                if(action.payload.unreadMessages)
-                {
-                    state.chats[chatIndex].unreadMessages[action.payload.recieverID]+=1;
-                }
-            }
+            
        
+        },
+        'setread':(state,action)=>{
+            console.log("entered setRead reducer.")
+            const chatIndex = state.chats.findIndex(chat => chat.chatID === action.payload.chatID);
+            if(state.chats[chatIndex].unreadMessages)
+            {
+                state.chats[chatIndex].unreadMessages[action.payload.sender] = 0;
+
+            }
         },
         'updateLastMessage':(state,action)=>{
             let chatIndex = state.chats.findIndex(chat => chat.chatID === action.payload.chatID);
             console.log(chatIndex);
             if(chatIndex!=-1)
             {
+                state.chats[chatIndex].unreadMessages[action.payload.recieverID]+=1;
+                    console.log("Unread message count:", state.chats[chatIndex].unreadMessages[action.payload.recieverID]);
                 let updatedChat = state.chats[chatIndex]
-                let notification = updatedChat.notification + 1;
                 state.chats.splice(chatIndex,1)
-                state.chats.unshift({...updatedChat,lastMessage:action.payload.lastMessage,notification:notification})
+                state.chats.unshift({...updatedChat,lastMessage:action.payload.lastMessage})
             }
         }    
     }
 })
 
-export const {setRoomID,setChats,setMessages,setReceiverName,setReceiverID,setChatID,addMessage,setIsChatting,updateMessage,updateLastMessage} = chatSlice.actions;
+export const {setRoomID,setChats,setMessages,setReceiverName,setReceiverID,setChatID,addMessage,setIsChatting,updateMessage,updateLastMessage,setread} = chatSlice.actions;
 export default chatSlice.reducer;
